@@ -18,7 +18,7 @@ export function Pill({ id, label, isActive, onClick }: PillProps) {
         ${
           isActive
             ? 'bg-white text-black hover:opacity-80'
-            : 'bg-transparent text-white border border-white hover:bg-white hover:text-black'
+            : 'bg-transparent text-white outline outline-1 outline-white hover:bg-white hover:text-black'
         }
       `}
     >

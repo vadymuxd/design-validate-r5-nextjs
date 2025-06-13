@@ -18,7 +18,7 @@ export const usabilityTestingTools: Tool[] = [
   {
     name: 'UserTesting',
     description: 'Access to a massive, diverse participant panel for in-depth video feedback',
-    logo_url: 'https://media.cdnandroid.com/item_images/1117984/imagen-usertesting-0ori.jpg',
+    logo_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSbfGbzsa1YDRuz2i8lASWjpgHIIDUcZsBIA&s',
     website_url: 'https://www.usertesting.com/',
     upvotes: 320,
     downvotes: 120
