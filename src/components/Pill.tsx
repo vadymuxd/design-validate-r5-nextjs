@@ -1,26 +1,28 @@
-import React from 'react';
+'use client';
+
+import { Category } from '@/data/types';
 
 interface PillProps {
+  id: Category;
   label: string;
-  isActive?: boolean;
+  isActive: boolean;
+  onClick: (id: Category) => void;
 }
 
-export const Pill: React.FC<PillProps> = ({ label, isActive = false }) => {
+export function Pill({ id, label, isActive, onClick }: PillProps) {
   return (
-    <div
+    <button
+      onClick={() => onClick(id)}
       className={`
-        rounded-[36px] px-4 py-2.5
-        ${isActive ? 'bg-white' : 'border border-white'}
+        rounded-[36px] px-3 py-2 transition-all cursor-pointer font-['Inter'] font-semibold text-[12px] leading-none
+        ${
+          isActive
+            ? 'bg-white text-black hover:opacity-80'
+            : 'bg-transparent text-white border border-white hover:bg-white hover:text-black'
+        }
       `}
     >
-      <span
-        className={`
-          font-['Inter'] font-semibold text-[12px] leading-normal whitespace-pre
-          ${isActive ? 'text-black' : 'text-white'}
-        `}
-      >
-        {label}
-      </span>
-    </div>
+      {label}
+    </button>
   );
-}; 
+} 
