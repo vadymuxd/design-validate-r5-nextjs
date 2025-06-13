@@ -16,7 +16,10 @@ export const metadata: Metadata = {
   title: "Design. Validate",
   description: "Tools, frameworks, methods, and case studies for design validation",
   icons: {
-    icon: '/favicon.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png' }
+    ],
   },
 };
 
@@ -27,6 +30,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.png" type="image/png" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
