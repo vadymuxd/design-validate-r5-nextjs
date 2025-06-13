@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Voter } from './Voter';
 
 interface ToolCardProps {
@@ -24,8 +25,14 @@ export const ToolCard: React.FC<ToolCardProps> = ({
 }) => {
   return (
     <div className="bg-white rounded-2xl p-8 flex items-center gap-6">
-      <div className="w-20 h-20 shrink-0">
-        <img src={logo} alt={`${name} logo`} className="w-full h-full object-contain" />
+      <div className="w-20 h-20 shrink-0 relative">
+        <Image
+          src={logo}
+          alt={`${name} logo`}
+          fill
+          className="object-contain"
+          sizes="80px"
+        />
       </div>
       
       <div className="flex-grow">
