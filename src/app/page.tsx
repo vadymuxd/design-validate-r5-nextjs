@@ -1,41 +1,27 @@
+import { Feedback } from '@/components/Feedback';
 import { Pill } from '@/components/Pill';
 import { ToolCard } from '@/components/ToolCard';
-import { Feedback } from '@/components/Feedback';
+import { supabase } from '@/lib/supabase';
+import { categories, tools } from '@/data/tools';
 
-const tools = [
-  {
-    name: 'Maze',
-    description: 'Unmoderated testing for prototypes with fast, automated insights.',
-    logo: '/logos/maze.svg',
-    url: 'https://maze.co/',
-    upvotes: 0,
-    downvotes: 0,
-  },
-  {
-    name: 'Lookback',
-    description: 'Live or recorded user sessions with real-time observation and feedback.',
-    logo: '/logos/lookback.svg',
-    url: 'https://www.lookback.com/',
-    upvotes: 0,
-    downvotes: 0,
-  },
-  {
-    name: 'UserTesting',
-    description: 'Access to a large tester panel for quick, targeted usability feedback.',
-    logo: '/logos/usertesting.svg',
-    url: 'https://www.usertesting.com/',
-    upvotes: 0,
-    downvotes: 0,
-  },
-];
+export const revalidate = 60;
 
-const categories = [
-  { label: 'Usability Testing', isActive: true },
-  { label: 'Event Tracking', isActive: false },
-  { label: 'A/B Testing', isActive: false },
-];
+export default async function Home() {
+  // Get feedback counts
+  const { data, error } = await supabase
+    .from('feedback')
+    .select('sentiment');
 
-export default function Home() {
+  if (error) {
+    console.error('Error fetching feedback:', error);
+    return null;
+  }
+
+  const counts = {
+    likes: data?.filter(row => row.sentiment === 'LIKE').length || 0,
+    dislikes: data?.filter(row => row.sentiment === 'DISLIKE').length || 0
+  };
+
   return (
     <main className="min-h-screen bg-black">
       <div className="flex flex-col items-center py-12 px-8 gap-8">
@@ -85,13 +71,25 @@ export default function Home() {
           {tools.map((tool) => (
             <ToolCard
               key={tool.name}
-              {...tool}
+              name={tool.name}
+              description={tool.description}
+              logo={tool.logo_url}
+              url={tool.website_url}
+              upvotes={counts.likes}
+              downvotes={counts.dislikes}
             />
           ))}
         </div>
 
         {/* Feedback Section */}
-        <Feedback />
+        <div className="flex flex-col items-center gap-4">
+          <p className="text-white text-[10px] leading-[1.4] text-center max-w-[520px]">
+            Synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit.
+            Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users. It is reflecting the volume and intensity of
+            feedback, not a literal count of every comment. Done by Gemini 2.5 Pro
+          </p>
+          <Feedback />
+        </div>
       </div>
     </main>
   );
