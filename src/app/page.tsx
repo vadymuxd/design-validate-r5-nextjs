@@ -97,6 +97,8 @@ export default function Home() {
                   url={tool.website_url}
                   upvotes={tool.upvotes}
                   downvotes={tool.downvotes}
+                  pros={tool.pros}
+                  cons={tool.cons}
                 />
               ))}
             </div>

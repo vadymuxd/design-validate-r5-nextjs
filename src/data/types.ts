@@ -5,6 +5,8 @@ export interface Tool {
   website_url: string;
   upvotes: number;
   downvotes: number;
+  pros?: string[];
+  cons?: string[];
 }
 
 export type Category = 
