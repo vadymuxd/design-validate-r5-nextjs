@@ -21,6 +21,7 @@ export function ToolCard({ name, description, logo, url, upvotes, downvotes }: T
             src={logo}
             alt={`${name} logo`}
             fill
+            sizes="60px"
             className="rounded-full object-cover"
           />
         </div>
