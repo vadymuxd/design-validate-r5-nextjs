@@ -103,7 +103,7 @@ export default function Home() {
 
             {/* Feedback Section */}
             <div className="flex flex-col items-center gap-4">
-              <p className="text-white text-[10px] leading-[1.4] text-center max-w-[520px]">
+            <p className="text-white text-[10px] leading-[1.4] text-center max-w-[520px]">
                 Synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit.
                 Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users. It is reflecting the volume and intensity of
                 feedback, not a literal count of every comment. Done by Gemini 2.5 Pro
