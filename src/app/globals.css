@@ -1,8 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base colors */
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-red: #FF3654;
+  --color-green: #77DB95;
+  --color-grey: #F2F2F7;
+
+  /* System colors */
+  --background: var(--color-black);
+  --foreground: var(--color-white);
+
+  /* Typography */
+  --font-family: 'Inter', sans-serif;
+  --font-size-h1: 40px;
+  --font-size-h3: 24px;
+  --font-size-body: 16px;
+  --font-size-label: 12px;
+  --font-size-annotation: 10px;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 100%;
+  --line-height-normal: 140%;
 }
 
 @theme inline {
@@ -14,13 +38,18 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--color-black);
+    --foreground: var(--color-white);
   }
 }
 
+/* Set default background and text colors */
 body {
   background: var(--background);
+  font-family: var(--font-family);
+}
+
+/* Apply white text only to main content area */
+main {
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }

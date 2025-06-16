@@ -31,11 +31,11 @@ export function ToolCard({ name, description, logo, url, upvotes, downvotes }: T
           <Link 
             href={url}
             target="_blank"
-            className="inline-block text-2xl font-bold text-black hover:underline mb-1"
+            className="inline-block text-2xl font-bold text-[#000000] hover:underline mb-1"
           >
             {name}
           </Link>
-          <p className="text-base font-medium text-black/80">{description}</p>
+          <p className="text-base font-medium text-[#000000]/80">{description}</p>
         </div>
 
         {/* Votes - Desktop: Vertical, Mobile: Horizontal */}
@@ -44,7 +44,7 @@ export function ToolCard({ name, description, logo, url, upvotes, downvotes }: T
             <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M7 0L13.9282 12H0.0717969L7 0Z" fill={upvotes > 0 ? "#77DB95" : "#8E8E93"} />
             </svg>
-            <span className="font-medium text-base leading-normal">
+            <span className="font-medium text-base leading-normal text-[#000000]">
               {upvotes}
             </span>
           </div>
@@ -52,7 +52,7 @@ export function ToolCard({ name, description, logo, url, upvotes, downvotes }: T
             <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg" className="rotate-180">
               <path d="M7 0L13.9282 12H0.0717969L7 0Z" fill={downvotes > 0 ? "#FF3654" : "#8E8E93"} />
             </svg>
-            <span className="font-medium text-base leading-normal">
+            <span className="font-medium text-base leading-normal text-[#000000]">
               {downvotes}
             </span>
           </div>

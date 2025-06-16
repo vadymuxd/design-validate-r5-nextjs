@@ -4,9 +4,18 @@ import { Feedback } from '@/components/Feedback';
 import { Pill } from '@/components/Pill';
 import { ToolCard } from '@/components/ToolCard';
 import { abTestingTools } from '@/data/abTesting';
-import { eventTrackingTools } from '@/data/eventTracking';
+import { behaviourTrackingTools } from '@/data/behaviourTracking';
 import { Category, categories } from '@/data/types';
 import { usabilityTestingTools } from '@/data/usabilityTesting';
+import { uxDataAnalysisTools } from '@/data/uxDataAnalysis';
+import { sessionReplaysTools } from '@/data/sessionReplays';
+import { heatmapsTools } from '@/data/heatmaps';
+import { aiValidationTools } from '@/data/aiValidation';
+import { surveysTools } from '@/data/surveys';
+import { userFeedbackTools } from '@/data/userFeedback';
+import { conceptTestingTools } from '@/data/conceptTesting';
+import { CategorySelector } from '@/components/CategorySelector';
+import { UpdatedAt } from '@/components/UpdatedAt';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -15,8 +24,15 @@ export default function Home() {
 
   const tools = {
     usabilityTesting: usabilityTestingTools,
-    eventTracking: eventTrackingTools,
+    behaviourTracking: behaviourTrackingTools,
     abTesting: abTestingTools,
+    uxDataAnalysis: uxDataAnalysisTools,
+    sessionReplays: sessionReplaysTools,
+    heatmaps: heatmapsTools,
+    aiValidation: aiValidationTools,
+    surveys: surveysTools,
+    userFeedback: userFeedbackTools,
+    conceptTesting: conceptTestingTools,
   }[activeCategory];
 
   return (
@@ -47,23 +63,25 @@ export default function Home() {
               </defs>
             </svg>
           </div>
-          <h1 className="font-['Inter'] font-bold text-[40px] text-white text-center">
-            Design. Validate
-          </h1>
+          <CategorySelector />
         </div>
 
         {/* Categories */}
-        <div className="flex gap-2">
-          {categories.map((category) => (
-            <Pill
-              key={category.id}
-              id={category.id}
-              label={category.label}
-              isActive={category.id === activeCategory}
-              onClick={setActiveCategory}
-            />
-          ))}
+        <div className="w-full max-w-[730px] flex flex-col gap-2">
+          <div className="flex gap-2 flex-wrap justify-center">
+            {categories.map((category) => (
+              <Pill
+                key={category.id}
+                id={category.id}
+                label={category.label}
+                isActive={category.id === activeCategory}
+                onClick={setActiveCategory}
+              />
+            ))}
+          </div>
         </div>
+
+        <UpdatedAt />
 
         {/* Content */}
         {activeCategory === 'usabilityTesting' ? (

@@ -1,9 +1,9 @@
 import { Tool } from './types';
 
-export const eventTrackingTools: Tool[] = [
+export const heatmapsTools: Tool[] = [
   {
     name: 'Coming Soon',
-    description: 'We are working on gathering the best event tracking tools for you.',
+    description: 'We are working on gathering the best heatmap tools for you.',
     logo_url: '/gifs/cat.gif',
     website_url: '#',
     upvotes: 0,

@@ -34,7 +34,7 @@ export const Voter: React.FC<VoterProps> = ({
           />
         </svg>
       </div>
-      <span className="font-['Inter'] font-medium text-base leading-normal">
+      <span className="font-['Inter'] font-medium text-base leading-normal text-[#000000]">
         {count}
       </span>
     </button>
