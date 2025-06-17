@@ -42,7 +42,7 @@ export const Voter: React.FC<VoterProps> = ({
         throw new Error('Failed to submit feedback');
       }
       onVoteUpdate?.(() => showSuccessToast(direction === 'up' ? 'Thank you for your upvote!' : 'Thank you for your downvote!'));
-    } catch (error) {
+    } catch {
       setToastMessage('Failed to submit feedback. Please try again.');
       setShowToast(true);
     }
