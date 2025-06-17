@@ -19,9 +19,17 @@ export const Voter: React.FC<VoterProps> = ({
 }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState<'default' | 'warning'>('default');
 
   const showSuccessToast = (message: string) => {
     setToastMessage(message);
+    setToastVariant('default');
+    setShowToast(true);
+  };
+
+  const showWarningToast = (message: string) => {
+    setToastMessage(message);
+    setToastVariant('warning');
     setShowToast(true);
   };
 
@@ -38,19 +46,28 @@ export const Voter: React.FC<VoterProps> = ({
           component: toolName
         }),
       });
+
+      if (response.status === 409) {
+        // Duplicate vote error
+        showWarningToast('You have already voted for this!');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error('Failed to submit feedback');
       }
-      onVoteUpdate?.(() => showSuccessToast(direction === 'up' ? 'Thank you for your upvote!' : 'Thank you for your downvote!'));
-    } catch {
-      setToastMessage('Failed to submit feedback. Please try again.');
-      setShowToast(true);
+      
+      onVoteUpdate?.(() => showSuccessToast("Thanks for feedback!"));
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      showWarningToast("Failed to submit feedback. Please try again.");
     }
   };
 
   const handleCloseToast = () => {
     setShowToast(false);
     setToastMessage("");
+    setToastVariant('default');
   };
 
   const getIcon = () => {
@@ -67,14 +84,14 @@ export const Voter: React.FC<VoterProps> = ({
     <>
       <button
         onClick={handleVote}
-        className={`flex items-center justify-center sm:justify-start gap-1 px-2 py-1.5 rounded-lg w-full ${getBgColor()} hover:cursor-pointer`}
+        className={`flex items-center justify-start gap-1 px-3 py-1.5 rounded-lg w-full ${getBgColor()} hover:cursor-pointer`}
       >
-        <div className="relative w-5 h-5">
+        <div className="flex-shrink-0">
           <Image
             src={getIcon()}
             alt={direction === 'up' ? 'Upvote' : 'Downvote'}
-            fill
-            sizes="20px"
+            width={20}
+            height={20}
           />
         </div>
         <span className="font-['Inter'] font-medium text-base leading-normal text-[#000000]">
@@ -85,6 +102,7 @@ export const Voter: React.FC<VoterProps> = ({
         message={toastMessage}
         isVisible={showToast}
         onClose={handleCloseToast}
+        variant={toastVariant}
       />
     </>
   );

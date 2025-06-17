@@ -23,7 +23,7 @@ export const ToastMessage: React.FC<ToastMessageProps> = ({ message, isVisible, 
   const backgroundColor = variant === 'warning' ? 'var(--color-red)' : 'var(--color-link)';
 
   return (
-    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50" style={{ minWidth: 320 }}>
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 max-w-sm mx-4">
       <div
         style={{
           backgroundColor,

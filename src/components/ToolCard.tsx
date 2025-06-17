@@ -31,9 +31,17 @@ export function ToolCard({
   const [isExpanded, setIsExpanded] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState<'default' | 'warning'>('default');
 
   const showSuccessToast = (message: string) => {
     setToastMessage(message);
+    setToastVariant('default');
+    setShowToast(true);
+  };
+
+  const showWarningToast = (message: string) => {
+    setToastMessage(message);
+    setToastVariant('warning');
     setShowToast(true);
   };
 
@@ -59,16 +67,21 @@ export function ToolCard({
         }),
       });
 
+      if (response.status === 409) {
+        // Duplicate vote error
+        showWarningToast('You have already voted for this!');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error('Failed to submit feedback');
       }
       
       // Call refresh with success callback that has the message baked in
-      onVoteUpdate?.(() => showSuccessToast("Thank you for your recommendation!"));
+      onVoteUpdate?.(() => showSuccessToast("Thanks for feedback!"));
     } catch (error) {
       console.error('Error submitting feedback:', error);
-      setToastMessage("Failed to submit feedback. Please try again.");
-      setShowToast(true);
+      showWarningToast("Failed to submit feedback. Please try again.");
     }
   };
 
@@ -86,22 +99,28 @@ export function ToolCard({
         }),
       });
 
+      if (response.status === 409) {
+        // Duplicate vote error
+        showWarningToast('You have already voted for this!');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error('Failed to submit feedback');
       }
       
       // Call refresh with success callback that has the message baked in
-      onVoteUpdate?.(() => showSuccessToast("Thank you for your feedback!"));
+      onVoteUpdate?.(() => showSuccessToast("Thanks for feedback!"));
     } catch (error) {
       console.error('Error submitting feedback:', error);
-      setToastMessage("Failed to submit feedback. Please try again.");
-      setShowToast(true);
+      showWarningToast("Failed to submit feedback. Please try again.");
     }
   };
 
   const handleCloseToast = () => {
     setShowToast(false);
     setToastMessage("");
+    setToastVariant('default');
   };
 
   return (
@@ -185,7 +204,7 @@ export function ToolCard({
           </div>
 
           {/* Votes - Desktop */}
-          <div className="flex flex-col gap-2 w-[67px]">
+          <div className="flex flex-col gap-2 w-[75px] flex-shrink-0">
             <Voter
               direction="up"
               count={upvotes}
@@ -311,6 +330,7 @@ export function ToolCard({
         message={toastMessage}
         isVisible={showToast}
         onClose={handleCloseToast}
+        variant={toastVariant}
       />
     </>
   );
