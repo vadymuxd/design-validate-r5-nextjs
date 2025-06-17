@@ -42,6 +42,60 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // If this is feedback for a specific tool (not "general feedback"), update the tool's current totals
+    if (category === 'tools' && component && component !== 'general feedback') {
+      // Get the tool's current initial votes
+      const { data: tool, error: toolError } = await supabase
+        .from('tools')
+        .select('initial_upvotes, initial_downvotes')
+        .eq('name', component)
+        .single();
+
+      if (toolError) {
+        console.error('Error fetching tool for total update:', toolError);
+        // Don't fail the entire request if update fails
+      } else if (tool) {
+        // Count total LIKE feedback for this tool
+        const { count: likeCount, error: likeError } = await supabase
+          .from('feedback')
+          .select('*', { count: 'exact', head: true })
+          .eq('category', 'tools')
+          .eq('component', component)
+          .eq('sentiment', 'LIKE');
+
+        // Count total DISLIKE feedback for this tool
+        const { count: dislikeCount, error: dislikeError } = await supabase
+          .from('feedback')
+          .select('*', { count: 'exact', head: true })
+          .eq('category', 'tools')
+          .eq('component', component)
+          .eq('sentiment', 'DISLIKE');
+
+        if (likeError || dislikeError) {
+          console.error('Error counting feedback for total update:', likeError || dislikeError);
+          // Don't fail the entire request if update fails
+        } else {
+          // Calculate new current totals: initial + feedback counts
+          const current_upvotes_total = tool.initial_upvotes + (likeCount || 0);
+          const current_downvotes_total = tool.initial_downvotes + (dislikeCount || 0);
+
+          // Update the tool's current totals in the database
+          const { error: updateError } = await supabase
+            .from('tools')
+            .update({
+              current_upvotes_total,
+              current_downvotes_total
+            })
+            .eq('name', component);
+
+          if (updateError) {
+            console.error('Error updating tool current totals:', updateError);
+            // Don't fail the entire request if update fails
+          }
+        }
+      }
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error processing feedback:', error);

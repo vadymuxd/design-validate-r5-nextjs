@@ -6,7 +6,9 @@
   --color-black: #000000;
   --color-red: #FF3654;
   --color-green: #77DB95;
-  --color-grey: #F2F2F7;
+  --color-grey-light: #F2F2F7;
+  --color-grey-medium: #BEBEC1;
+  --color-grey-dark: #383838;
   --color-link: #007AFF;
 
   /* System colors */

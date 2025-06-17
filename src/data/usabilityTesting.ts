@@ -106,5 +106,25 @@ export const usabilityTestingTools: Tool[] = [
     downvotes: 110,
     pros: ['Good for live, moderated testing', 'Screen/camera/touch recording'],
     cons: ['Plagued by technical bugs', 'Frequent connection drops', 'Poor reliability']
+  },
+  {
+    name: 'Tool 11',
+    description: 'Test tool for sorting functionality with high NET score',
+    logo_url: '/gifs/cat.gif',
+    website_url: 'https://example.com/tool11',
+    upvotes: 400,
+    downvotes: 50,
+    pros: ['Very high user satisfaction', 'Excellent performance', 'Great value'],
+    cons: ['New to market', 'Limited integrations']
+  },
+  {
+    name: 'Tool 12',
+    description: 'Test tool for sorting functionality with low NET score',
+    logo_url: '/gifs/cat.gif',
+    website_url: 'https://example.com/tool12',
+    upvotes: 80,
+    downvotes: 200,
+    pros: ['Affordable pricing', 'Basic functionality'],
+    cons: ['Poor user experience', 'Frequent bugs', 'Limited features', 'Bad support']
   }
 ]; 

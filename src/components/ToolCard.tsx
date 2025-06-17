@@ -14,6 +14,7 @@ interface ToolCardProps {
   downvotes: number;
   pros?: string[];
   cons?: string[];
+  onVoteUpdate?: (showSuccessToast: () => void) => void;
 }
 
 export function ToolCard({ 
@@ -24,11 +25,17 @@ export function ToolCard({
   upvotes, 
   downvotes,
   pros = [],
-  cons = []
+  cons = [],
+  onVoteUpdate
 }: ToolCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+
+  const showSuccessToast = (message: string) => {
+    setToastMessage(message);
+    setShowToast(true);
+  };
 
   const handleTitleClick = () => {
     setIsExpanded(!isExpanded);
@@ -56,8 +63,8 @@ export function ToolCard({
         throw new Error('Failed to submit feedback');
       }
       
-      setToastMessage("Thank you for your recommendation!");
-      setShowToast(true);
+      // Call refresh with success callback that has the message baked in
+      onVoteUpdate?.(() => showSuccessToast("Thank you for your recommendation!"));
     } catch (error) {
       console.error('Error submitting feedback:', error);
       setToastMessage("Failed to submit feedback. Please try again.");
@@ -83,8 +90,8 @@ export function ToolCard({
         throw new Error('Failed to submit feedback');
       }
       
-      setToastMessage("Thank you for your feedback!");
-      setShowToast(true);
+      // Call refresh with success callback that has the message baked in
+      onVoteUpdate?.(() => showSuccessToast("Thank you for your feedback!"));
     } catch (error) {
       console.error('Error submitting feedback:', error);
       setToastMessage("Failed to submit feedback. Please try again.");
@@ -182,11 +189,15 @@ export function ToolCard({
             <Voter
               direction="up"
               count={upvotes}
+              toolName={name}
+              onVoteUpdate={onVoteUpdate}
               background={isExpanded ? 'white' : 'grey'}
             />
             <Voter
               direction="down"
               count={downvotes}
+              toolName={name}
+              onVoteUpdate={onVoteUpdate}
               background={isExpanded ? 'white' : 'grey'}
             />
           </div>
@@ -262,6 +273,8 @@ export function ToolCard({
               <Voter
                 direction="up"
                 count={upvotes}
+                toolName={name}
+                onVoteUpdate={onVoteUpdate}
                 background={isExpanded ? 'white' : 'grey'}
               />
             </div>
@@ -269,6 +282,8 @@ export function ToolCard({
               <Voter
                 direction="down"
                 count={downvotes}
+                toolName={name}
+                onVoteUpdate={onVoteUpdate}
                 background={isExpanded ? 'white' : 'grey'}
               />
             </div>
