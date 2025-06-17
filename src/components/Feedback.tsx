@@ -4,9 +4,27 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { ToastMessage } from './ToastMessage';
 
-export const Feedback: React.FC = () => {
+interface FeedbackProps {
+  component: string;
+  category?: string;
+}
+
+export const Feedback: React.FC<FeedbackProps> = ({ component, category = 'general' }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastVariant, setToastVariant] = useState<'default' | 'warning'>('default');
+
+  const showSuccessToast = (message: string) => {
+    setToastMessage(message);
+    setToastVariant('default');
+    setShowToast(true);
+  };
+
+  const showWarningToast = (message: string) => {
+    setToastMessage(message);
+    setToastVariant('warning');
+    setShowToast(true);
+  };
 
   const submitFeedback = async (sentiment: 'LIKE' | 'DISLIKE') => {
     try {
@@ -17,21 +35,25 @@ export const Feedback: React.FC = () => {
         },
         body: JSON.stringify({
           sentiment,
-          category: 'tools',
-          component: 'general feedback',
+          category,
+          component,
         }),
       });
+
+      if (response.status === 409) {
+        // Duplicate vote error
+        showWarningToast('You have already voted for this!');
+        return;
+      }
 
       if (!response.ok) {
         throw new Error('Failed to submit feedback');
       }
 
-      setToastMessage("Thanks for feedback!");
-      setShowToast(true);
+      showSuccessToast("Thanks for feedback!");
     } catch (error) {
       console.error('Error submitting feedback:', error);
-      setToastMessage("Failed to submit feedback. Please try again.");
-      setShowToast(true);
+      showWarningToast("Failed to submit feedback. Please try again.");
     }
   };
 
@@ -73,6 +95,7 @@ export const Feedback: React.FC = () => {
         message={toastMessage}
         isVisible={showToast}
         onClose={handleCloseToast}
+        variant={toastVariant}
       />
     </>
   );

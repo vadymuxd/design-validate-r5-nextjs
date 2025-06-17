@@ -114,6 +114,12 @@ export default function Home() {
 
   const tools = getToolsForCategory();
 
+  // Get the current category label for feedback
+  const getCurrentCategoryLabel = () => {
+    const currentCategory = categories.find(cat => cat.id === activeCategory);
+    return currentCategory?.label || activeCategory;
+  };
+
   return (
     <main className="min-h-screen flex flex-col bg-black">
       <div className="flex flex-col items-center py-12 px-8 gap-8 flex-1">
@@ -187,17 +193,24 @@ export default function Home() {
 
             {/* Feedback Section */}
             <div className="flex flex-col items-center gap-4">
-            <p className="text-white text-[10px] leading-[1.4] text-center max-w-[520px]">
+              <p className="text-white text-[10px] leading-[1.4] text-center max-w-[520px]">
                 This is a synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit.
                 Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users. It is reflecting the volume and intensity of
                 feedback, not a literal count of every comment. Done by Gemini 2.5 Pro
               </p>
-              <Feedback />
+              <Feedback component={getCurrentCategoryLabel()} category="tools" />
             </div>
           </>
         ) : (
-          <div className="w-full max-w-[730px] flex flex-col items-center justify-center min-h-[300px]">
+          <div className="w-full max-w-[730px] flex flex-col items-center justify-center min-h-[300px] gap-4">
             <img src="/gifs/cat.gif" alt="Coming soon" style={{ width: 320, height: 'auto' }} />
+            <div className="flex flex-col items-center gap-4">
+              <h3 className="text-white text-xl font-medium">Coming Soon</h3>
+              <p className="text-white text-[10px] leading-[1.4] text-center max-w-[520px]">
+                Please vote if you like this content to be added. This will prioritise it accordingly and will be added sooner than later.
+              </p>
+              <Feedback component={getCurrentCategoryLabel()} category="tools" />
+            </div>
           </div>
         )}
       </div>

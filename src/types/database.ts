@@ -12,6 +12,7 @@ export interface User {
 export interface Feedback {
   id: number;
   created_at: string;
+  updated_at: string;
   sentiment: SentimentType;
   ip_address?: string | null;
   device_id?: string | null;
@@ -29,8 +30,8 @@ export interface Database {
       };
       feedback: {
         Row: Feedback;
-        Insert: Omit<Feedback, 'id' | 'created_at'>;
-        Update: Partial<Omit<Feedback, 'id' | 'created_at'>>;
+        Insert: Omit<Feedback, 'id' | 'created_at' | 'updated_at'>;
+        Update: Partial<Omit<Feedback, 'id' | 'created_at' | 'updated_at'>>;
       };
     };
     Enums: {
