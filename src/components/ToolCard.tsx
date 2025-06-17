@@ -28,6 +28,7 @@ export function ToolCard({
 }: ToolCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   const handleTitleClick = () => {
     setIsExpanded(!isExpanded);
@@ -37,16 +38,63 @@ export function ToolCard({
     window.open(url, '_blank');
   };
 
-  const handleRecommend = () => {
-    setShowToast(true);
+  const handleRecommend = async () => {
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          sentiment: 'LIKE',
+          category: 'tools',
+          component: name
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit feedback');
+      }
+      
+      setToastMessage("Thank you for your recommendation!");
+      setShowToast(true);
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      setToastMessage("Failed to submit feedback. Please try again.");
+      setShowToast(true);
+    }
   };
 
-  const handleDontRecommend = () => {
-    setShowToast(true);
+  const handleDontRecommend = async () => {
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          sentiment: 'DISLIKE',
+          category: 'tools',
+          component: name
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit feedback');
+      }
+      
+      setToastMessage("Thank you for your feedback!");
+      setShowToast(true);
+    } catch (error) {
+      console.error('Error submitting feedback:', error);
+      setToastMessage("Failed to submit feedback. Please try again.");
+      setShowToast(true);
+    }
   };
 
   const handleCloseToast = () => {
     setShowToast(false);
+    setToastMessage("");
   };
 
   return (
@@ -245,7 +293,7 @@ export function ToolCard({
 
       {/* Toast Message */}
       <ToastMessage
-        message="This will be available in next releases"
+        message={toastMessage}
         isVisible={showToast}
         onClose={handleCloseToast}
       />

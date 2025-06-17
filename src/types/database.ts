@@ -15,6 +15,8 @@ export interface Feedback {
   sentiment: SentimentType;
   ip_address?: string | null;
   device_id?: string | null;
+  category?: string | null;
+  component?: string | null;
 }
 
 export interface Database {

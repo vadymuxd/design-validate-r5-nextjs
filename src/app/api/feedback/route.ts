@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sentiment } = body;
+    const { sentiment, category, component } = body;
 
     // Validate sentiment
     if (sentiment !== 'LIKE' && sentiment !== 'DISLIKE') {
@@ -28,7 +28,9 @@ export async function POST(request: NextRequest) {
         {
           sentiment,
           ip_address,
-          device_id
+          device_id,
+          category,
+          component
         }
       ]);
 
