@@ -9,9 +9,9 @@ export interface Tool {
   cons?: string[];
 }
 
-export type Category = 
-  | 'usabilityTesting' 
-  | 'behaviourTracking' 
+export type Category =
+  | 'usabilityTesting'
+  | 'eventTracking'
   | 'abTesting'
   | 'uxDataAnalysis'
   | 'sessionReplays'
@@ -23,7 +23,7 @@ export type Category =
 
 export const categories = [
   { id: 'usabilityTesting', label: 'Usability Testing' },
-  { id: 'behaviourTracking', label: 'Behaviour Tracking' },
+  { id: 'eventTracking', label: 'Event Tracking' },
   { id: 'abTesting', label: 'A/B Testing' },
   { id: 'uxDataAnalysis', label: 'UX Data Analysis' },
   { id: 'sessionReplays', label: 'Session Replays' },

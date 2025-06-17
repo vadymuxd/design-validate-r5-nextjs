@@ -5,6 +5,46 @@ const { URL } = require('url');
 
 const tools = [
   {
+    name: 'Mixpanel',
+    logo_url: 'https://wpforms.com/wp-content/uploads/cache/integrations/669824a815a36cb6bd5a186e312362d0.png'
+  },
+  {
+    name: 'Heap',
+    logo_url: 'https://media.licdn.com/dms/image/v2/C560BAQEFnYhpwGfSgQ/company-logo_200_200/company-logo_200_200/0/1656698401379/heap_inc__logo?e=2147483647&v=beta&t=mt5YBp7KVr_NnZkd_uTUYXxQZiyPrCHJw0vkDl84Nms'
+  },
+  {
+    name: 'FullStory',
+    logo_url: 'https://pbs.twimg.com/profile_images/1777355268914880514/dauQYrko_400x400.png'
+  },
+  {
+    name: 'Pendo',
+    logo_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKBgKJZqdUw2mDqBg_AOvT2AppN67ki4BTuw&s'
+  },
+  {
+    name: 'Amplitude',
+    logo_url: 'https://pipedream.com/s.v0/app_XBxh84/logo/orig'
+  },
+  {
+    name: 'Hotjar',
+    logo_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1bFokFT723dhAIqi7w6H1dBpxLQVmOcEuCg&s'
+  },
+  {
+    name: 'PostHog',
+    logo_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkTqteImyGlzQIJou-nJ18ymYPuGUsMP-ufw&s'
+  },
+  {
+    name: 'LogRocket',
+    logo_url: 'https://avatars.githubusercontent.com/u/19847951?s=280&v=4'
+  },
+  {
+    name: 'Google Analytics 4',
+    logo_url: 'https://thumbs.dreamstime.com/b/google-analytics-logo-white-background-editorial-illustrative-vector-eps-aab-210442257.jpg'
+  },
+  {
+    name: 'Indicative',
+    logo_url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIOZ-r8tKdgjI3OVt_Mr6iYAHzFyM9NVc3iw&s'
+  },
+  {
     name: 'UXTweak',
     logo_url: 'https://media.licdn.com/dms/image/v2/D4E0BAQF5cgbwKM4STw/company-logo_200_200/company-logo_200_200/0/1735549240945/uxtweak_logo?e=2147483647&v=beta&t=P4RHCxfBc4KYDKnQyxUSCxP7b3vzs3S1O82AunU4CFs'
   },

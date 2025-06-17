@@ -4,7 +4,7 @@ import { Feedback } from '@/components/Feedback';
 import { Pill } from '@/components/Pill';
 import { ToolCard } from '@/components/ToolCard';
 import { abTestingTools } from '@/data/abTesting';
-import { behaviourTrackingTools } from '@/data/behaviourTracking';
+import { eventTrackingTools } from '@/data/eventTracking';
 import { Category, categories } from '@/data/types';
 import { usabilityTestingTools } from '@/data/usabilityTesting';
 import { uxDataAnalysisTools } from '@/data/uxDataAnalysis';
@@ -57,6 +57,8 @@ export default function Home() {
   useEffect(() => {
     if (activeCategory === 'usabilityTesting') {
       fetchToolsFromDatabase('usability testing');
+    } else if (activeCategory === 'eventTracking') {
+      fetchToolsFromDatabase('event tracking');
     }
   }, [activeCategory]);
 
@@ -74,13 +76,42 @@ export default function Home() {
           showSuccessToast();
         });
       }
+    } else if (activeCategory === 'eventTracking') {
+      // Save current scroll position
+      const scrollPosition = window.scrollY;
+      
+      const success = await fetchToolsFromDatabase('event tracking', true);
+      if (success) {
+        // Restore scroll position after data update
+        requestAnimationFrame(() => {
+          window.scrollTo(0, scrollPosition);
+          // Call the success callback to show the toast after data is refreshed
+          showSuccessToast();
+        });
+      }
     }
   };
 
-  // Merge database tools with static data for usability testing
+  // Merge database tools with static data for dynamic categories
   const getToolsForCategory = () => {
     if (activeCategory === 'usabilityTesting') {
       const mergedTools = usabilityTestingTools.map(staticTool => {
+        const dbTool = databaseTools.find(dbTool => dbTool.name === staticTool.name);
+        return {
+          ...staticTool,
+          upvotes: dbTool?.current_upvotes_total ?? staticTool.upvotes,
+          downvotes: dbTool?.current_downvotes_total ?? staticTool.downvotes,
+        };
+      });
+
+      // Sort by NET score (upvotes - downvotes) in descending order
+      return mergedTools.sort((a, b) => {
+        const netScoreA = a.upvotes - a.downvotes;
+        const netScoreB = b.upvotes - b.downvotes;
+        return netScoreB - netScoreA; // Descending order (highest NET score first)
+      });
+    } else if (activeCategory === 'eventTracking') {
+      const mergedTools = eventTrackingTools.map(staticTool => {
         const dbTool = databaseTools.find(dbTool => dbTool.name === staticTool.name);
         return {
           ...staticTool,
@@ -99,7 +130,7 @@ export default function Home() {
 
     // For other categories, use static data
     const toolsMap = {
-      behaviourTracking: behaviourTrackingTools,
+      eventTracking: eventTrackingTools,
       abTesting: abTestingTools,
       uxDataAnalysis: uxDataAnalysisTools,
       sessionReplays: sessionReplaysTools,
@@ -171,7 +202,7 @@ export default function Home() {
           <div className="w-full max-w-[730px] flex flex-col items-center justify-center min-h-[300px]">
             <img src="/gifs/Pi-Slices Loading.gif" alt="Loading..." style={{ width: 120, height: 'auto' }} />
           </div>
-        ) : activeCategory === 'usabilityTesting' ? (
+        ) : activeCategory === 'usabilityTesting' || activeCategory === 'eventTracking' ? (
           <>
             {/* Tools Grid */}
             <div className="w-full max-w-[730px] flex flex-col gap-2">
@@ -195,8 +226,8 @@ export default function Home() {
             <div className="flex flex-col items-center gap-4">
               <p className="text-white text-[10px] leading-[1.4] text-center max-w-[520px]">
                 This is a synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit.
-                Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users. It is reflecting the volume and intensity of
-                feedback, not a literal count of every comment. Done by Gemini 2.5 Pro
+                Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users from listed sources plus unique users&apos; votes on this site.
+                The initial sentiment analysis done by Gemini 2.5 Pro
               </p>
               <Feedback component={getCurrentCategoryLabel()} category="tools" />
             </div>
