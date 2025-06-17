@@ -33,7 +33,6 @@ export default function Home() {
   const [databaseTools, setDatabaseTools] = useState<DatabaseTool[]>([]);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [showLogo, setShowLogo] = useState(false);
-  const [showLoadingGif, setShowLoadingGif] = useState(false);
 
   const fetchToolsFromDatabase = async (pill: string, isRefresh = false) => {
     try {
@@ -66,16 +65,6 @@ export default function Home() {
   }, [activeCategory]);
 
   useEffect(() => { setShowLogo(true); }, []);
-
-  useEffect(() => {
-    if (isInitialLoading) {
-      setShowLoadingGif(false);
-      const t = setTimeout(() => setShowLoadingGif(true), 1000);
-      return () => clearTimeout(t);
-    } else {
-      setShowLoadingGif(false);
-    }
-  }, [isInitialLoading]);
 
   const refreshTools = async (showSuccessToast: () => void) => {
     if (activeCategory === 'usabilityTesting') {
@@ -181,11 +170,8 @@ export default function Home() {
           }
         }
         .loading-gif-fade {
-          opacity: 0;
-          animation: loadingGifFadeIn 0.7s cubic-bezier(0.4,0,0.2,1) forwards;
-        }
-        @keyframes loadingGifFadeIn {
-          to { opacity: 1; }
+          opacity: 1; /* Always visible, no fade-in */
+          animation: none;
         }
       `}</style>
       <div className="flex flex-col items-center py-12 px-4 sm:px-8 gap-8 flex-1">
@@ -239,11 +225,22 @@ export default function Home() {
         {/* Content */}
         {isInitialLoading ? (
           <div className="w-full max-w-[730px] flex flex-col items-center justify-center min-h-[300px]">
-            {showLoadingGif && (
-              <div className="loading-gif-fade" style={{ width: 240, height: 240, overflow: 'hidden', borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <img src="/gifs/Pi-Slices Loading.gif" alt="Loading..." style={{ width: 240, height: 240, objectFit: 'cover', borderRadius: '24px', display: 'block', margin: 'auto' }} />
-              </div>
-            )}
+            {/* Crop loading GIF to show full width and crop 10% top and bottom */}
+            <div style={{ width: 240, height: 192, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img
+                src="/gifs/Pi-Slices Loading.gif"
+                alt="Loading..."
+                style={{
+                  width: 240,
+                  height: 240,
+                  objectFit: 'cover',
+                  display: 'block',
+                  position: 'absolute',
+                  left: 0,
+                  top: -24
+                }}
+              />
+            </div>
           </div>
         ) : activeCategory === 'usabilityTesting' || activeCategory === 'eventTracking' ? (
           <>
