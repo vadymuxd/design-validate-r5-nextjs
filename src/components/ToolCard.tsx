@@ -125,7 +125,7 @@ export function ToolCard({
 
   return (
     <>
-      <div className="bg-white rounded-2xl p-8">
+      <div className="bg-white rounded-2xl p-4 sm:p-8">
         {/* Desktop Layout */}
         <div className="hidden sm:flex flex-row gap-6 items-start">
           {/* Logo */}

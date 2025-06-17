@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface LinkProps {
   variant: 'recommend' | 'dont-recommend' | 'visit-site';
@@ -6,6 +6,7 @@ interface LinkProps {
 }
 
 export const Link: React.FC<LinkProps> = ({ variant, onClick }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const getIcon = () => {
     switch (variant) {
       case 'recommend':
@@ -58,16 +59,74 @@ export const Link: React.FC<LinkProps> = ({ variant, onClick }) => {
     }
   };
 
+  const handleClick = async () => {
+    if (variant === 'recommend' || variant === 'dont-recommend') {
+      if (isLoading) return; // Prevent multiple clicks while loading
+      setIsLoading(true);
+      try {
+        await onClick?.();
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      onClick?.();
+    }
+  };
+
+  const shouldShowLoader = isLoading && (variant === 'recommend' || variant === 'dont-recommend');
+
   return (
-    <button
-      onClick={onClick}
-      className="flex items-center gap-1 font-medium text-base hover:cursor-pointer"
-      style={{ color: 'var(--color-link)' }}
-    >
-      <div className="w-5 h-5">
-        {getIcon()}
-      </div>
-      <span>{getText()}</span>
-    </button>
+    <>
+      <style jsx>{`
+        .link-loader-container {
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .link-loader {
+          width: 15px;
+          aspect-ratio: 1;
+          border-radius: 50%;
+          border: 2px solid #007AFF;
+          animation:
+            link-loader-1 0.8s infinite linear alternate,
+            link-loader-2 1.6s infinite linear;
+        }
+        @keyframes link-loader-1{
+           0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
+           12.5% {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100%   0%, 100%   0%, 100%   0% )}
+           25%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 100% 100%, 100% 100% )}
+           50%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+           62.5% {clip-path: polygon(50% 50%,100%    0, 100%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+           75%   {clip-path: polygon(50% 50%,100% 100%, 100% 100%,  100% 100%, 100% 100%, 50%  100%, 0%   100% )}
+           100%  {clip-path: polygon(50% 50%,50%  100%,  50% 100%,   50% 100%,  50% 100%, 50%  100%, 0%   100% )}
+        }
+        @keyframes link-loader-2{ 
+          0%    {transform:scaleY(1)  rotate(0deg)}
+          49.99%{transform:scaleY(1)  rotate(135deg)}
+          50%   {transform:scaleY(-1) rotate(0deg)}
+          100%  {transform:scaleY(-1) rotate(-135deg)}
+        }
+      `}</style>
+      <button
+        onClick={handleClick}
+        disabled={shouldShowLoader}
+        className={`flex items-center gap-1 font-medium text-base ${shouldShowLoader ? 'cursor-not-allowed opacity-80' : 'hover:cursor-pointer'}`}
+        style={{ color: 'var(--color-link)' }}
+      >
+        <div className="w-5 h-5">
+          {shouldShowLoader ? (
+            <div className="link-loader-container">
+              <div className="link-loader"></div>
+            </div>
+          ) : (
+            getIcon()
+          )}
+        </div>
+        <span>{getText()}</span>
+      </button>
+    </>
   );
 }; 

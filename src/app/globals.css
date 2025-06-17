@@ -50,9 +50,20 @@
 body {
   background: var(--background);
   font-family: var(--font-family);
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Apply white text only to main content area */
 main {
   color: var(--foreground);
+}
+
+/* Ensure all containers respect viewport width */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
 }
