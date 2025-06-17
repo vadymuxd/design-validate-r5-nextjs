@@ -16,7 +16,7 @@ import { userFeedbackTools } from '@/data/userFeedback';
 import { conceptTestingTools } from '@/data/conceptTesting';
 import { CategorySelector } from '@/components/CategorySelector';
 import { UpdatedAt } from '@/components/UpdatedAt';
-import Image from 'next/image';
+// import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 interface DatabaseTool {
