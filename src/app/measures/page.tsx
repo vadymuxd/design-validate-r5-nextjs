@@ -39,8 +39,8 @@ export default function MeasuresPage() {
           />
         </div>
         <div className="flex flex-col items-center gap-4">
-          <h3 className="text-white text-xl font-medium">Coming Soon</h3>
-          <p className="text-white text-[16px] leading-[1.4] text-center max-w-[520px]">
+          <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
+          <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re building a comprehensive library of UX metrics, KPIs, and performance indicators. This will help you choose the right metrics to measure your design success and impact.
           </p>
           <Feedback component="Measures" category="measures" />

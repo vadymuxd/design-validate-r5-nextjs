@@ -39,8 +39,8 @@ export default function CasesPage() {
           />
         </div>
         <div className="flex flex-col items-center gap-4">
-          <h3 className="text-white text-xl font-medium">Coming Soon</h3>
-          <p className="text-white text-[16px] leading-[1.4] text-center max-w-[520px]">
+          <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
+          <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re collecting real-world design case studies from Medium, company blogs, and industry publications. These will show actual validation challenges and how they were solved.
           </p>
           <Feedback component="Cases" category="cases" />

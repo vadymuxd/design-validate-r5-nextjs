@@ -24,11 +24,11 @@ export default function CommunityPage() {
             src="/gifs/cat.gif" 
             alt="Community coming soon" 
             width={320}
-            height={320}
+            height={300}
             style={{
               width: '100%',
               maxWidth: 320,
-              height: 320,
+              height: 300,
               objectFit: 'cover',
               display: 'block',
               position: 'absolute',
@@ -39,8 +39,8 @@ export default function CommunityPage() {
           />
         </div>
         <div className="flex flex-col items-center gap-4">
-          <h3 className="text-white text-xl font-medium">Coming Soon</h3>
-          <p className="text-white text-[16px] leading-[1.4] text-center max-w-[520px]">
+          <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
+          <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re building a space for the design validation community to connect, share stories, ask questions, and discover events. Join us to discuss everything related to validating design decisions.
           </p>
           <Feedback component="Community" category="community" />

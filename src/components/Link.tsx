@@ -113,7 +113,7 @@ export const Link: React.FC<LinkProps> = ({ variant, onClick }) => {
     <button
         onClick={handleClick}
         disabled={shouldShowLoader}
-        className={`flex items-center gap-1 font-medium text-base ${shouldShowLoader ? 'cursor-not-allowed opacity-80' : 'hover:cursor-pointer'}`}
+        className={`flex items-center gap-1 label-default ${shouldShowLoader ? 'cursor-not-allowed opacity-80' : 'hover:cursor-pointer'}`}
       style={{ color: 'var(--color-link)' }}
     >
       <div className="w-5 h-5">

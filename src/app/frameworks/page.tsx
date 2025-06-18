@@ -39,8 +39,8 @@ export default function FrameworksPage() {
           />
         </div>
         <div className="flex flex-col items-center gap-4">
-          <h3 className="text-white text-xl font-medium">Coming Soon</h3>
-          <p className="text-white text-[16px] leading-[1.4] text-center max-w-[520px]">
+          <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
+          <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re curating established measurement frameworks from leading companies like Google, Airbnb, and Spotify. Learn how top organizations measure design success and impact.
           </p>
           <Feedback component="Frameworks" category="frameworks" />

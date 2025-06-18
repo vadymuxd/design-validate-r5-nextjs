@@ -39,8 +39,8 @@ export default function AboutPage() {
           />
         </div>
         <div className="flex flex-col items-center gap-4">
-          <h3 className="text-white text-xl font-medium">Coming Soon</h3>
-          <p className="text-white text-[16px] leading-[1.4] text-center max-w-[520px]">
+          <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
+          <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re crafting our story and mission to help designers validate their work with data-driven insights. This page will include our vision, team information, and ways to contact us.
           </p>
           <Feedback component="About" category="about" />

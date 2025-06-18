@@ -14,11 +14,11 @@ export function Pill({ id, label, isActive, onClick }: PillProps) {
     <button
       onClick={() => onClick(id)}
       className={`
-        rounded-[36px] px-3 py-2 transition-all cursor-pointer font-['Inter'] font-semibold text-[12px] leading-none
+        rounded-[36px] px-3 py-2 transition-all cursor-pointer label-mini
         ${
           isActive
-            ? 'bg-white text-black hover:opacity-80'
-            : 'bg-transparent text-white outline outline-1 outline-white hover:bg-white hover:text-black'
+            ? 'bg-white text-[var(--color-black)] hover:opacity-80'
+            : 'bg-transparent text-[var(--color-white)] outline outline-1 outline-white hover:bg-white hover:text-[var(--color-black)]'
         }
       `}
     >

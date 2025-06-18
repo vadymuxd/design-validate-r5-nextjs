@@ -44,6 +44,63 @@
   --logo-to-title-gap: 1rem; /* 16px - gap between logo and title - MATCHES Tools page gap-4 */
 }
 
+/* Typography classes from Figma */
+.h1 {
+  font-family: var(--font-family);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.h2 {
+  font-family: var(--font-family);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.h3 {
+  font-family: var(--font-family);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.body {
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.label-default {
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.label-bold {
+  font-family: var(--font-family);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.label-mini {
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.annotation {
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
 /* Layout utility classes */
 .page-container {
   min-height: 100vh;

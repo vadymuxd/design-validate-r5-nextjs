@@ -39,8 +39,8 @@ export default function MethodsPage() {
           />
         </div>
         <div className="flex flex-col items-center gap-4">
-          <h3 className="text-white text-xl font-medium">Coming Soon</h3>
-          <p className="text-white text-[16px] leading-[1.4] text-center max-w-[520px]">
+          <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
+          <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re curating the best design validation methods and research techniques for you. This will include structured educational content to help you choose the right validation approach for your design challenges.
           </p>
           <Feedback component="Methods" category="methods" />

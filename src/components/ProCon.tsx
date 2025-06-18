@@ -18,10 +18,10 @@ export const ProCon: React.FC<ProConProps> = ({ variant, title, items }) => {
       className="bg-[#F2F2F7] rounded-lg p-4 border-l-4"
       style={{ borderLeftColor: borderColor }}
     >
-      <h4 className="font-bold text-base text-[#000000] mb-2">
+      <h4 className="label-bold text-[var(--color-black)] mb-2">
         {title}
       </h4>
-      <p className="font-normal text-xs text-[#000000] leading-[1.4]">
+      <p className="annotation text-[var(--color-black)]">
         {items.join(', ')}
       </p>
     </div>

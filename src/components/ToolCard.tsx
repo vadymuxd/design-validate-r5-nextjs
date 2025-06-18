@@ -148,7 +148,7 @@ export function ToolCard({
                   <div className="flex items-center gap-2">
                     <button
                       onClick={handleTitleClick}
-                      className="text-2xl font-bold text-[#000000] hover:cursor-pointer flex items-center gap-2"
+                      className="h3 text-[var(--color-black)] hover:cursor-pointer flex items-center gap-2"
                     >
                       {name}
                       <div className="relative w-5 h-5">
@@ -161,7 +161,7 @@ export function ToolCard({
                       </div>
                     </button>
                   </div>
-                  <p className="text-base font-medium text-[#000000]">{description}</p>
+                  <p className="body text-[var(--color-black)]">{description}</p>
                 </div>
               </div>
 
@@ -243,7 +243,7 @@ export function ToolCard({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleTitleClick}
-                    className="text-2xl font-bold text-[#000000] hover:cursor-pointer flex items-center gap-2"
+                    className="h3 text-[var(--color-black)] hover:cursor-pointer flex items-center gap-2"
                   >
                     {name}
                     <div className="relative w-5 h-5">
@@ -256,7 +256,7 @@ export function ToolCard({
                     </div>
                   </button>
                 </div>
-                <p className="text-base font-medium text-[#000000]">{description}</p>
+                <p className="body text-[var(--color-black)]">{description}</p>
               </div>
             </div>
 
@@ -287,7 +287,7 @@ export function ToolCard({
           </div>
 
           {/* Votes - Mobile */}
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row justify-center gap-2">
             <div className="flex-1">
               <Voter
                 direction="up"

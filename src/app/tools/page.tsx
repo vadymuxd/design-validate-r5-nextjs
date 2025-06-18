@@ -224,10 +224,8 @@ export default function ToolsPage() {
 
             {/* Feedback Section */}
             <div className="flex flex-col items-center gap-4">
-              <p className="text-white text-[16px] leading-[1.4] text-center max-w-[520px]">
-                This is a synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit.
-                Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users from listed sources plus unique users&apos; votes on this site.
-                The initial sentiment analysis done by Gemini 2.5 Pro
+              <p className="body text-[var(--foreground)] text-center max-w-[730px]">
+                This is a synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit. Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users from listed sources plus unique users&apos; votes on this site. The initial sentiment analysis done by Gemini 2.5 Pro
               </p>
               <Feedback component={getCurrentCategoryLabel()} category="tools" />
             </div>
@@ -239,7 +237,7 @@ export default function ToolsPage() {
                 src="/gifs/cat.gif" 
                 alt="Coming soon" 
                 width={320}
-                height={320}
+                height={300}
                 style={{
                   width: '100%',
                   maxWidth: 320,
@@ -253,13 +251,11 @@ export default function ToolsPage() {
                 unoptimized
               />
             </div>
-            <div className="flex flex-col items-center gap-4">
-              <h3 className="text-white text-xl font-medium">Coming Soon</h3>
-              <p className="text-white text-[16px] leading-[1.4] text-center max-w-[520px]">
-                Please vote if you like this content to be added. This will prioritise it accordingly and will be added sooner than later.
-              </p>
-              <Feedback component={getCurrentCategoryLabel()} category="tools" />
-            </div>
+            <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
+            <p className="body text-[var(--foreground)] text-center max-w-[520px]">
+              {`We're working hard to bring you a curated list of tools for ${getCurrentCategoryLabel()}. Like or dislike to help us prioritize!`}
+            </p>
+            <Feedback component={getCurrentCategoryLabel()} category="tools" />
           </div>
         )}
       </div>

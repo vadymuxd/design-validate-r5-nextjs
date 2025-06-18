@@ -144,7 +144,7 @@ export const Voter: React.FC<VoterProps> = ({
         />
           )}
       </div>
-      <span className="font-['Inter'] font-medium text-base leading-normal text-[#000000]">
+      <span className="body text-[var(--color-black)]">
         {count}
       </span>
     </button>
