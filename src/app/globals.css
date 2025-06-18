@@ -17,20 +17,6 @@
 
   /* Typography */
   --font-family: 'Inter', sans-serif;
-  --font-size-h1: 40px;
-  --font-size-h2: 36px;
-  --font-size-h3: 24px;
-  --font-size-body: 16px;
-  --font-size-label: 12px;
-  --font-size-annotation: 10px;
-
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 600;
-  --font-weight-bold: 700;
-
-  --line-height-tight: 100%;
-  --line-height-normal: 140%;
 
   /* Layout variables - Edit these to change layout globally */
   --container-max-width: 730px;

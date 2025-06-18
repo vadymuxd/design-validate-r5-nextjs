@@ -30,7 +30,7 @@ export function UpdatedAt() {
   }, []);
 
   return (
-    <p className="text-white text-[16px] leading-[1.4] text-center w-[520px]">
+    <p className="annotation text-[var(--foreground)] text-center w-full">
       Updated at: {lastUpdate}
     </p>
   );
