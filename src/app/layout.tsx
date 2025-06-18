@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { LoadingProvider } from "@/components/LoadingProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -9,8 +10,49 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Design. Validate",
-  description: "Tools, frameworks, methods, and case studies for design validation",
+  title: {
+    template: "%s | Design. Validate",
+    default: "Design. Validate - Tools, Methods & Frameworks for Design Validation",
+  },
+  description: "Comprehensive platform for design validation featuring tools, methods, frameworks, and case studies. Make data-driven design decisions with curated resources and community insights.",
+  keywords: [
+    "design validation",
+    "UX research",
+    "design tools",
+    "usability testing",
+    "A/B testing",
+    "user experience",
+    "design methods",
+    "design frameworks"
+  ],
+  authors: [{ name: "Design. Validate" }],
+  creator: "Design. Validate",
+  publisher: "Design. Validate",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Design. Validate",
+    title: "Design. Validate - Tools, Methods & Frameworks for Design Validation",
+    description: "Comprehensive platform for design validation featuring tools, methods, frameworks, and case studies.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@designvalidate",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: '', // Add Google Search Console verification ID when available
+  },
 };
 
 export default function RootLayout({
@@ -22,9 +64,32 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/icon.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Design. Validate",
+              "description": "Comprehensive platform for design validation featuring tools, methods, frameworks, and case studies.",
+              "url": "https://design-validate.com",
+              "logo": "https://design-validate.com/icon.png",
+              "sameAs": [],
+              "foundingDate": "2025",
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "customer support",
+                "availableLanguage": "English"
+              }
+            }),
+          }}
+        />
       </head>
       <body className={`${inter.variable} antialiased`}>
-        {children}
+        <LoadingProvider>
+          {children}
+        </LoadingProvider>
       </body>
     </html>
   );

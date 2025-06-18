@@ -110,13 +110,13 @@ export const Link: React.FC<LinkProps> = ({ variant, onClick }) => {
           100%  {transform:scaleY(-1) rotate(-135deg)}
         }
       `}</style>
-      <button
+    <button
         onClick={handleClick}
         disabled={shouldShowLoader}
         className={`flex items-center gap-1 font-medium text-base ${shouldShowLoader ? 'cursor-not-allowed opacity-80' : 'hover:cursor-pointer'}`}
-        style={{ color: 'var(--color-link)' }}
-      >
-        <div className="w-5 h-5">
+      style={{ color: 'var(--color-link)' }}
+    >
+      <div className="w-5 h-5">
           {shouldShowLoader ? (
             <div className="link-loader-container">
               <div className="link-loader"></div>
@@ -124,9 +124,9 @@ export const Link: React.FC<LinkProps> = ({ variant, onClick }) => {
           ) : (
             getIcon()
           )}
-        </div>
-        <span>{getText()}</span>
-      </button>
+      </div>
+      <span>{getText()}</span>
+    </button>
     </>
   );
 }; 

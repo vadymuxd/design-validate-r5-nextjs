@@ -64,32 +64,32 @@ export const Feedback: React.FC<FeedbackProps> = ({ component, category = 'gener
 
   return (
     <>
-      <div className="flex gap-4">
-        <button 
-          onClick={() => submitFeedback('LIKE')}
-          className="hover:opacity-80 transition-opacity cursor-pointer"
-        >
-          <Image
-            src="/icons/like.svg"
-            alt="Like"
-            width={24}
-            height={31}
-            priority
-          />
-        </button>
-        <button 
-          onClick={() => submitFeedback('DISLIKE')}
-          className="hover:opacity-80 transition-opacity cursor-pointer"
-        >
-          <Image
-            src="/icons/dislike.svg"
-            alt="Dislike"
-            width={24}
-            height={31}
-            priority
-          />
-        </button>
-      </div>
+    <div className="flex gap-4">
+      <button 
+        onClick={() => submitFeedback('LIKE')}
+        className="hover:opacity-80 transition-opacity cursor-pointer"
+      >
+        <Image
+          src="/icons/like.svg"
+          alt="Like"
+          width={24}
+          height={31}
+          priority
+        />
+      </button>
+      <button 
+        onClick={() => submitFeedback('DISLIKE')}
+        className="hover:opacity-80 transition-opacity cursor-pointer"
+      >
+        <Image
+          src="/icons/dislike.svg"
+          alt="Dislike"
+          width={24}
+          height={31}
+          priority
+        />
+      </button>
+    </div>
 
       <ToastMessage
         message={toastMessage}

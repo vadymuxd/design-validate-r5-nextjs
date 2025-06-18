@@ -125,29 +125,29 @@ export const Voter: React.FC<VoterProps> = ({
           100%  {transform:scaleY(-1) rotate(-135deg)}
         }
       `}</style>
-      <button
+    <button
         onClick={handleVote}
         disabled={isLoading}
         className={`flex items-center justify-start gap-1 px-3 py-1.5 rounded-lg w-full ${getBgColor()} ${isLoading ? 'cursor-not-allowed opacity-80' : 'hover:cursor-pointer'}`}
-      >
+    >
         <div className="flex-shrink-0">
           {isLoading ? (
             <div className="voter-loader-container">
               <div className="voter-loader"></div>
             </div>
           ) : (
-            <Image
-              src={getIcon()}
-              alt={direction === 'up' ? 'Upvote' : 'Downvote'}
+        <Image
+          src={getIcon()}
+          alt={direction === 'up' ? 'Upvote' : 'Downvote'}
               width={20}
               height={20}
-            />
+        />
           )}
-        </div>
-        <span className="font-['Inter'] font-medium text-base leading-normal text-[#000000]">
-          {count}
-        </span>
-      </button>
+      </div>
+      <span className="font-['Inter'] font-medium text-base leading-normal text-[#000000]">
+        {count}
+      </span>
+    </button>
       <ToastMessage
         message={toastMessage}
         isVisible={showToast}

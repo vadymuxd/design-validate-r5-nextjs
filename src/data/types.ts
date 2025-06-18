@@ -9,8 +9,8 @@ export interface Tool {
   cons?: string[];
 }
 
-export type Category =
-  | 'usabilityTesting'
+export type Category = 
+  | 'usabilityTesting' 
   | 'eventTracking'
   | 'abTesting'
   | 'uxDataAnalysis'

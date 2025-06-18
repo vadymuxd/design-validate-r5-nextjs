@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       // For non-tools category or missing component, just insert normally
       console.log('Inserting feedback for non-tools category or missing component');
       const { error: insertError } = await supabase
-        .from('feedback')
+      .from('feedback')
         .insert({
           sentiment,
           ip_address,
@@ -114,11 +114,11 @@ export async function POST(request: NextRequest) {
 
       if (insertError) {
         console.error('Error inserting feedback:', insertError);
-        return NextResponse.json(
+      return NextResponse.json(
           { error: 'Failed to save feedback' },
-          { status: 500 }
-        );
-      }
+        { status: 500 }
+      );
+    }
 
       console.log('Successfully inserted feedback');
     }
