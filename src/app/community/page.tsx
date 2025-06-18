@@ -2,7 +2,6 @@
 
 import { UpdatedAt } from '@/components/UpdatedAt';
 import { Feedback } from '@/components/Feedback';
-import { TitleNavigation } from '@/components/TitleNavigation';
 import Image from 'next/image';
 
 export default function CommunityPage() {
@@ -10,7 +9,7 @@ export default function CommunityPage() {
     <main className="page-container">
       {/* Header */}
       <div className="header-section">
-        <TitleNavigation />
+        <h1 className="h1">Community</h1>
         
         <p className="seo-only">
           Join the Design. Validate community to discuss and share insights about design validation. Connect with designers, share stories, ask questions, and discover events.

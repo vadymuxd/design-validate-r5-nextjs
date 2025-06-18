@@ -2,7 +2,6 @@
 
 import { UpdatedAt } from '@/components/UpdatedAt';
 import { Feedback } from '@/components/Feedback';
-import { TitleNavigation } from '@/components/TitleNavigation';
 import Image from 'next/image';
 
 export default function AboutPage() {
@@ -10,7 +9,7 @@ export default function AboutPage() {
     <main className="page-container">
       {/* Header */}
       <div className="header-section">
-        <TitleNavigation />
+        <h1 className="h1">About</h1>
         
         <p className="seo-only">
           Learn about Design. Validate&apos;s mission to help designers make data-driven decisions. Discover our platform&apos;s purpose and how to get in touch with our team.

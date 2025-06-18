@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { LoadingProvider } from "@/components/LoadingProvider";
+import TopNav from "@/components/TopNav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -88,6 +89,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} antialiased`}>
         <LoadingProvider>
+          <TopNav />
           {children}
         </LoadingProvider>
       </body>

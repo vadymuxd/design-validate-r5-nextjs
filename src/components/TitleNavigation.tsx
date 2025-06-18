@@ -63,7 +63,7 @@ export function TitleNavigation() {
 
   return (
     <>
-      {isOpen && <div className="fixed inset-0 bg-black bg-opacity-90 z-40"></div>}
+      {isOpen && <div className="fixed inset-0 bg-[rgba(0,0,0,0.9)] z-40"></div>}
       
       <div 
         ref={containerRef}
@@ -109,25 +109,27 @@ export function TitleNavigation() {
               )}
           </h1>
 
-        {isOpen && (
-          <div className="absolute top-full flex flex-col items-center z-50 pt-4 pb-8 px-8 w-fit">
-            {pages
-              .filter((p) => p.href !== pathname)
-              .map((page) => (
-                <button
-                  key={page.href} 
-                  className={`font-['Inter'] font-bold text-[40px] py-1 whitespace-nowrap cursor-pointer ${
-                    hoveredItem === page.href ? 'text-[#FF3654]' : 'text-white'
-                  }`}
-                  onClick={() => handleMenuItemClick(page.href)}
-                  onMouseEnter={() => handleMenuItemHover(page.href)}
-                  onMouseLeave={handleMenuItemLeave}
-                >
-                  {page.label}
-                </button>
-              ))}
-          </div>
-        )}
+        <div
+          className={`absolute top-full flex flex-col items-center z-50 pt-2 pb-8 px-8 w-fit transition-opacity duration-300 ease-in-out ${
+            isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+        >
+          {pages
+            .filter((p) => p.href !== pathname)
+            .map((page) => (
+              <button
+                key={page.href} 
+                className={`font-['Inter'] font-bold text-[40px] py-1 whitespace-nowrap cursor-pointer ${
+                  hoveredItem === page.href ? 'text-[#FF3654]' : 'text-white'
+                }`}
+                onClick={() => handleMenuItemClick(page.href)}
+                onMouseEnter={() => handleMenuItemHover(page.href)}
+                onMouseLeave={handleMenuItemLeave}
+              >
+                {page.label}
+              </button>
+            ))}
+        </div>
       </div>
     </>
   );
