@@ -117,8 +117,6 @@ const TopNav = () => {
     { href: '/about', label: 'About' },
   ];
 
-  const allLinks = [...dropdownLinks, ...mainLinks];
-
   const handleToggleClick = () => {
     setIsClickOpen(prev => !prev);
     setIsHoverOpen(false); 
