@@ -1,29 +1,32 @@
-interface PageLoaderProps {
-  isVisible: boolean;
-}
+'use client';
 
-export function PageLoader({ isVisible }: PageLoaderProps) {
-  if (!isVisible) return null;
+import { useLoading } from './LoadingProvider';
+import Image from 'next/image';
+
+export function PageLoader() {
+  const { isLoading } = useLoading();
+
+  if (!isLoading) return null;
 
   return (
-    <div className="fixed inset-0 bg-black z-[100] flex items-center justify-center">
-      <div className="w-full max-w-[730px] flex flex-col items-center justify-center min-h-[300px]">
-        {/* Crop loading GIF to show full width and crop 10% top and bottom */}
-        <div style={{ width: 240, height: 192, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img
-            src="/gifs/Pi-Slices Loading.gif"
-            alt="Loading..."
-            style={{
-              width: 240,
-              height: 240,
-              objectFit: 'cover',
-              display: 'block',
-              position: 'absolute',
-              left: 0,
-              top: -24
-            }}
-          />
-        </div>
+    <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
+      <div style={{ width: 240, height: 192, overflow: 'hidden', position: 'relative' }}>
+        <Image 
+          src="/gifs/Pi-Slices Loading.gif" 
+          alt="Loading..." 
+          width={240}
+          height={240}
+          style={{
+            width: '100%',
+            height: 240,
+            objectFit: 'cover',
+            position: 'absolute',
+            left: 0,
+            top: -24
+          }}
+          unoptimized
+          priority
+        />
       </div>
     </div>
   );

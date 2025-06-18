@@ -18,6 +18,7 @@ import { TitleNavigation } from '@/components/TitleNavigation';
 import { UpdatedAt } from '@/components/UpdatedAt';
 import { useState, useEffect } from 'react';
 import React from 'react';
+import Image from 'next/image';
 
 interface DatabaseTool {
   id: string;
@@ -182,9 +183,11 @@ export default function ToolsPage() {
           <div className="w-full max-w-[730px] flex flex-col items-center justify-center min-h-[300px]">
             {/* Crop loading GIF to show full width and crop 10% top and bottom */}
             <div style={{ width: 240, height: 192, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <img
+              <Image
                 src="/gifs/Pi-Slices Loading.gif"
                 alt="Loading..."
+                width={240}
+                height={240}
                 style={{
                   width: 240,
                   height: 240,
@@ -194,6 +197,8 @@ export default function ToolsPage() {
                   left: 0,
                   top: -24
                 }}
+                unoptimized
+                priority
               />
             </div>
           </div>
@@ -230,9 +235,11 @@ export default function ToolsPage() {
         ) : (
           <div className="w-full max-w-[730px] flex flex-col items-center justify-center min-h-[300px] gap-4">
             <div style={{ width: '100%', maxWidth: 320, height: 240, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <img 
+              <Image 
                 src="/gifs/cat.gif" 
                 alt="Coming soon" 
+                width={320}
+                height={320}
                 style={{
                   width: '100%',
                   maxWidth: 320,
@@ -243,6 +250,7 @@ export default function ToolsPage() {
                   left: 0,
                   top: -40
                 }}
+                unoptimized
               />
             </div>
             <div className="flex flex-col items-center gap-4">

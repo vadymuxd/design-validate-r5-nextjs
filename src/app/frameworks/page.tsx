@@ -3,6 +3,7 @@
 import { UpdatedAt } from '@/components/UpdatedAt';
 import { Feedback } from '@/components/Feedback';
 import { TitleNavigation } from '@/components/TitleNavigation';
+import Image from 'next/image';
 
 export default function FrameworksPage() {
   return (
@@ -19,9 +20,11 @@ export default function FrameworksPage() {
       {/* Content Area */}
       <div className="content-area">
         <div style={{ width: '100%', maxWidth: 320, height: 240, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img 
+          <Image 
             src="/gifs/cat.gif" 
             alt="Frameworks coming soon" 
+            width={320}
+            height={320}
             style={{
               width: '100%',
               maxWidth: 320,
@@ -32,12 +35,13 @@ export default function FrameworksPage() {
               left: 0,
               top: -40
             }}
+            unoptimized
           />
         </div>
         <div className="flex flex-col items-center gap-4">
           <h3 className="text-white text-xl font-medium">Coming Soon</h3>
           <p className="text-white text-[16px] leading-[1.4] text-center max-w-[520px]">
-            We're curating established measurement frameworks from leading companies like Google, Airbnb, and Spotify. Learn how top organizations measure design success and impact.
+            We&apos;re curating established measurement frameworks from leading companies like Google, Airbnb, and Spotify. Learn how top organizations measure design success and impact.
           </p>
           <Feedback component="Frameworks" category="frameworks" />
         </div>

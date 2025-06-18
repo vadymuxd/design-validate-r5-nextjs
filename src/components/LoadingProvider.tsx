@@ -53,7 +53,7 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
   return (
     <LoadingContext.Provider value={{ isLoading, setLoading }}>
       {children}
-      <PageLoader isVisible={isLoading} />
+      <PageLoader />
     </LoadingContext.Provider>
   );
 } 
