@@ -10,7 +10,7 @@ const ChevronIcon = ({ isUp, className }: { isUp: boolean, className?: string })
   return (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
-      className={className} 
+      className={`${className} transform -translate-y-0.5`} 
       width="16" 
       height="16" 
       viewBox="0 0 20 20" 
@@ -159,19 +159,24 @@ const TopNav = () => {
                   className="transition-colors duration-200 text-white group-hover:text-[var(--color-red)]"
                 />
               </button>
-              {(isHoverOpen || isClickOpen) && (
-                <div className="absolute top-full left-0 pt-2">
-                  <div className="bg-[var(--color-grey-dark)] border border-[var(--color-grey-dark)] rounded-md shadow-lg py-2 z-10 w-40">
-                    {dropdownLinks.map(link => (
-                      <Link key={link.href} href={link.href}>
-                        <span onClick={() => setIsClickOpen(false)} className={`block px-4 py-2 label-default text-white hover:text-[var(--color-red)] ${pathname === link.href ? 'text-[var(--color-red)]' : ''}`}>
-                          {link.label}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
+              <div 
+                className="absolute top-full left-0 pt-2"
+                style={{ pointerEvents: (isHoverOpen || isClickOpen) ? 'auto' : 'none' }}
+              >
+                <div className={`bg-[var(--color-grey-dark)] border border-[var(--color-grey-dark)] rounded-md shadow-lg py-2 z-10 w-40 transform transition-all duration-300 ease-out ${
+                  (isHoverOpen || isClickOpen) 
+                    ? 'opacity-100 translate-y-0 scale-100' 
+                    : 'opacity-0 -translate-y-2 scale-95'
+                }`}>
+                  {dropdownLinks.map(link => (
+                    <Link key={link.href} href={link.href}>
+                      <span onClick={() => setIsClickOpen(false)} className={`block px-4 py-2 label-default text-white hover:text-[var(--color-red)] ${pathname === link.href ? 'text-[var(--color-red)]' : ''}`}>
+                        {link.label}
+                      </span>
+                    </Link>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
 
             {mainLinks.map(link => (
