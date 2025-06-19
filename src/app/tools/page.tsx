@@ -200,7 +200,7 @@ export default function ToolsPage() {
 
       {/* Footer Section */}
       {!isLoading && (
-        <footer className="footer-section w-full max-w-[730px] mx-auto">
+        <footer className="footer-section">
           <UpdatedAt />
         </footer>
       )}
