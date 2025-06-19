@@ -81,7 +81,7 @@ export function ToolCard({
           variant: 'warning' 
         });
       }
-    } catch (error) {
+    } catch {
       onVote({ 
         toolId,
         voteStatus: 'ERROR',
