@@ -11,31 +11,39 @@ import React from 'react';
 import Image from 'next/image';
 import { ToastMessage } from '@/components/ToastMessage';
 
-// This is a temporary, hardcoded list until a proper API endpoint for categories is created.
-// In a real app, this would be fetched from the database.
-const FAKE_CATEGORIES: ApiCategory[] = [
-  { id: 1, name: 'Usability Testing', slug: 'usability-testing' },
-  { id: 2, name: 'Event Tracking', slug: 'event-tracking' },
-  { id: 3, name: 'A/B Testing', slug: 'ab-testing' },
-  { id: 4, name: 'UX Data Analysis', slug: 'ux-data-analysis' },
-  { id: 5, name: 'Session Replays', slug: 'session-replays' },
-  { id: 6, name: 'Heat-maps', slug: 'heat-maps' },
-  { id: 7, name: 'AI Validation', slug: 'ai-validation' },
-  { id: 8, name: 'Surveys', slug: 'surveys' },
-  { id: 9, name: 'User Feedback', slug: 'user-feedback' },
-  { id: 10, name: 'Concept Testing', slug: 'concept-testing' },
-];
-
 export default function ToolsPage() {
-  const [activeCategorySlug, setActiveCategorySlug] = useState<string>(FAKE_CATEGORIES[0].slug);
+  const [categories, setCategories] = useState<ApiCategory[]>([]);
+  const [activeCategorySlug, setActiveCategorySlug] = useState<string>('');
   const [tools, setTools] = useState<ApiTool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
 
   // State for the toast message, lifted up from ToolCard
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState<'default' | 'warning'>('default');
   
+  // Fetch categories from the database (only once)
+  const fetchCategories = useCallback(async () => {
+    setCategoriesLoading(true);
+    try {
+      const response = await fetch('/api/categories');
+      if (response.ok) {
+        const data = await response.json();
+        const fetchedCategories = data.categories || [];
+        setCategories(fetchedCategories);
+      } else {
+        console.error('Failed to fetch categories');
+        setCategories([]);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      setCategories([]);
+    } finally {
+      setCategoriesLoading(false);
+    }
+  }, []); // No dependencies - fetch only once
+
   const fetchToolsForCategory = useCallback(async (slug: string) => {
     setIsLoading(true);
     try {
@@ -55,8 +63,23 @@ export default function ToolsPage() {
     }
   }, []);
 
+  // Fetch categories on component mount (only once)
   useEffect(() => {
-    fetchToolsForCategory(activeCategorySlug);
+    fetchCategories();
+  }, [fetchCategories]);
+
+  // Set first category as active when categories are loaded
+  useEffect(() => {
+    if (categories.length > 0 && !activeCategorySlug) {
+      setActiveCategorySlug(categories[0].slug);
+    }
+  }, [categories, activeCategorySlug]);
+
+  // Fetch tools when active category changes
+  useEffect(() => {
+    if (activeCategorySlug) {
+      fetchToolsForCategory(activeCategorySlug);
+    }
   }, [activeCategorySlug, fetchToolsForCategory]);
 
   const handleVote = (result: VoteResult) => {
@@ -101,7 +124,7 @@ export default function ToolsPage() {
     }
   };
 
-  const currentCategory = FAKE_CATEGORIES.find(cat => cat.slug === activeCategorySlug);
+  const currentCategory = categories.find((cat: ApiCategory) => cat.slug === activeCategorySlug);
 
   return (
     <main className="min-h-screen flex flex-col bg-black">
@@ -111,14 +134,20 @@ export default function ToolsPage() {
         {/* Categories */}
         <div className="w-full max-w-[730px] flex flex-col gap-2">
           <div className="flex gap-2 flex-wrap justify-center">
-            {FAKE_CATEGORIES.map((category) => (
-              <Pill
-                key={category.id}
-                label={category.name}
-                isActive={category.slug === activeCategorySlug}
-                onClick={() => handleCategoryClick(category.slug)}
-              />
-            ))}
+            {categoriesLoading ? (
+              <div className="flex justify-center items-center h-12">
+                <div className="text-white">Loading categories...</div>
+              </div>
+            ) : (
+              categories.map((category: ApiCategory) => (
+                <Pill
+                  key={category.id}
+                  label={category.name}
+                  isActive={category.slug === activeCategorySlug}
+                  onClick={() => handleCategoryClick(category.slug)}
+                />
+              ))
+            )}
           </div>
         </div>
 
