@@ -150,6 +150,24 @@ export function ToolCard({
             {/* Expanded Content */}
             {isExpanded && (
               <>
+                {/* Votes - Desktop Expanded */}
+                <div className="flex flex-row gap-2">
+                  <Voter
+                    direction="up"
+                    count={upvotes}
+                    onClick={() => handleVote('UPVOTE', 'up')}
+                    background="white"
+                    isLoading={loadingState === 'up'}
+                  />
+                  <Voter
+                    direction="down"
+                    count={downvotes}
+                    onClick={() => handleVote('DOWNVOTE', 'down')}
+                    background="white"
+                    isLoading={loadingState === 'down'}
+                  />
+                </div>
+
                 {/* Pro & Con Section */}
                 {(proText || conText) && (
                   <div className="flex flex-row gap-4">
@@ -185,23 +203,25 @@ export function ToolCard({
           </div>
         </div>
 
-        {/* Votes - Desktop */}
-        <div className="flex flex-col gap-2 w-[75px] flex-shrink-0">
-          <Voter
-            direction="up"
-            count={upvotes}
-            onClick={() => handleVote('UPVOTE', 'up')}
-            background={isExpanded ? 'white' : 'grey'}
-            isLoading={loadingState === 'up'}
-          />
-          <Voter
-            direction="down"
-            count={downvotes}
-            onClick={() => handleVote('DOWNVOTE', 'down')}
-            background={isExpanded ? 'white' : 'grey'}
-            isLoading={loadingState === 'down'}
-          />
-        </div>
+        {/* Votes - Desktop Collapsed */}
+        {!isExpanded && (
+          <div className="flex flex-col gap-2 w-[75px] flex-shrink-0">
+            <Voter
+              direction="up"
+              count={upvotes}
+              onClick={() => handleVote('UPVOTE', 'up')}
+              background="grey"
+              isLoading={loadingState === 'up'}
+            />
+            <Voter
+              direction="down"
+              count={downvotes}
+              onClick={() => handleVote('DOWNVOTE', 'down')}
+              background="grey"
+              isLoading={loadingState === 'down'}
+            />
+          </div>
+        )}
       </div>
 
       {/* Mobile Layout */}
@@ -247,6 +267,24 @@ export function ToolCard({
           {/* Expanded Content */}
           {isExpanded && (
             <>
+              {/* Votes - Mobile Expanded */}
+              <div className="flex flex-row gap-2 justify-start">
+                <Voter
+                  direction="up"
+                  count={upvotes}
+                  onClick={() => handleVote('UPVOTE', 'up')}
+                  background="white"
+                  isLoading={loadingState === 'up'}
+                />
+                <Voter
+                  direction="down"
+                  count={downvotes}
+                  onClick={() => handleVote('DOWNVOTE', 'down')}
+                  background="white"
+                  isLoading={loadingState === 'down'}
+                />
+              </div>
+
               {/* Pro & Con Section */}
               {(proText || conText) && (
                 <div className="flex flex-col gap-4">
@@ -271,11 +309,9 @@ export function ToolCard({
               <div className="h-px bg-[#F2F2F7] w-full"></div>
 
               {/* Actions */}
-              <div className="flex flex-col gap-6">
-                <div className="flex flex-row gap-6">
-                  <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
-                  <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
-                </div>
+              <div className="flex flex-col gap-4">
+                <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
+                <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
                 <Link variant="visit-site" onClick={handleVisitSite} />
               </div>
             </>
@@ -283,25 +319,31 @@ export function ToolCard({
         </div>
       </div>
 
-      {/* Votes - Mobile */}
-      <div className="flex sm:hidden flex-row gap-2 w-full justify-end mt-4">
-        <div className="flex flex-row gap-2">
-          <Voter
-            direction="up"
-            count={upvotes}
-            onClick={() => handleVote('UPVOTE', 'up')}
-            background={isExpanded ? 'white' : 'grey'}
-            isLoading={loadingState === 'up'}
-          />
-          <Voter
-            direction="down"
-            count={downvotes}
-            onClick={() => handleVote('DOWNVOTE', 'down')}
-            background={isExpanded ? 'white' : 'grey'}
-            isLoading={loadingState === 'down'}
-          />
+      {/* Votes - Mobile Collapsed */}
+      {!isExpanded && (
+        <div className="flex sm:hidden flex-row gap-2 w-full mt-4 justify-center">
+          <div className="flex flex-row gap-2 w-full justify-center">
+            <div className="flex-1">
+              <Voter
+                direction="up"
+                count={upvotes}
+                onClick={() => handleVote('UPVOTE', 'up')}
+                background="grey"
+                isLoading={loadingState === 'up'}
+              />
+            </div>
+            <div className="flex-1">
+              <Voter
+                direction="down"
+                count={downvotes}
+                onClick={() => handleVote('DOWNVOTE', 'down')}
+                background="grey"
+                isLoading={loadingState === 'down'}
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 } 
