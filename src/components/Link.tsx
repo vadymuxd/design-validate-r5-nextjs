@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface LinkProps {
   variant: 'recommend' | 'dont-recommend' | 'visit-site';
