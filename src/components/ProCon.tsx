@@ -3,13 +3,13 @@ import React from 'react';
 interface ProConProps {
   variant: 'pro' | 'con';
   title: string;
-  items: string[];
+  text: string;
 }
 
-export const ProCon: React.FC<ProConProps> = ({ variant, title, items }) => {
+export const ProCon: React.FC<ProConProps> = ({ variant, title, text }) => {
   const borderColor = variant === 'pro' ? '#77DB95' : '#FF3654';
   
-  if (!items || items.length === 0) {
+  if (!text) {
     return null;
   }
   
@@ -22,7 +22,7 @@ export const ProCon: React.FC<ProConProps> = ({ variant, title, items }) => {
         {title}
       </h4>
       <p className="annotation text-[var(--color-black)]">
-        {items.join(', ')}
+        {text}
       </p>
     </div>
   );

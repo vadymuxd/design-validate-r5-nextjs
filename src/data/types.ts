@@ -1,35 +1,22 @@
-export interface Tool {
+// This file now defines the shape of data returned from the API, not the initial seed data.
+
+export interface ApiTool {
+  id: string;
   name: string;
-  description: string;
-  logo_url: string;
-  website_url: string;
+  description: string | null;
+  logo_url: string | null;
+  website_url: string | null;
+  category_id: number;
   upvotes: number;
   downvotes: number;
-  pros?: string[];
-  cons?: string[];
+  pro_text: string | null;
+  con_text: string | null;
+  // The 'pros' and 'cons' are no longer part of the main tool object from the API.
+  // This data could be moved to a separate table in the future if needed.
 }
 
-export type Category = 
-  | 'usabilityTesting' 
-  | 'eventTracking'
-  | 'abTesting'
-  | 'uxDataAnalysis'
-  | 'sessionReplays'
-  | 'heatmaps'
-  | 'aiValidation'
-  | 'surveys'
-  | 'userFeedback'
-  | 'conceptTesting';
-
-export const categories = [
-  { id: 'usabilityTesting', label: 'Usability Testing' },
-  { id: 'eventTracking', label: 'Event Tracking' },
-  { id: 'abTesting', label: 'A/B Testing' },
-  { id: 'uxDataAnalysis', label: 'UX Data Analysis' },
-  { id: 'sessionReplays', label: 'Session Replays' },
-  { id: 'heatmaps', label: 'Heat-maps' },
-  { id: 'aiValidation', label: 'AI Validation' },
-  { id: 'surveys', label: 'Surveys' },
-  { id: 'userFeedback', label: 'User Feedback' },
-  { id: 'conceptTesting', label: 'Concept Testing' },
-] as const; 
+export interface ApiCategory {
+  id: number;
+  name: string;
+  slug: string;
+}

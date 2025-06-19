@@ -5,11 +5,11 @@ import Image from 'next/image';
 import { ToastMessage } from './ToastMessage';
 
 interface FeedbackProps {
-  component: string;
-  category?: string;
+  collectionSlug: string;
+  categorySlug?: string;
 }
 
-export const Feedback: React.FC<FeedbackProps> = ({ component, category = 'general' }) => {
+export const Feedback: React.FC<FeedbackProps> = ({ collectionSlug, categorySlug }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastVariant, setToastVariant] = useState<'default' | 'warning'>('default');
@@ -28,21 +28,20 @@ export const Feedback: React.FC<FeedbackProps> = ({ component, category = 'gener
 
   const submitFeedback = async (sentiment: 'LIKE' | 'DISLIKE') => {
     try {
-      const response = await fetch('/api/feedback', {
+      const response = await fetch('/api/app-feedback', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           sentiment,
-          category,
-          component,
+          collection_slug: collectionSlug,
+          category_slug: categorySlug,
         }),
       });
 
       if (response.status === 409) {
-        // Duplicate vote error
-        showWarningToast('You have already voted for this!');
+        showWarningToast('You have already provided feedback here!');
         return;
       }
 
@@ -50,7 +49,7 @@ export const Feedback: React.FC<FeedbackProps> = ({ component, category = 'gener
         throw new Error('Failed to submit feedback');
       }
 
-      showSuccessToast("Thanks for feedback!");
+      showSuccessToast("Thanks for your feedback!");
     } catch (error) {
       console.error('Error submitting feedback:', error);
       showWarningToast("Failed to submit feedback. Please try again.");

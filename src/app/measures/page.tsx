@@ -43,7 +43,7 @@ export default function MeasuresPage() {
           <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re building a comprehensive library of UX metrics, KPIs, and performance indicators. This will help you choose the right metrics to measure your design success and impact.
           </p>
-          <Feedback component="Measures" category="measures" />
+          <Feedback collectionSlug="measures" />
         </div>
       </div>
 

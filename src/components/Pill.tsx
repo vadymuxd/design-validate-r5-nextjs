@@ -1,18 +1,15 @@
 'use client';
 
-import { Category } from '@/data/types';
-
 interface PillProps {
-  id: Category;
   label: string;
   isActive: boolean;
-  onClick: (id: Category) => void;
+  onClick: () => void;
 }
 
-export function Pill({ id, label, isActive, onClick }: PillProps) {
+export function Pill({ label, isActive, onClick }: PillProps) {
   return (
     <button
-      onClick={() => onClick(id)}
+      onClick={onClick}
       className={`
         rounded-[36px] px-3 py-2 transition-all cursor-pointer label-mini
         ${

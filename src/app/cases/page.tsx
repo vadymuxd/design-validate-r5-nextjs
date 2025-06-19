@@ -43,7 +43,7 @@ export default function CasesPage() {
           <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re collecting real-world design case studies from Medium, company blogs, and industry publications. These will show actual validation challenges and how they were solved.
           </p>
-          <Feedback component="Cases" category="cases" />
+          <Feedback collectionSlug="cases" />
         </div>
       </div>
 

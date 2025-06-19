@@ -2,24 +2,23 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { PageLoader } from './PageLoader';
 
-interface LoadingContextType {
+interface PreloaderContextType {
   isLoading: boolean;
   setLoading: (loading: boolean) => void;
 }
 
-const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
+const PreloaderContext = createContext<PreloaderContextType | undefined>(undefined);
 
-export function useLoading() {
-  const context = useContext(LoadingContext);
+export function usePreloader() {
+  const context = useContext(PreloaderContext);
   if (!context) {
-    throw new Error('useLoading must be used within a LoadingProvider');
+    throw new Error('usePreloader must be used within a Preloader');
   }
   return context;
 }
 
-export function LoadingProvider({ children }: { children: React.ReactNode }) {
+export function Preloader({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
 
@@ -51,9 +50,8 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <LoadingContext.Provider value={{ isLoading, setLoading }}>
+    <PreloaderContext.Provider value={{ isLoading, setLoading }}>
       {children}
-      <PageLoader />
-    </LoadingContext.Provider>
+    </PreloaderContext.Provider>
   );
 } 

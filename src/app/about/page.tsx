@@ -42,7 +42,7 @@ export default function AboutPage() {
           <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re crafting our story and mission to help designers validate their work with data-driven insights. This page will include our vision, team information, and ways to contact us.
           </p>
-          <Feedback component="About" category="about" />
+          <Feedback collectionSlug="about" />
         </div>
       </div>
 

@@ -43,7 +43,7 @@ export default function FrameworksPage() {
           <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re curating established measurement frameworks from leading companies like Google, Airbnb, and Spotify. Learn how top organizations measure design success and impact.
           </p>
-          <Feedback component="Frameworks" category="frameworks" />
+          <Feedback collectionSlug="frameworks" />
         </div>
       </div>
 

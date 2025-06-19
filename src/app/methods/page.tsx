@@ -43,7 +43,7 @@ export default function MethodsPage() {
           <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re curating the best design validation methods and research techniques for you. This will include structured educational content to help you choose the right validation approach for your design challenges.
           </p>
-          <Feedback component="Methods" category="methods" />
+          <Feedback collectionSlug="methods" />
         </div>
       </div>
 

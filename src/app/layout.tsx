@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { LoadingProvider } from "@/components/LoadingProvider";
+import { Preloader } from "@/components/Preloader";
 import TopNav from "@/components/TopNav";
 
 const inter = Inter({
@@ -88,10 +88,10 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} antialiased`}>
-        <LoadingProvider>
+        <Preloader>
           <TopNav />
           {children}
-        </LoadingProvider>
+        </Preloader>
       </body>
     </html>
   );

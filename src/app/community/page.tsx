@@ -42,7 +42,7 @@ export default function CommunityPage() {
           <p className="body text-[var(--foreground)] text-center max-w-[520px]">
             We&apos;re building a space for the design validation community to connect, share stories, ask questions, and discover events. Join us to discuss everything related to validating design decisions.
           </p>
-          <Feedback component="Community" category="community" />
+          <Feedback collectionSlug="community" />
         </div>
       </div>
 
