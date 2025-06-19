@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 interface LinkProps {
   variant: 'recommend' | 'dont-recommend' | 'visit-site';
   onClick?: () => void;
+  isLoading?: boolean;
 }
 
-export const Link: React.FC<LinkProps> = ({ variant, onClick }) => {
-  const [isLoading, setIsLoading] = useState(false);
+export const Link: React.FC<LinkProps> = ({ variant, onClick, isLoading = false }) => {
   const getIcon = () => {
     switch (variant) {
       case 'recommend':
@@ -59,20 +59,6 @@ export const Link: React.FC<LinkProps> = ({ variant, onClick }) => {
     }
   };
 
-  const handleClick = async () => {
-    if (variant === 'recommend' || variant === 'dont-recommend') {
-      if (isLoading) return; // Prevent multiple clicks while loading
-      setIsLoading(true);
-      try {
-        await onClick?.();
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      onClick?.();
-    }
-  };
-
   const shouldShowLoader = isLoading && (variant === 'recommend' || variant === 'dont-recommend');
 
   return (
@@ -111,7 +97,7 @@ export const Link: React.FC<LinkProps> = ({ variant, onClick }) => {
         }
       `}</style>
     <button
-        onClick={handleClick}
+        onClick={onClick}
         disabled={shouldShowLoader}
         className={`flex items-center gap-1 label-default ${shouldShowLoader ? 'cursor-not-allowed opacity-80' : 'hover:cursor-pointer'}`}
       style={{ color: 'var(--color-link)' }}

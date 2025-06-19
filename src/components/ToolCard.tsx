@@ -40,11 +40,12 @@ export function ToolCard({
   onVote,
 }: ToolCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isVoting, setIsVoting] = useState(false);
+  type LoadingState = 'up' | 'down' | 'recommend' | 'dont-recommend' | null;
+  const [loadingState, setLoadingState] = useState<LoadingState>(null);
 
-  const handleVote = async (sentiment: 'UPVOTE' | 'DOWNVOTE') => {
-    if (isVoting) return;
-    setIsVoting(true);
+  const handleVote = async (sentiment: 'UPVOTE' | 'DOWNVOTE', source: LoadingState) => {
+    if (loadingState) return;
+    setLoadingState(source);
     try {
       const response = await fetch('/api/votes', {
         method: 'POST',
@@ -53,12 +54,11 @@ export function ToolCard({
       });
 
       const result = await response.json();
-      const voteStatus = result.status || 'ERROR';
 
       if (response.ok) { // Status 200-299
         onVote({ 
           toolId,
-          voteStatus, // VOTE_CREATED or VOTE_UPDATED
+          voteStatus: result.status, // VOTE_CREATED or VOTE_UPDATED
           sentiment, 
           message: result.message || 'Thanks for your feedback!', 
           variant: 'default' 
@@ -90,7 +90,7 @@ export function ToolCard({
         variant: 'warning' 
       });
     } finally {
-      setIsVoting(false);
+      setLoadingState(null);
     }
   };
 
@@ -176,8 +176,8 @@ export function ToolCard({
 
                 {/* Actions */}
                 <div className="flex flex-row gap-6">
-                  <Link variant="recommend" onClick={() => handleVote('UPVOTE')} />
-                  <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE')} />
+                  <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
+                  <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
                   <Link variant="visit-site" onClick={handleVisitSite} />
                 </div>
               </>
@@ -190,16 +190,16 @@ export function ToolCard({
           <Voter
             direction="up"
             count={upvotes}
-            onClick={() => handleVote('UPVOTE')}
+            onClick={() => handleVote('UPVOTE', 'up')}
             background={isExpanded ? 'white' : 'grey'}
-            isLoading={isVoting}
+            isLoading={loadingState === 'up'}
           />
           <Voter
             direction="down"
             count={downvotes}
-            onClick={() => handleVote('DOWNVOTE')}
+            onClick={() => handleVote('DOWNVOTE', 'down')}
             background={isExpanded ? 'white' : 'grey'}
-            isLoading={isVoting}
+            isLoading={loadingState === 'down'}
           />
         </div>
       </div>
@@ -271,9 +271,11 @@ export function ToolCard({
               <div className="h-px bg-[#F2F2F7] w-full"></div>
 
               {/* Actions */}
-              <div className="flex flex-col gap-4">
-                <Link variant="recommend" onClick={() => handleVote('UPVOTE')} />
-                <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE')} />
+              <div className="flex flex-col gap-6">
+                <div className="flex flex-row gap-6">
+                  <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
+                  <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
+                </div>
                 <Link variant="visit-site" onClick={handleVisitSite} />
               </div>
             </>
@@ -283,20 +285,22 @@ export function ToolCard({
 
       {/* Votes - Mobile */}
       <div className="flex sm:hidden flex-row gap-2 w-full justify-end mt-4">
-        <Voter
-          direction="up"
-          count={upvotes}
-          onClick={() => handleVote('UPVOTE')}
-          background={isExpanded ? 'white' : 'grey'}
-          isLoading={isVoting}
-        />
-        <Voter
-          direction="down"
-          count={downvotes}
-          onClick={() => handleVote('DOWNVOTE')}
-          background={isExpanded ? 'white' : 'grey'}
-          isLoading={isVoting}
-        />
+        <div className="flex flex-row gap-2">
+          <Voter
+            direction="up"
+            count={upvotes}
+            onClick={() => handleVote('UPVOTE', 'up')}
+            background={isExpanded ? 'white' : 'grey'}
+            isLoading={loadingState === 'up'}
+          />
+          <Voter
+            direction="down"
+            count={downvotes}
+            onClick={() => handleVote('DOWNVOTE', 'down')}
+            background={isExpanded ? 'white' : 'grey'}
+            isLoading={loadingState === 'down'}
+          />
+        </div>
       </div>
     </div>
   );

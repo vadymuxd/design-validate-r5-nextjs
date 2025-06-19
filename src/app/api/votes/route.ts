@@ -100,6 +100,10 @@ export async function POST(request: NextRequest) {
           console.error('Error updating vote:', updateError);
           return NextResponse.json({ message: 'Failed to update vote' }, { status: 500 });
         }
+        
+        // After a successful update, update the leaderboard and return the correct status
+        await updateLeaderboard(tool_id, category_id);
+        return NextResponse.json({ status: 'VOTE_UPDATED', message: 'Your vote has been updated!' });
       }
     } else {
       // New vote: insert a new record
@@ -117,12 +121,11 @@ export async function POST(request: NextRequest) {
         console.error('Error inserting vote:', insertError);
         return NextResponse.json({ message: 'Failed to save vote' }, { status: 500 });
       }
+
+      // After a successful insert, update the leaderboard and return the correct status
+      await updateLeaderboard(tool_id, category_id);
+      return NextResponse.json({ status: 'VOTE_CREATED', message: 'Thanks for your feedback!' });
     }
-
-    // 5. Update the leaderboard in real-time.
-    await updateLeaderboard(tool_id, category_id);
-
-    return NextResponse.json({ message: 'Thanks for your feedback!' });
 
   } catch (error) {
     console.error('Unexpected error in votes API:', error);
