@@ -5,7 +5,7 @@ import { UpdatedAt } from './UpdatedAt';
 
 export const Footer = () => {
   return (
-    <div className="flex flex-row items-center justify-center gap-9 w-full">
+    <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-9 w-full">
       <Link href="/about">
         <span
           className={`font-bold text-[12px] text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200`}

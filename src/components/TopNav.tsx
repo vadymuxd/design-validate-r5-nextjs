@@ -122,13 +122,9 @@ const TopNav = () => {
     setIsHoverOpen(false); 
   };
 
-  if (!isMounted) {
-    return null; // or a placeholder/loader
-  }
-
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-[60] transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'} bg-black ${isMenuOpen ? '' : 'border-b border-gray-800'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-[60] transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'} bg-black ${isMenuOpen ? '' : 'border-b border-[var(--color-grey-dark)]'}`}>
         <nav className="px-9 py-4 flex justify-between items-center">
           <Link href="/">
             <div className="relative h-8 w-8">
@@ -212,28 +208,31 @@ const TopNav = () => {
           </div>
         </nav>
       </header>
+      <div className="h-16"></div> {/* Spacer for the fixed header, always rendered */}
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden fixed inset-0 bg-black z-[59] pt-[4rem] overflow-y-auto transition-opacity duration-300 ease-in-out ${
+        className={`md:hidden fixed inset-0 bg-black z-[59] flex flex-col transition-opacity duration-300 ease-in-out ${
           isMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
-        <div className="px-9 pb-12 border-b border-[var(--color-grey-dark)]">
-          <div className="flex flex-col items-start gap-2.5">
-            {dropdownLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="h1 text-white"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
+        <div className="pt-[4.5rem] flex-grow overflow-y-auto">
+          <div className="px-9 pb-12">
+            <div className="flex flex-col items-start gap-2.5">
+              {dropdownLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="h1 text-white"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-        <div className="px-9 py-12 bg-[var(--color-grey-dark)]">
+        <div className="flex-shrink-0 px-9 py-12 bg-[var(--color-grey-dark)]">
           <div className="flex flex-col items-start gap-2.5">
             {mainLinks.map((link) => (
               <Link
