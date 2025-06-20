@@ -1,7 +1,7 @@
 'use client';
 
-import { UpdatedAt } from '@/components/UpdatedAt';
 import { Feedback } from '@/components/Feedback';
+import { Footer } from '@/components/Footer';
 import Image from 'next/image';
 
 export default function AboutPage() {
@@ -48,7 +48,7 @@ export default function AboutPage() {
 
       {/* Footer Section */}
       <footer className="footer-section">
-        <UpdatedAt />
+        <Footer />
       </footer>
     </main>
   );

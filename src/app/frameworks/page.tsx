@@ -1,7 +1,7 @@
 'use client';
 
-import { UpdatedAt } from '@/components/UpdatedAt';
 import { Feedback } from '@/components/Feedback';
+import { Footer } from '@/components/Footer';
 import { TitleNavigation } from '@/components/TitleNavigation';
 import Image from 'next/image';
 
@@ -49,7 +49,7 @@ export default function FrameworksPage() {
 
       {/* Footer Section */}
       <footer className="footer-section">
-        <UpdatedAt />
+        <Footer />
       </footer>
     </main>
   );

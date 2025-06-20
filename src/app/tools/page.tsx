@@ -5,7 +5,7 @@ import { Pill } from '@/components/Pill';
 import { ToolCard, VoteResult } from '@/components/ToolCard';
 import { ApiCategory, ApiTool } from '@/data/types';
 import { TitleNavigation } from '@/components/TitleNavigation';
-import { UpdatedAt } from '@/components/UpdatedAt';
+import { Footer } from '@/components/Footer';
 import { useState, useEffect, useCallback } from 'react';
 import React from 'react';
 import Image from 'next/image';
@@ -230,7 +230,7 @@ export default function ToolsPage() {
       {/* Footer Section */}
       {!isLoading && (
         <footer className="footer-section">
-          <UpdatedAt />
+          <Footer />
         </footer>
       )}
       

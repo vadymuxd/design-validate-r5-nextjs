@@ -30,8 +30,8 @@ export function UpdatedAt() {
   }, []);
 
   return (
-    <p className="annotation text-[var(--foreground)] text-center w-full">
-      Updated at: {lastUpdate}
+    <p className="annotation text-[var(--foreground)]">
+      Updated: {lastUpdate}
     </p>
   );
 } 

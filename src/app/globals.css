@@ -26,7 +26,7 @@
   --header-margin-bottom: 2rem; /* 32px - space after header */
   --content-min-height: 400px;
   --footer-margin-top: 2rem; /* 32px - space before footer */
-  --footer-padding-y: 2rem; /* 32px - footer vertical padding */
+  --footer-padding-y: 3rem; /* 48px - footer vertical padding */
   --logo-to-title-gap: 1rem; /* 16px - gap between logo and title - MATCHES Tools page gap-4 */
   --topnav-height: 2rem; /*  Adjust as needed for TopNav height */
 }
@@ -135,6 +135,7 @@
   justify-content: center;
   min-height: var(--content-min-height);
   gap: 1.5rem;
+  flex-grow: 1;
 }
 
 .footer-section {

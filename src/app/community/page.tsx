@@ -1,7 +1,7 @@
 'use client';
 
-import { UpdatedAt } from '@/components/UpdatedAt';
 import { Feedback } from '@/components/Feedback';
+import { Footer } from '@/components/Footer';
 import Image from 'next/image';
 
 export default function CommunityPage() {
@@ -18,21 +18,16 @@ export default function CommunityPage() {
 
       {/* Content Area */}
       <div className="content-area">
-        <div style={{ width: '100%', maxWidth: 320, height: 240, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Image 
-            src="/gifs/cat.gif" 
+            src="/gifs/Matrix_Cats-ezgif.com-crop.gif" 
             alt="Community coming soon" 
-            width={320}
-            height={300}
+            width={400}
+            height={0}
             style={{
-              width: '100%',
-              maxWidth: 320,
-              height: 300,
-              objectFit: 'cover',
-              display: 'block',
-              position: 'absolute',
-              left: 0,
-              top: -40
+              width: '400px',
+              height: 'auto',
+              display: 'block'
             }}
             unoptimized
           />
@@ -48,7 +43,7 @@ export default function CommunityPage() {
 
       {/* Footer Section */}
       <footer className="footer-section">
-        <UpdatedAt />
+        <Footer />
       </footer>
     </main>
   );
