@@ -44,7 +44,7 @@ export default function AboutPage() {
       </div>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <ContentCard title="What" variant="dark" size="medium">
+            <ContentCard title="Why" variant="dark" size="medium">
               <p>
                 Design shouldn&apos;t be held hostage by opinionated
                 stakeholders who &quot;just know&quot; what looks good. We
@@ -57,7 +57,7 @@ export default function AboutPage() {
                 data-driven while popularizing design measurement.
               </p>
             </ContentCard>
-            <ContentCard title="Why" variant="dark" size="medium">
+            <ContentCard title="What" variant="dark" size="medium">
               <p>
                 A platform curating the best tools, methods, case studies, and
                 practices for measuring and validating design. The ultimate
