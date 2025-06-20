@@ -2,11 +2,8 @@
 
 import Link from 'next/link';
 import { UpdatedAt } from './UpdatedAt';
-import { usePathname } from 'next/navigation';
 
 export const Footer = () => {
-  const pathname = usePathname();
-
   return (
     <div className="flex flex-row items-center justify-center gap-9 w-full">
       <Link href="/about">
