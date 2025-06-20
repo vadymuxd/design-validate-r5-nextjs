@@ -46,11 +46,6 @@ export default function CasesPage() {
           <Feedback collectionSlug="cases" />
         </div>
       </div>
-
-      {/* Footer Section */}
-      <footer className="footer-section">
-        <Footer />
-      </footer>
     </main>
   );
 } 

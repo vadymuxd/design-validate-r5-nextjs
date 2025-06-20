@@ -46,11 +46,6 @@ export default function FrameworksPage() {
           <Feedback collectionSlug="frameworks" />
         </div>
       </div>
-
-      {/* Footer Section */}
-      <footer className="footer-section">
-        <Footer />
-      </footer>
     </main>
   );
 } 

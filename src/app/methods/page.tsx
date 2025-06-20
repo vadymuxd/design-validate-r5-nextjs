@@ -46,11 +46,6 @@ export default function MethodsPage() {
           <Feedback collectionSlug="methods" />
         </div>
       </div>
-
-      {/* Footer Section */}
-      <footer className="footer-section">
-        <Footer />
-      </footer>
     </main>
   );
 } 

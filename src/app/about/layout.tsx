@@ -1,3 +1,4 @@
+import React from 'react';
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -34,5 +35,5 @@ export default function AboutLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <>{children}</>;
 } 

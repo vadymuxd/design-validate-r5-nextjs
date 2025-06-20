@@ -55,21 +55,21 @@
 
 .body {
   font-family: var(--font-family);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.4;
 }
 
 .label-default {
   font-family: var(--font-family);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.6;
 }
 
 .label-bold {
   font-family: var(--font-family);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.4;
 }
@@ -168,7 +168,6 @@ body {
   background: var(--background);
   font-family: var(--font-family);
   overflow-x: hidden; /* Prevent horizontal scrolling */
-  padding-top: var(--topnav-height);
 }
 
 /* Apply white text only to main content area */

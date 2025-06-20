@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import TopNav from "@/components/TopNav";
+import { Footer } from "@/components/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -87,8 +88,13 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} antialiased`}>
+        <div className="flex flex-col min-h-screen">
         <TopNav />
-        {children}
+          <main className="flex-grow">{children}</main>
+          <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
+            <Footer />
+          </footer>
+        </div>
       </body>
     </html>
   );

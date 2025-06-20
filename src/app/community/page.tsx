@@ -40,11 +40,6 @@ export default function CommunityPage() {
           <Feedback collectionSlug="community" />
         </div>
       </div>
-
-      {/* Footer Section */}
-      <footer className="footer-section">
-        <Footer />
-      </footer>
     </main>
   );
 } 

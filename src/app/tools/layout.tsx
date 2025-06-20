@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import React, { ReactNode } from 'react';
+import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: "Design Validation Tools | Design. Validate",
@@ -29,10 +31,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ToolsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return children;
+export default function ToolsLayout({ children }: { children: ReactNode }) {
+  return <>{children}</>;
 } 

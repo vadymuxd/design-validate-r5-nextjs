@@ -10,9 +10,9 @@ const ChevronIcon = ({ isUp, className }: { isUp: boolean, className?: string })
   return (
     <svg 
       xmlns="http://www.w3.org/2000/svg" 
-      className={`${className} transform -translate-y-0.5`} 
-      width="16" 
-      height="16" 
+      className={`${className} transform -translate-y-px`} 
+      width="11" 
+      height="11" 
       viewBox="0 0 20 20" 
       fill="none" 
       stroke="currentColor" 
@@ -127,7 +127,7 @@ const TopNav = () => {
       <header className={`fixed top-0 left-0 right-0 z-[60] transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'} bg-black ${isMenuOpen ? '' : 'border-b border-[var(--color-grey-dark)]'}`}>
         <nav className="px-9 py-4 flex justify-between items-center">
           <Link href="/">
-            <div className="relative h-8 w-8">
+            <div className="relative h-6 w-6">
               <Image
                 src="/logo/Vairant=White.svg"
                 alt="Design Validate Logo"
@@ -147,7 +147,7 @@ const TopNav = () => {
             >
               <button 
                 onClick={handleToggleClick}
-                className="label-default text-white hover:text-[var(--color-red)] transition-colors duration-200 flex items-center space-x-1 cursor-pointer group"
+                className="label-mini text-white hover:text-[var(--color-red)] transition-colors duration-200 flex items-center space-x-1 cursor-pointer group"
               >
                 <span>Validate</span>
                 <ChevronIcon 
@@ -166,7 +166,7 @@ const TopNav = () => {
                 }`}>
                   {dropdownLinks.map(link => (
                     <Link key={link.href} href={link.href}>
-                      <span onClick={() => setIsClickOpen(false)} className={`block px-4 py-2 label-default text-white hover:text-[var(--color-red)] ${pathname === link.href ? 'text-[var(--color-red)]' : ''}`}>
+                      <span onClick={() => setIsClickOpen(false)} className={`block px-4 py-2 label-mini text-white hover:text-[var(--color-red)] ${pathname === link.href ? 'text-[var(--color-red)]' : ''}`}>
                         {link.label}
                       </span>
                     </Link>
@@ -177,7 +177,7 @@ const TopNav = () => {
 
             {mainLinks.map(link => (
               <Link key={link.href} href={link.href}>
-                <span className={`label-default text-white hover:text-[var(--color-red)] transition-colors duration-200 ${pathname === link.href ? 'text-[var(--color-red)]' : ''}`}>
+                <span className={`label-mini text-white hover:text-[var(--color-red)] transition-colors duration-200 ${pathname === link.href ? 'text-[var(--color-red)]' : ''}`}>
                   {link.label}
                 </span>
               </Link>

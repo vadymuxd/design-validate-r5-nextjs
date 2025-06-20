@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import React, { ReactNode } from 'react';
+import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: "UX Metrics & KPIs | Design. Validate",
@@ -30,10 +32,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function MeasuresLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return children;
+export default function MeasuresLayout({ children }: { children: ReactNode }) {
+  return <>{children}</>;
 } 

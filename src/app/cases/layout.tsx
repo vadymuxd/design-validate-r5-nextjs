@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import React, { ReactNode } from 'react';
+import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: "Design Case Studies | Design. Validate",
@@ -30,10 +32,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CasesLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return children;
+export default function CasesLayout({ children }: { children: ReactNode }) {
+  return <>{children}</>;
 } 

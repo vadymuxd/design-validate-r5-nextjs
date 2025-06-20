@@ -244,13 +244,6 @@ export default function ToolsPage() {
         )}
       </div>
 
-      {/* Footer Section */}
-      {isContentLoaded && (
-        <footer className="footer-section animate-fadeIn">
-          <Footer />
-        </footer>
-      )}
-      
       <ToastMessage
         message={toastMessage}
         isVisible={showToast}

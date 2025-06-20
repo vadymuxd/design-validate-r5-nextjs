@@ -8,14 +8,14 @@ export const Footer = () => {
     <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-9 w-full">
       <Link href="/about">
         <span
-          className={`font-bold text-[12px] text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200`}
+          className={`label-mini text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200`}
         >
           About
         </span>
       </Link>
       <Link href="/community">
         <span
-          className={`font-bold text-[12px] text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200`}
+          className={`label-mini text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200`}
         >
           Community
         </span>

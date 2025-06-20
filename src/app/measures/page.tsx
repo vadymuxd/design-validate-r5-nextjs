@@ -46,11 +46,6 @@ export default function MeasuresPage() {
           <Feedback collectionSlug="measures" />
         </div>
       </div>
-
-      {/* Footer Section */}
-      <footer className="footer-section">
-        <Footer />
-      </footer>
     </main>
   );
 } 

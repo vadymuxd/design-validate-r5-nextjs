@@ -105,7 +105,7 @@ export function ToolCard({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-4 sm:p-8">
+    <div className="bg-white rounded-2xl p-6 sm:p-8">
       {/* Desktop Layout */}
       <div className="hidden sm:flex flex-row gap-6 items-start">
         {/* Logo */}
@@ -123,10 +123,10 @@ export function ToolCard({
 
         {/* Content */}
         <div className="flex-grow">
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
             {/* Header */}
             <div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-3">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleTitleClick}
@@ -240,10 +240,10 @@ export function ToolCard({
         </div>
 
         {/* Content */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
           {/* Header */}
           <div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleTitleClick}
