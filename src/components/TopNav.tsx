@@ -208,7 +208,7 @@ const TopNav = () => {
           </div>
         </nav>
       </header>
-      <div className="h-16"></div> {/* Spacer for the fixed header, always rendered */}
+      {pathname !== '/about' && <div className="h-16"></div>} {/* Spacer for the fixed header, rendered on all pages except 'About' */}
 
       {/* Mobile Menu */}
       <div

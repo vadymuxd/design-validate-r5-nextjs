@@ -16,7 +16,7 @@ export default function CommunityPage() {
       </div>
 
       {/* Content Area */}
-      <div className="content-area">
+      <div className="content-area" style={{ justifyContent: 'flex-start' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Image 
             src="/gifs/Matrix_Cats-ezgif.com-crop.gif" 
