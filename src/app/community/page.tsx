@@ -1,7 +1,6 @@
 'use client';
 
 import { Feedback } from '@/components/Feedback';
-import { Footer } from '@/components/Footer';
 import Image from 'next/image';
 
 export default function CommunityPage() {

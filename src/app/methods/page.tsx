@@ -1,7 +1,6 @@
 'use client';
 
 import { Feedback } from '@/components/Feedback';
-import { Footer } from '@/components/Footer';
 import { TitleNavigation } from '@/components/TitleNavigation';
 import Image from 'next/image';
 

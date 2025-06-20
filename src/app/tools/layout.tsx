@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import React, { ReactNode } from 'react';
-import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: "Design Validation Tools | Design. Validate",

@@ -5,7 +5,6 @@ import { Pill } from '@/components/Pill';
 import { ToolCard, VoteResult } from '@/components/ToolCard';
 import { ApiCategory, ApiTool } from '@/data/types';
 import { TitleNavigation } from '@/components/TitleNavigation';
-import { Footer } from '@/components/Footer';
 import { useState, useEffect, useCallback } from 'react';
 import React from 'react';
 import Image from 'next/image';

@@ -105,24 +105,142 @@ export function ToolCard({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 sm:p-8">
-      {/* Desktop Layout */}
-      <div className="hidden sm:flex flex-row gap-6 items-start">
-        {/* Logo */}
-        <div className="relative w-20 h-20 shrink-0">
-          {logo && (
-            <Image
-              src={logo}
-              alt={`${name} logo`}
-              fill
-              sizes="80px"
-              className="rounded-full object-cover"
-            />
+    <div className="bg-white rounded-2xl">
+      <div className="p-6 sm:p-8">
+        {/* Desktop Layout */}
+        <div className="hidden sm:flex flex-row gap-6 items-start">
+          {/* Logo */}
+          <div className="relative w-20 h-20 shrink-0">
+            {logo && (
+              <Image
+                src={logo}
+                alt={`${name} logo`}
+                fill
+                sizes="80px"
+                className="rounded-full object-cover"
+              />
+            )}
+          </div>
+
+          {/* Content */}
+          <div className="flex-grow">
+            <div className="flex flex-col gap-4">
+              {/* Header */}
+              <div>
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleTitleClick}
+                      className="h3 text-[var(--color-black)] hover:cursor-pointer flex items-center gap-2"
+                    >
+                      {name}
+                      <div className="relative w-5 h-5">
+                        <Image
+                          src={isExpanded ? '/icons/Chevron=Up.svg' : '/icons/Chevron=Down.svg'}
+                          alt={isExpanded ? 'Collapse' : 'Expand'}
+                          fill
+                          sizes="20px"
+                        />
+                      </div>
+                    </button>
+                  </div>
+                  <p className="body text-[var(--color-black)]">{description}</p>
+                </div>
+              </div>
+
+              {/* Expanded Content */}
+              {isExpanded && (
+                <>
+                  {/* Votes - Desktop Expanded */}
+                  <div className="flex flex-row gap-2">
+                    <Voter
+                      direction="up"
+                      count={upvotes}
+                      onClick={() => handleVote('UPVOTE', 'up')}
+                      background="white"
+                      isLoading={loadingState === 'up'}
+                    />
+                    <Voter
+                      direction="down"
+                      count={downvotes}
+                      onClick={() => handleVote('DOWNVOTE', 'down')}
+                      background="white"
+                      isLoading={loadingState === 'down'}
+                    />
+                  </div>
+
+                  {/* Pro & Con Section */}
+                  {(proText || conText) && (
+                    <div className="flex flex-row gap-4">
+                      {proText && (
+                        <div className="flex-1">
+                          <ProCon
+                            variant="pro"
+                            title="Pro"
+                            text={proText}
+                          />
+                        </div>
+                      )}
+                      {conText && (
+                        <div className="flex-1">
+                          <ProCon
+                            variant="con"
+                            title="Con"
+                            text={conText}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="flex flex-row gap-6">
+                    <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
+                    <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
+                    <Link variant="visit-site" onClick={handleVisitSite} />
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Votes - Desktop Collapsed */}
+          {!isExpanded && (
+            <div className="flex flex-col gap-2 w-[75px] flex-shrink-0">
+              <Voter
+                direction="up"
+                count={upvotes}
+                onClick={() => handleVote('UPVOTE', 'up')}
+                background="grey"
+                isLoading={loadingState === 'up'}
+              />
+              <Voter
+                direction="down"
+                count={downvotes}
+                onClick={() => handleVote('DOWNVOTE', 'down')}
+                background="grey"
+                isLoading={loadingState === 'down'}
+              />
+            </div>
           )}
         </div>
 
-        {/* Content */}
-        <div className="flex-grow">
+        {/* Mobile Layout */}
+        <div className="flex sm:hidden flex-col gap-6">
+          {/* Logo */}
+          <div className="relative w-20 h-20 shrink-0">
+            {logo && (
+              <Image
+                src={logo}
+                alt={`${name} logo`}
+                fill
+                sizes="80px"
+                className="rounded-full object-cover"
+              />
+            )}
+          </div>
+
+          {/* Content */}
           <div className="flex flex-col gap-4">
             {/* Header */}
             <div>
@@ -147,11 +265,11 @@ export function ToolCard({
               </div>
             </div>
 
-            {/* Expanded Content */}
+            {/* Expanded Content (Conditional Rendering) */}
             {isExpanded && (
-              <>
-                {/* Votes - Desktop Expanded */}
-                <div className="flex flex-row gap-2">
+              <div className="flex flex-col gap-4">
+                {/* Votes - Mobile Expanded */}
+                <div className="flex flex-row gap-2 justify-start">
                   <Voter
                     direction="up"
                     count={upvotes}
@@ -170,158 +288,47 @@ export function ToolCard({
 
                 {/* Pro & Con Section */}
                 {(proText || conText) && (
-                  <div className="flex flex-row gap-4">
+                  <div className="flex flex-col gap-4">
                     {proText && (
-                      <div className="flex-1">
-                        <ProCon
-                          variant="pro"
-                          title="Pro"
-                          text={proText}
-                        />
-                      </div>
+                      <ProCon
+                        variant="pro"
+                        title="Pro"
+                        text={proText}
+                      />
                     )}
                     {conText && (
-                      <div className="flex-1">
-                        <ProCon
-                          variant="con"
-                          title="Con"
-                          text={conText}
-                        />
-                      </div>
+                      <ProCon
+                        variant="con"
+                        title="Con"
+                        text={conText}
+                      />
                     )}
                   </div>
                 )}
-
-                {/* Actions */}
-                <div className="flex flex-row gap-6">
-                  <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
-                  <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
-                  <Link variant="visit-site" onClick={handleVisitSite} />
-                </div>
-              </>
+              </div>
             )}
           </div>
         </div>
-
-        {/* Votes - Desktop Collapsed */}
-        {!isExpanded && (
-          <div className="flex flex-col gap-2 w-[75px] flex-shrink-0">
-            <Voter
-              direction="up"
-              count={upvotes}
-              onClick={() => handleVote('UPVOTE', 'up')}
-              background="grey"
-              isLoading={loadingState === 'up'}
-            />
-            <Voter
-              direction="down"
-              count={downvotes}
-              onClick={() => handleVote('DOWNVOTE', 'down')}
-              background="grey"
-              isLoading={loadingState === 'down'}
-            />
-          </div>
-        )}
       </div>
 
-      {/* Mobile Layout */}
-      <div className="flex sm:hidden flex-col gap-6">
-        {/* Logo */}
-        <div className="relative w-20 h-20 shrink-0">
-          {logo && (
-            <Image
-              src={logo}
-              alt={`${name} logo`}
-              fill
-              sizes="80px"
-              className="rounded-full object-cover"
-            />
-          )}
-        </div>
+      {/* Expanded Content for Mobile - Placed outside the main padding */}
+      {isExpanded && (
+        <div className="block sm:hidden">
+          {/* Divider */}
+          <div className="h-px bg-[#F2F2F7] w-full my-4"></div>
 
-        {/* Content */}
-        <div className="flex flex-col gap-4">
-          {/* Header */}
-          <div>
-            <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={handleTitleClick}
-                  className="h3 text-[var(--color-black)] hover:cursor-pointer flex items-center gap-2"
-                >
-                  {name}
-                  <div className="relative w-5 h-5">
-                    <Image
-                      src={isExpanded ? '/icons/Chevron=Up.svg' : '/icons/Chevron=Down.svg'}
-                      alt={isExpanded ? 'Collapse' : 'Expand'}
-                      fill
-                      sizes="20px"
-                    />
-                  </div>
-                </button>
-              </div>
-              <p className="body text-[var(--color-black)]">{description}</p>
-            </div>
+          {/* Actions - with its own padding */}
+          <div className="px-6 pb-6 flex flex-col gap-4">
+            <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
+            <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
+            <Link variant="visit-site" onClick={handleVisitSite} />
           </div>
-
-          {/* Expanded Content */}
-          {isExpanded && (
-            <>
-              {/* Votes - Mobile Expanded */}
-              <div className="flex flex-row gap-2 justify-start">
-                <Voter
-                  direction="up"
-                  count={upvotes}
-                  onClick={() => handleVote('UPVOTE', 'up')}
-                  background="white"
-                  isLoading={loadingState === 'up'}
-                />
-                <Voter
-                  direction="down"
-                  count={downvotes}
-                  onClick={() => handleVote('DOWNVOTE', 'down')}
-                  background="white"
-                  isLoading={loadingState === 'down'}
-                />
-              </div>
-
-              {/* Pro & Con Section */}
-              {(proText || conText) && (
-                <div className="flex flex-col gap-4">
-                  {proText && (
-                    <ProCon
-                      variant="pro"
-                      title="Pro"
-                      text={proText}
-                    />
-                  )}
-                  {conText && (
-                    <ProCon
-                      variant="con"
-                      title="Con"
-                      text={conText}
-                    />
-                  )}
-                </div>
-              )}
-
-              {/* Divider */}
-              <div className="h-px bg-[#F2F2F7] w-full"></div>
-
-              {/* Actions */}
-              <div className="flex flex-col gap-4">
-                <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
-                <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
-                <Link variant="visit-site" onClick={handleVisitSite} />
-              </div>
-            </>
-          )}
         </div>
-      </div>
+      )}
 
       {/* Votes - Mobile Collapsed */}
       {!isExpanded && (
-        <div className="flex sm:hidden flex-row gap-2 w-full mt-4 justify-center">
+        <div className="block sm:hidden px-6 pb-6">
           <div className="flex flex-row gap-2 w-full justify-center">
             <div className="flex-1">
               <Voter
