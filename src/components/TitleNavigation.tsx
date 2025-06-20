@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import { usePreloader } from './Preloader';
 
 const pages = [
   { href: '/tools', label: 'Tools' },
@@ -18,7 +17,6 @@ export function TitleNavigation() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const pathname = usePathname();
   const router = useRouter();
-  const { setLoading } = usePreloader();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const currentPage = pages.find((p) => p.href === pathname);
@@ -30,7 +28,6 @@ export function TitleNavigation() {
   const handleMenuItemClick = (href: string) => {
     setIsOpen(false);
     setHoveredItem(null);
-    setLoading(true);
     router.push(href);
   };
 
