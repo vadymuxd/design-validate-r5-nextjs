@@ -5,6 +5,7 @@ import { Pill } from '@/components/Pill';
 import { ToolCard, VoteResult } from '@/components/ToolCard';
 import { ApiCategory, ApiTool } from '@/data/types';
 import { TitleNavigation } from '@/components/TitleNavigation';
+import { PageLoader } from '@/components/PageLoader';
 import { useState, useEffect, useCallback } from 'react';
 import React from 'react';
 import Image from 'next/image';
@@ -16,7 +17,6 @@ export default function ToolsPage() {
   const [tools, setTools] = useState<ApiTool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
-  const [isContentLoaded, setIsContentLoaded] = useState(false);
 
   // State for the toast message, lifted up from ToolCard
   const [showToast, setShowToast] = useState(false);
@@ -62,14 +62,6 @@ export default function ToolsPage() {
       setIsLoading(false);
     }
   }, []);
-
-  // Combined effect to track overall loading status
-  useEffect(() => {
-    if (!categoriesLoading && !isLoading) {
-      const timer = setTimeout(() => setIsContentLoaded(true), 300); // Small delay for smoother transition
-      return () => clearTimeout(timer);
-    }
-  }, [categoriesLoading, isLoading]);
 
   // Fetch categories on component mount (only once)
   useEffect(() => {
@@ -135,11 +127,30 @@ export default function ToolsPage() {
   const currentCategory = categories.find((cat: ApiCategory) => cat.slug === activeCategorySlug);
 
   return (
-    <main className="min-h-screen flex flex-col bg-black">
-      <div className="flex flex-col items-center py-12 px-4 sm:px-8 gap-8 flex-1">
-        <TitleNavigation />
+    <>
+      <PageLoader titleNavigation={<TitleNavigation />}>
+        {/* Categories */}
+        <div className="w-full max-w-[730px] flex flex-col gap-2">
+          <div className="flex gap-2 flex-wrap justify-center">
+            {categoriesLoading ? (
+              <div className="flex justify-center items-center h-12">
+                <div className="text-white">Loading categories...</div>
+              </div>
+            ) : (
+              categories.map((category: ApiCategory) => (
+                <Pill
+                  key={category.id}
+                  label={category.name}
+                  isActive={category.slug === activeCategorySlug}
+                  onClick={() => handleCategoryClick(category.slug)}
+                />
+              ))
+            )}
+          </div>
+        </div>
 
-        {!isContentLoaded ? (
+        {/* Loading state for tools */}
+        {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <Image
               src="/gifs/Pi-Slices.gif"
@@ -155,111 +166,71 @@ export default function ToolsPage() {
             />
           </div>
         ) : (
-          <div className="w-full flex flex-col items-center gap-8 animate-fadeIn">
-            {/* Categories */}
-            <div className="w-full max-w-[730px] flex flex-col gap-2">
-              <div className="flex gap-2 flex-wrap justify-center">
-                {categoriesLoading ? (
-                  <div className="flex justify-center items-center h-12">
-                    <div className="text-white">Loading categories...</div>
-                  </div>
-                ) : (
-                  categories.map((category: ApiCategory) => (
-                    <Pill
-                      key={category.id}
-                      label={category.name}
-                      isActive={category.slug === activeCategorySlug}
-                      onClick={() => handleCategoryClick(category.slug)}
-                    />
-                  ))
+          /* Content: Tools or Coming Soon */
+          tools.length > 0 ? (
+            <>
+              {/* Tools Grid */}
+              <div className="w-full max-w-[730px] flex flex-col gap-2">
+                {tools.map((tool) => (
+                  <ToolCard
+                    key={tool.id}
+                    toolId={tool.id}
+                    categoryId={tool.category_id}
+                    name={tool.name}
+                    description={tool.description}
+                    logo={tool.logo_url}
+                    url={tool.website_url}
+                    upvotes={tool.upvotes}
+                    downvotes={tool.downvotes}
+                    proText={tool.pro_text}
+                    conText={tool.con_text}
+                    onVote={handleVote}
+                  />
+                ))}
+              </div>
+
+              {/* Feedback Section */}
+              <div className="flex flex-col items-center gap-4 mt-8">
+                <p className="body text-[var(--foreground)] text-center max-w-[730px]">
+                  This is a synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit. Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users from listed sources plus unique users&apos; votes on this site. The initial sentiment analysis done by Gemini 2.5 Pro
+                </p>
+                {currentCategory && (
+                  <Feedback collectionSlug="tools" categorySlug={currentCategory.slug} />
                 )}
               </div>
-            </div>
-
-            {/* Loading state for tools */}
-            {isLoading ? (
-              <div className="flex justify-center items-center h-64">
-                <Image
-                  src="/gifs/Pi-Slices.gif"
-                  alt="Loading..."
-                  width={200}
-                  height={200}
+            </>
+          ) : (
+            <div className="w-full max-w-[730px] flex flex-col items-center justify-center min-h-[300px] gap-4">
+              <div style={{ width: '100%', maxWidth: 320, height: 240, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Image 
+                  src="/gifs/cat.gif" 
+                  alt="Coming soon" 
+                  width={320}
+                  height={300}
                   style={{
                     width: '100%',
-                    height: 'auto',
-                    maxWidth: '200px',
+                    maxWidth: 320,
+                    height: 320,
+                    objectFit: 'cover',
+                    display: 'block',
+                    position: 'absolute',
+                    left: 0,
+                    top: -40
                   }}
                   unoptimized
                 />
               </div>
-            ) : (
-              /* Content: Tools or Coming Soon */
-              tools.length > 0 ? (
-                <>
-                  {/* Tools Grid */}
-                  <div className="w-full max-w-[730px] flex flex-col gap-2">
-                    {tools.map((tool) => (
-                      <ToolCard
-                        key={tool.id}
-                        toolId={tool.id}
-                        categoryId={tool.category_id}
-                        name={tool.name}
-                        description={tool.description}
-                        logo={tool.logo_url}
-                        url={tool.website_url}
-                        upvotes={tool.upvotes}
-                        downvotes={tool.downvotes}
-                        proText={tool.pro_text}
-                        conText={tool.con_text}
-                        onVote={handleVote}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Feedback Section */}
-                  <div className="flex flex-col items-center gap-4 mt-8">
-                    <p className="body text-[var(--foreground)] text-center max-w-[730px]">
-                      This is a synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit. Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users from listed sources plus unique users&apos; votes on this site. The initial sentiment analysis done by Gemini 2.5 Pro
-                    </p>
-                    {currentCategory && (
-                      <Feedback collectionSlug="tools" categorySlug={currentCategory.slug} />
-                    )}
-                  </div>
-                </>
-              ) : (
-                <div className="w-full max-w-[730px] flex flex-col items-center justify-center min-h-[300px] gap-4">
-                  <div style={{ width: '100%', maxWidth: 320, height: 240, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Image 
-                      src="/gifs/cat.gif" 
-                      alt="Coming soon" 
-                      width={320}
-                      height={300}
-                      style={{
-                        width: '100%',
-                        maxWidth: 320,
-                        height: 320,
-                        objectFit: 'cover',
-                        display: 'block',
-                        position: 'absolute',
-                        left: 0,
-                        top: -40
-                      }}
-                      unoptimized
-                    />
-                  </div>
-                  <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
-                  <p className="body text-[var(--foreground)] text-center max-w-[520px]">
-                    {`We're working hard to bring you a curated list of tools for this category. Like or dislike to help us prioritize!`}
-                  </p>
-                  {currentCategory && (
-                    <Feedback collectionSlug="tools" categorySlug={currentCategory.slug} />
-                  )}
-                </div>
-              )
-            )}
-          </div>
+              <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
+              <p className="body text-[var(--foreground)] text-center max-w-[520px]">
+                {`We're working hard to bring you a curated list of tools for this category. Like or dislike to help us prioritize!`}
+              </p>
+              {currentCategory && (
+                <Feedback collectionSlug="tools" categorySlug={currentCategory.slug} />
+              )}
+            </div>
+          )
         )}
-      </div>
+      </PageLoader>
 
       <ToastMessage
         message={toastMessage}
@@ -267,6 +238,6 @@ export default function ToolsPage() {
         onClose={() => setShowToast(false)}
         variant={toastVariant}
       />
-    </main>
+    </>
   );
 } 

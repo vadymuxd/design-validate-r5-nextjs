@@ -14,6 +14,7 @@ const pages = [
 export function TitleNavigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogo, setShowLogo] = useState(false);
+  const [contentLoaded, setContentLoaded] = useState(false);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const pathname = usePathname();
   const router = useRouter();
@@ -44,6 +45,23 @@ export function TitleNavigation() {
   }, []);
 
   useEffect(() => {
+    const handleContentLoad = () => {
+      setContentLoaded(true);
+    };
+
+    // Check if the page is already loaded
+    if (document.readyState === 'complete') {
+      setContentLoaded(true);
+    } else {
+      // Wait for all content to load
+      window.addEventListener('load', handleContentLoad);
+      return () => {
+        window.removeEventListener('load', handleContentLoad);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false);
@@ -68,7 +86,7 @@ export function TitleNavigation() {
       >
           <div className="w-[60px] h-[60px] flex items-center justify-center">
               {showLogo && (
-              <div className="logo-animate w-full h-full">
+              <div className={`w-full h-full ${contentLoaded ? 'logo-animate' : ''}`}>
               <svg
                   viewBox="0 0 60 60"
                   fill="none"

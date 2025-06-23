@@ -198,6 +198,17 @@ html, body {
   }
 }
 
+.animate-fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.4s cubic-bezier(0.4,0,0.2,1) forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
 /* SEO-only content - hidden from users but visible to search engines */
 .seo-only {
   position: absolute;
