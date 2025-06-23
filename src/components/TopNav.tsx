@@ -182,6 +182,11 @@ const TopNav = () => {
                 </span>
               </Link>
             ))}
+            <Link href="/about#contact-form">
+              <span className="label-mini text-white hover:text-[var(--color-red)] transition-colors duration-200">
+                Contact
+              </span>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -244,6 +249,13 @@ const TopNav = () => {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/about#contact-form"
+              className="h1 text-white"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Contact
+            </Link>
           </div>
         </div>
       </div>

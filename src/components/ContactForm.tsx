@@ -17,7 +17,7 @@ export function ContactForm({
   className,
   heading = 'Hi, there!',
   description =
-    "Does this vision resonate with you and you'd like to contribute or join the mission? Or maybe you found any bugs or have any questions?",
+    "Share your thoughts, ideas, or feedback with us. We'd love to build a community of like-minded people, so please include your contact details if you want to collaborate or to be contacted back.",
 }: ContactFormProps) {
   const [message, setMessage] = useState('');
   const [formState, setFormState] = useState<FormState>('idle');
@@ -34,6 +34,7 @@ export function ContactForm({
   const handleSubmit = async () => {
     if (!message.trim()) {
       setErrorMessage('Please enter a message');
+      textareaRef.current?.focus();
       return;
     }
 
@@ -117,7 +118,7 @@ export function ContactForm({
         <div className="flex flex-col gap-4 items-center">
           <Textarea
             ref={textareaRef}
-            placeholder="Include your contact details if you want to be contacted back"
+            placeholder="Type your message here..."
             rows={4}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
