@@ -10,10 +10,6 @@ export default function MethodsPage() {
       {/* Header */}
       <div className="header-section">
         <TitleNavigation />
-        
-        <p className="seo-only">
-          Discover comprehensive design validation methods and research techniques. Learn structured, educational approaches to validating your design decisions with proven methodologies.
-        </p>
       </div>
 
       {/* Content Area */}

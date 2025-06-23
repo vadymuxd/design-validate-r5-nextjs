@@ -9,10 +9,6 @@ export default function CommunityPage() {
       {/* Header */}
       <div className="header-section">
         <h1 className="h1">Community</h1>
-        
-        <p className="seo-only">
-          Join the Design. Validate community to discuss and share insights about design validation. Connect with designers, share stories, ask questions, and discover events.
-        </p>
       </div>
 
       {/* Content Area */}

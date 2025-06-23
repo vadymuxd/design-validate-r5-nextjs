@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import { Metadata } from 'next';
 import React, { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: "Design Validation Community | Design. Validate",
-  description: "Join the Design. Validate community to discuss and share insights about design validation. Connect with designers, share stories, ask questions, and discover events.",
+  title: 'Community | Design. Validate',
+  description: 'Join the Design. Validate community to discuss and share insights about design validation. Connect with designers, share stories, ask questions, and discover events.',
   keywords: [
     "design community",
     "UX community", 
@@ -31,6 +31,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CommunityLayout({ children }: { children: ReactNode }) {
+export default function CommunityLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return <>{children}</>;
 } 

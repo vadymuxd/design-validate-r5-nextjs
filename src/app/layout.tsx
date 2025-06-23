@@ -35,10 +35,13 @@ export const metadata: Metadata = {
     siteName: "Design. Validate",
     title: "Design. Validate - Tools, Methods & Frameworks for Design Validation",
     description: "Comprehensive platform for design validation featuring tools, methods, frameworks, and case studies.",
+    images: ["/icon.png"],
+    url: "https://design-validate.com",
   },
   twitter: {
     card: "summary_large_image",
     creator: "@designvalidate",
+    images: ["/icon.png"],
   },
   robots: {
     index: true,

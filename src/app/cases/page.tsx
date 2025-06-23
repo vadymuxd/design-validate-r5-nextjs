@@ -10,10 +10,6 @@ export default function CasesPage() {
       {/* Header */}
       <div className="header-section">
         <TitleNavigation />
-        
-        <p className="seo-only">
-          Real-world design case studies showing how design challenges were solved and success measured. Learn from actual validation examples connected to industry blog posts and stories.
-        </p>
       </div>
 
       {/* Content Area */}

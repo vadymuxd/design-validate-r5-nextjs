@@ -10,10 +10,6 @@ export default function FrameworksPage() {
       {/* Header */}
       <div className="header-section">
         <TitleNavigation />
-        
-        <p className="seo-only">
-          Explore established design measurement frameworks introduced by leading companies. Learn proven methodologies for measuring design impact and success from industry leaders.
-        </p>
       </div>
 
       {/* Content Area */}

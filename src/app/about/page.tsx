@@ -1,5 +1,4 @@
-'use client';
-
+import { Metadata } from 'next';
 import React from 'react';
 import { ContactForm } from '@/components/ContactForm';
 import { ContentCard } from '@/components/ContentCard';
@@ -10,6 +9,11 @@ const MaskIcon = () => <Image src="/icons/goal=mask.svg" alt="" width={24} heigh
 const CopySuccessIcon = () => <Image src="/icons/goal=copy-success.svg" alt="" width={24} height={24} />;
 const ColorSwatchIcon = () => <Image src="/icons/goal=color-swatch.svg" alt="" width={24} height={24} />;
 const Profile2UserIcon = () => <Image src="/icons/goal=profile-2user.svg" alt="" width={24} height={24} />;
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "Our mission is to popularize data-driven design and connect a community of designers, product managers, and engineers.",
+};
 
 export default function AboutPage() {
   return (

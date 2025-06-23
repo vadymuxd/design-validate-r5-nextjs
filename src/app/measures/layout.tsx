@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import { Metadata } from 'next';
 import React, { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: "UX Metrics & KPIs | Design. Validate",
-  description: "Comprehensive collection of UX and product metrics, KPIs, and performance indicators. Learn how to measure design success with structured, actionable metrics for real-world application.",
+  title: 'UX & Product Design Metrics | Design. Validate',
+  description: 'Comprehensive collection of UX and product metrics, KPIs, and performance indicators. Learn how to measure design success with structured, actionable metrics for real-world application.',
   keywords: [
     "UX metrics",
     "design KPIs", 

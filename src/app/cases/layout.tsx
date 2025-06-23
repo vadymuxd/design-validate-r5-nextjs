@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import { Metadata } from 'next';
 import React, { ReactNode } from 'react';
 
 export const metadata: Metadata = {
-  title: "Design Case Studies | Design. Validate",
-  description: "Real-world design case studies showing how design challenges were solved and success measured. Learn from actual validation examples connected to industry blog posts and stories.",
+  title: 'Design & UX Case Studies | Design. Validate',
+  description: 'Real-world design case studies showing how design challenges were solved and success measured. Learn from actual validation examples connected to industry blog posts and stories.',
   keywords: [
     "design case studies",
     "UX case studies", 

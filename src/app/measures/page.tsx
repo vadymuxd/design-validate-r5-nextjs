@@ -10,10 +10,6 @@ export default function MeasuresPage() {
       {/* Header */}
       <div className="header-section">
         <TitleNavigation />
-        
-        <p className="seo-only">
-          Comprehensive collection of UX and product metrics, KPIs, and performance indicators. Learn how to measure design success with structured, actionable metrics for real-world application.
-        </p>
       </div>
 
       {/* Content Area */}
