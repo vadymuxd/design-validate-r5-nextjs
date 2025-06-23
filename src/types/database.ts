@@ -39,6 +39,51 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          id: number
+          message: string
+          ip_address: string | null
+          user_agent: string | null
+          device_id: string | null
+          device_type: string | null
+          country: string | null
+          browser: string | null
+          os: string | null
+          created_at: string
+          email_sent: boolean
+          email_sent_at: string | null
+        }
+        Insert: {
+          id?: number
+          message: string
+          ip_address?: string | null
+          user_agent?: string | null
+          device_id?: string | null
+          device_type?: string | null
+          country?: string | null
+          browser?: string | null
+          os?: string | null
+          created_at?: string
+          email_sent?: boolean
+          email_sent_at?: string | null
+        }
+        Update: {
+          id?: number
+          message?: string
+          ip_address?: string | null
+          user_agent?: string | null
+          device_id?: string | null
+          device_type?: string | null
+          country?: string | null
+          browser?: string | null
+          os?: string | null
+          created_at?: string
+          email_sent?: boolean
+          email_sent_at?: string | null
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           collection_id: number

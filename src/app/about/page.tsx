@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/Button';
-import { Textarea } from '@/components/Textarea';
+import { ContactForm } from '@/components/ContactForm';
 import { ContentCard } from '@/components/ContentCard';
 import Image from 'next/image';
 
@@ -145,25 +144,7 @@ export default function AboutPage() {
       {/* Contact Section */}
       <section className="bg-[var(--color-grey-light)] py-20 sm:py-32">
         <div className="container mx-auto px-4 max-w-2xl text-center">
-          <h2 className="h1 text-black mb-4">Hi, there!</h2>
-          <p className="body text-[var(--color-grey-dark)] mb-8">
-            Does this vision resonate with you and you&apos;d like to
-            contribute or join the mission? Or maybe you found any bugs or have
-            any questions?
-          </p>
-          <div className="flex flex-col gap-4 items-center">
-            <Textarea
-              placeholder="Include your contact details if you want to be contacted back"
-              rows={4}
-            />
-            <Button
-              variant="primary"
-              onClick={() => alert('Message sent (not really)!')}
-              icon="/icons/Send.svg"
-            >
-              Send message
-            </Button>
-          </div>
+          <ContactForm />
         </div>
       </section>
       </div>
