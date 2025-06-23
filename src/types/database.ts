@@ -173,6 +173,45 @@ export type Database = {
           },
         ]
       }
+      tool_pros_and_cons: {
+        Row: {
+          id: number
+          tool_id: string
+          category_id: number
+          pro_text: string
+          con_text: string
+        }
+        Insert: {
+          id?: number
+          tool_id: string
+          category_id: number
+          pro_text: string
+          con_text: string
+        }
+        Update: {
+          id?: number
+          tool_id?: string
+          category_id?: number
+          pro_text?: string
+          con_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tool_pros_and_cons_tool_id_fkey"
+            columns: ["tool_id"]
+            isOneToOne: false
+            referencedRelation: "tools"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tool_pros_and_cons_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tools: {
         Row: {
           created_at: string | null
@@ -236,6 +275,7 @@ export type Database = {
           ip_address: string | null
           sentiment: Database["public"]["Enums"]["vote_type"]
           tool_id: string
+          updated_at: string | null
         }
         Insert: {
           category_id: number
@@ -245,6 +285,7 @@ export type Database = {
           ip_address?: string | null
           sentiment: Database["public"]["Enums"]["vote_type"]
           tool_id: string
+          updated_at?: string | null
         }
         Update: {
           category_id?: number
@@ -254,6 +295,7 @@ export type Database = {
           ip_address?: string | null
           sentiment?: Database["public"]["Enums"]["vote_type"]
           tool_id?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
