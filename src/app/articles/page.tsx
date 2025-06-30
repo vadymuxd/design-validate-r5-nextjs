@@ -36,7 +36,7 @@ export default function ArticlesPage() {
         <div className="flex flex-col items-center gap-4">
           <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
           <p className="body text-[var(--foreground)] text-center max-w-[520px]">
-            We're gathering insightful articles on design validation, data-driven design, and user research. Check back soon for our curated collection.
+            We&apos;re gathering insightful articles on design validation, data-driven design, and user research. Check back soon for our curated collection.
           </p>
           <Feedback collectionSlug="articles" />
         </div>
