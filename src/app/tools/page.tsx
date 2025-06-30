@@ -9,6 +9,8 @@ import { PageLoader } from '@/components/PageLoader';
 import { useState, useEffect, useCallback } from 'react';
 import React from 'react';
 import Image from 'next/image';
+import LottieAnimation from '@/components/LottieAnimation';
+import animationData from '../../../public/gifs/cube-2.json';
 import { ToastMessage } from '@/components/ToastMessage';
 
 export default function ToolsPage() {
@@ -152,17 +154,9 @@ export default function ToolsPage() {
         {/* Loading state for tools */}
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            <Image
-              src="/gifs/Pi-Slices.gif"
-              alt="Loading..."
-              width={200}
-              height={200}
-              style={{
-                width: '100%',
-                height: 'auto',
-                maxWidth: '200px',
-              }}
-              unoptimized
+            <LottieAnimation
+              animationData={animationData}
+              className="w-full h-auto max-w-[200px]"
             />
           </div>
         ) : (

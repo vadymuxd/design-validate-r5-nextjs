@@ -6,12 +6,13 @@ import { usePathname, useRouter } from 'next/navigation';
 const pages = [
   { href: '/tools', label: 'Tools' },
   { href: '/methods', label: 'Methods' },
-  { href: '/measures', label: 'Measures' },
+  { href: '/metrics', label: 'Metrics' },
   { href: '/frameworks', label: 'Frameworks' },
   { href: '/cases', label: 'Cases' },
+  { href: '/articles', label: 'Articles' },
 ];
 
-export function TitleNavigation() {
+export function TitleNavigation({ showNav = true }: { showNav?: boolean }) {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogo, setShowLogo] = useState(false);
   const [contentLoaded, setContentLoaded] = useState(false);
@@ -114,7 +115,7 @@ export function TitleNavigation() {
         
           <h1 className="font-['Inter'] font-bold text-[40px] text-center flex flex-wrap items-center justify-center gap-x-2">
               {!isOpen && <span className="text-white">Design. Validate</span>}
-              {currentPage && (
+              {showNav && currentPage && (
                 <span 
                   className={`cursor-pointer ${hoveredItem ? 'text-white' : 'text-[#FF3654]'}`}
                   onClick={handleClick}
@@ -124,6 +125,7 @@ export function TitleNavigation() {
               )}
           </h1>
 
+        {showNav && (
         <div
           className={`absolute top-full flex flex-col items-center z-50 pt-2 pb-8 px-8 w-fit transition-opacity duration-300 ease-in-out ${
             isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
@@ -145,6 +147,7 @@ export function TitleNavigation() {
               </button>
             ))}
         </div>
+        )}
       </div>
     </>
   );

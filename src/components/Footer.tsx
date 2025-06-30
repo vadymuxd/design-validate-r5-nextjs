@@ -28,7 +28,9 @@ export const Footer = () => {
         </span>
       </Link>
 
-      <div className="w-2 h-2 bg-[var(--color-red)] rounded-full"></div>
+      <Link href="/">
+        <div className="w-2 h-2 bg-[var(--color-red)] rounded-full cursor-pointer hover:scale-125 transition-transform"></div>
+      </Link>
 
       <UpdatedAt />
     </div>

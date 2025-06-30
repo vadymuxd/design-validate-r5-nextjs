@@ -107,9 +107,10 @@ const TopNav = () => {
   const dropdownLinks = [
     { href: '/tools', label: 'Tools' },
     { href: '/methods', label: 'Methods' },
-    { href: '/measures', label: 'Measures' },
+    { href: '/metrics', label: 'Metrics' },
     { href: '/frameworks', label: 'Frameworks' },
     { href: '/cases', label: 'Cases' },
+    { href: '/articles', label: 'Articles' },
   ];
 
   const mainLinks = [
@@ -138,7 +139,7 @@ const TopNav = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-baseline space-x-6">
             <div 
               ref={dropdownRef}
               className="relative"

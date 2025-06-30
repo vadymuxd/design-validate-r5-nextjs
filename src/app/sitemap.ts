@@ -23,7 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/measures`,
+      url: `${baseUrl}/metrics`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
@@ -36,6 +36,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/cases`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/articles`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,

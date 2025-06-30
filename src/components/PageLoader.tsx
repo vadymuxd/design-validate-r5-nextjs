@@ -1,14 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import LottieAnimation from './LottieAnimation';
+import animationData from '../../public/gifs/cube-2.json';
 
 interface PageLoaderProps {
   children: React.ReactNode;
   titleNavigation: React.ReactNode;
+  className?: string;
 }
 
-export function PageLoader({ children, titleNavigation }: PageLoaderProps) {
+export function PageLoader({
+  children,
+  titleNavigation,
+  className = 'bg-black',
+}: PageLoaderProps) {
   const [isContentLoaded, setIsContentLoaded] = useState(false);
 
   useEffect(() => {
@@ -31,7 +37,11 @@ export function PageLoader({ children, titleNavigation }: PageLoaderProps) {
   }, []);
 
   return (
-    <main className="min-h-screen flex flex-col bg-black">
+    <main
+      className={`flex flex-col ${className} ${
+        !isContentLoaded ? 'min-h-screen' : ''
+      }`}
+    >
       <div className="flex flex-col items-center py-12 px-4 sm:px-8 gap-8 flex-1">
         {/* TitleNavigation is always visible */}
         {titleNavigation}
@@ -39,17 +49,9 @@ export function PageLoader({ children, titleNavigation }: PageLoaderProps) {
         {/* Preloader or Content */}
         {!isContentLoaded ? (
           <div className="flex justify-center items-center h-64">
-            <Image
-              src="/gifs/Pi-Slices.gif"
-              alt="Loading..."
-              width={200}
-              height={200}
-              style={{
-                width: '100%',
-                height: 'auto',
-                maxWidth: '200px',
-              }}
-              unoptimized
+            <LottieAnimation
+              animationData={animationData}
+              className="w-full h-auto max-w-[200px]"
             />
           </div>
         ) : (
