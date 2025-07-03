@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Design Validation Tools | Design. Validate",
     description: "Discover and compare the best design validation tools. Rankings based on user sentiment analysis from G2, Capterra, TrustRadius, and Reddit.",
-    url: "/tools",
+    url: "https://www.design-validate.com/tools",
     siteName: "Design. Validate",
     type: "website",
   },
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description: "Discover and compare the best design validation tools. Rankings based on user sentiment analysis.",
   },
   alternates: {
-    canonical: "/tools",
+    canonical: "https://www.design-validate.com/tools",
   },
 };
 

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Design Case Studies | Design. Validate",
     description: "Real-world design case studies showing how design challenges were solved and success measured.",
-    url: "/cases",
+    url: "https://www.design-validate.com/cases",
     siteName: "Design. Validate",
     type: "website",
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description: "Learn from real-world design validation examples and success stories from the industry.",
   },
   alternates: {
-    canonical: "/cases",
+    canonical: "https://www.design-validate.com/cases",
   },
 };
 

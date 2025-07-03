@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Design Validation Methods | Design. Validate",
     description: "Discover comprehensive design validation methods and research techniques. Learn structured, educational approaches to validating your design decisions.",
-    url: "/methods",
+    url: "https://www.design-validate.com/methods",
     siteName: "Design. Validate",
     type: "website",
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description: "Discover comprehensive design validation methods and research techniques for better design decisions.",
   },
   alternates: {
-    canonical: "/methods",
+    canonical: "https://www.design-validate.com/methods",
   },
 };
 

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About Design. Validate | Our Mission",
     description: "Learn about Design. Validate's mission to help designers make data-driven decisions through curated tools and resources.",
-    url: "/about",
+    url: "https://www.design-validate.com/about",
     siteName: "Design. Validate",
     type: "website",
   },
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     description: "Discover our mission to help designers make data-driven decisions through validation tools and resources.",
   },
   alternates: {
-    canonical: "/about",
+    canonical: "https://www.design-validate.com/about",
   },
 };
 

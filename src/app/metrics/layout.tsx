@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "UX Metrics & KPIs | Design. Validate",
     description: "Comprehensive collection of UX and product metrics, KPIs, and performance indicators for measuring design success.",
-    url: "/measures",
+    url: "https://www.design-validate.com/metrics",
     siteName: "Design. Validate",
     type: "website",
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description: "Learn how to measure design success with structured, actionable UX metrics and KPIs.",
   },
   alternates: {
-    canonical: "/measures",
+    canonical: "https://www.design-validate.com/metrics",
   },
 };
 

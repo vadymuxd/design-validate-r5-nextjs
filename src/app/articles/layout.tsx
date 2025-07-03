@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Articles | Design. Validate',
     description: 'A collection of articles on design validation, user research, and data-driven design.',
-    url: '/articles',
+    url: 'https://www.design-validate.com/articles',
     siteName: 'Design. Validate',
     type: 'website',
   },
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     description: 'A collection of articles on design validation, user research, and data-driven design.',
   },
   alternates: {
-    canonical: '/articles',
+    canonical: 'https://www.design-validate.com/articles',
   },
 };
 

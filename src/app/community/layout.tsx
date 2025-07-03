@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Design Validation Community | Design. Validate",
     description: "Join the Design. Validate community to discuss and share insights about design validation with fellow designers.",
-    url: "/community",
+    url: "https://www.design-validate.com/community",
     siteName: "Design. Validate",
     type: "website",
   },
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description: "Connect with designers and share insights about design validation in our community.",
   },
   alternates: {
-    canonical: "/community",
+    canonical: "https://www.design-validate.com/community",
   },
 };
 

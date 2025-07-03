@@ -11,14 +11,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Design. Validate: Community-Driven Tools, Methods & Frameworks",
     description: "Explore community-driven collections to validate your design and measure the success of your digital solutions.",
-    url: "/",
+    url: "https://www.design-validate.com",
   },
   twitter: {
     title: "Design. Validate: Community-Driven Tools, Methods & Frameworks",
     description: "Explore community-driven collections to validate your design and measure the success of your digital solutions.",
   },
   alternates: {
-    canonical: "/",
+    canonical: "https://www.design-validate.com",
   },
 };
 
