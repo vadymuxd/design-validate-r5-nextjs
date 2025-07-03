@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: "Design. Validate - Tools, Methods & Frameworks for Design Validation",
     description: "Comprehensive platform for design validation featuring tools, methods, frameworks, and case studies.",
     images: ["/icon.png"],
-    url: "https://design-validate.com",
+    url: "https://www.design-validate.com",
   },
   twitter: {
     card: "summary_large_image",
@@ -76,8 +76,8 @@ export default function RootLayout({
               "@type": "Organization",
               "name": "Design. Validate",
               "description": "Comprehensive platform for design validation featuring tools, methods, frameworks, and case studies.",
-              "url": "https://design-validate.com",
-              "logo": "https://design-validate.com/icon.png",
+              "url": "https://www.design-validate.com",
+              "logo": "https://www.design-validate.com/icon.png",
               "sameAs": [],
               "foundingDate": "2025",
               "contactPoint": {
