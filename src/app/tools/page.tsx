@@ -14,8 +14,9 @@ import animationData from '../../../public/gifs/cube-2.json';
 import { ToastMessage } from '@/components/ToastMessage';
 import { useSearchParams } from 'next/navigation';
 import { Footer } from '@/components/Footer';
+import { Suspense } from 'react';
 
-export default function ToolsPage() {
+function ToolsPageContent() {
   const searchParams = useSearchParams();
   const [methods, setMethods] = useState<ApiMethod[]>([]);
   const [activeMethodSlug, setActiveMethodSlug] = useState<string>('');
@@ -252,5 +253,20 @@ export default function ToolsPage() {
         variant={toastVariant}
       />
     </>
+  );
+}
+
+export default function ToolsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center h-64">
+        <LottieAnimation
+          animationData={animationData}
+          className="w-full h-auto max-w-[200px]"
+        />
+      </div>
+    }>
+      <ToolsPageContent />
+    </Suspense>
   );
 } 
