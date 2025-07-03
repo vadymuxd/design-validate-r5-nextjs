@@ -6,7 +6,7 @@ export interface ApiTool {
   description: string | null;
   logo_url: string | null;
   website_url: string | null;
-  category_id: number;
+  method_id: number;
   upvotes: number;
   downvotes: number;
   pro_text: string | null;
@@ -15,7 +15,7 @@ export interface ApiTool {
   // This data could be moved to a separate table in the future if needed.
 }
 
-export interface ApiCategory {
+export interface ApiMethod {
   id: number;
   name: string;
   slug: string;

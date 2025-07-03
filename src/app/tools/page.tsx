@@ -3,7 +3,7 @@
 import { Feedback } from '@/components/Feedback';
 import { Pill } from '@/components/Pill';
 import { ToolCard, VoteResult } from '@/components/ToolCard';
-import { ApiCategory, ApiTool } from '@/data/types';
+import { ApiMethod, ApiTool } from '@/data/types';
 import { TitleNavigation } from '@/components/TitleNavigation';
 import { PageLoader } from '@/components/PageLoader';
 import { useState, useEffect, useCallback } from 'react';
@@ -14,47 +14,47 @@ import animationData from '../../../public/gifs/cube-2.json';
 import { ToastMessage } from '@/components/ToastMessage';
 
 export default function ToolsPage() {
-  const [categories, setCategories] = useState<ApiCategory[]>([]);
-  const [activeCategorySlug, setActiveCategorySlug] = useState<string>('');
+  const [methods, setMethods] = useState<ApiMethod[]>([]);
+  const [activeMethodSlug, setActiveMethodSlug] = useState<string>('');
   const [tools, setTools] = useState<ApiTool[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [methodsLoading, setMethodsLoading] = useState(true);
 
   // State for the toast message, lifted up from ToolCard
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState<'default' | 'warning'>('default');
   
-  // Fetch categories from the database (only once)
-  const fetchCategories = useCallback(async () => {
-    setCategoriesLoading(true);
+  // Fetch methods from the database (only once)
+  const fetchMethods = useCallback(async () => {
+    setMethodsLoading(true);
     try {
-      const response = await fetch('/api/categories');
+      const response = await fetch('/api/methods');
       if (response.ok) {
         const data = await response.json();
-        const fetchedCategories = data.categories || [];
-        setCategories(fetchedCategories);
+        const fetchedMethods = data.methods || [];
+        setMethods(fetchedMethods);
       } else {
-        console.error('Failed to fetch categories');
-        setCategories([]);
+        console.error('Failed to fetch methods');
+        setMethods([]);
       }
     } catch (error) {
-      console.error('Error fetching categories:', error);
-      setCategories([]);
+      console.error('Error fetching methods:', error);
+      setMethods([]);
     } finally {
-      setCategoriesLoading(false);
+      setMethodsLoading(false);
     }
-  }, []); // No dependencies - fetch only once
+  }, []);
 
-  const fetchToolsForCategory = useCallback(async (slug: string) => {
+  const fetchToolsForMethod = useCallback(async (slug: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/tools?category_slug=${encodeURIComponent(slug)}`);
+      const response = await fetch(`/api/tools?method_slug=${encodeURIComponent(slug)}`);
       if (response.ok) {
         const data = await response.json();
         setTools(data.tools || []);
       } else {
-        console.error('Failed to fetch tools for category:', slug);
+        console.error('Failed to fetch tools for method:', slug);
         setTools([]); // Clear tools on error
       }
     } catch (error) {
@@ -65,24 +65,24 @@ export default function ToolsPage() {
     }
   }, []);
 
-  // Fetch categories on component mount (only once)
+  // Fetch methods on component mount (only once)
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    fetchMethods();
+  }, [fetchMethods]);
 
-  // Set first category as active when categories are loaded
+  // Set first method as active when methods are loaded
   useEffect(() => {
-    if (categories.length > 0 && !activeCategorySlug) {
-      setActiveCategorySlug(categories[0].slug);
+    if (methods.length > 0 && !activeMethodSlug) {
+      setActiveMethodSlug(methods[0].slug);
     }
-  }, [categories, activeCategorySlug]);
+  }, [methods, activeMethodSlug]);
 
-  // Fetch tools when active category changes
+  // Fetch tools when active method changes
   useEffect(() => {
-    if (activeCategorySlug) {
-      fetchToolsForCategory(activeCategorySlug);
+    if (activeMethodSlug) {
+      fetchToolsForMethod(activeMethodSlug);
     }
-  }, [activeCategorySlug, fetchToolsForCategory]);
+  }, [activeMethodSlug, fetchToolsForMethod]);
 
   const handleVote = (result: VoteResult) => {
     // Show the toast message from the child component
@@ -120,31 +120,31 @@ export default function ToolsPage() {
     }
   };
 
-  const handleCategoryClick = (slug: string) => {
-    if (slug !== activeCategorySlug) {
-      setActiveCategorySlug(slug);
+  const handleMethodClick = (slug: string) => {
+    if (slug !== activeMethodSlug) {
+      setActiveMethodSlug(slug);
     }
   };
 
-  const currentCategory = categories.find((cat: ApiCategory) => cat.slug === activeCategorySlug);
+  const currentMethod = methods.find((method: ApiMethod) => method.slug === activeMethodSlug);
 
   return (
     <>
       <PageLoader titleNavigation={<TitleNavigation />}>
-        {/* Categories */}
+        {/* Methods */}
         <div className="w-full max-w-[730px] flex flex-col gap-2">
           <div className="flex gap-2 flex-wrap justify-center">
-            {categoriesLoading ? (
+            {methodsLoading ? (
               <div className="flex justify-center items-center h-12">
-                <div className="text-white">Loading categories...</div>
+                <div className="text-white">Loading methods...</div>
               </div>
             ) : (
-              categories.map((category: ApiCategory) => (
+              methods.map((method: ApiMethod) => (
                 <Pill
-                  key={category.id}
-                  label={category.name}
-                  isActive={category.slug === activeCategorySlug}
-                  onClick={() => handleCategoryClick(category.slug)}
+                  key={method.id}
+                  label={method.name}
+                  isActive={method.slug === activeMethodSlug}
+                  onClick={() => handleMethodClick(method.slug)}
                 />
               ))
             )}
@@ -169,7 +169,7 @@ export default function ToolsPage() {
                   <ToolCard
                     key={tool.id}
                     toolId={tool.id}
-                    categoryId={tool.category_id}
+                    methodId={tool.method_id}
                     name={tool.name}
                     description={tool.description}
                     logo={tool.logo_url}
@@ -188,8 +188,8 @@ export default function ToolsPage() {
                 <p className="body text-[var(--foreground)] text-center max-w-[730px]">
                   This is a synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit. Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users from listed sources plus unique users&apos; votes on this site. The initial sentiment analysis done by Gemini 2.5 Pro
                 </p>
-                {currentCategory && (
-                  <Feedback collectionSlug="tools" categorySlug={currentCategory.slug} />
+                {currentMethod && (
+                  <Feedback collectionSlug="tools" methodSlug={currentMethod.slug} />
                 )}
               </div>
             </>
@@ -216,10 +216,10 @@ export default function ToolsPage() {
               </div>
               <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
               <p className="body text-[var(--foreground)] text-center max-w-[520px]">
-                {`We're working hard to bring you a curated list of tools for this category. Like or dislike to help us prioritize!`}
+                {`We're working hard to bring you a curated list of tools for this method. Like or dislike to help us prioritize!`}
               </p>
-              {currentCategory && (
-                <Feedback collectionSlug="tools" categorySlug={currentCategory.slug} />
+              {currentMethod && (
+                <Feedback collectionSlug="tools" methodSlug={currentMethod.slug} />
               )}
             </div>
           )

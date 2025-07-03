@@ -11,7 +11,7 @@ export type Database = {
     Tables: {
       app_feedback: {
         Row: {
-          category_slug: string | null
+          method_slug: string | null
           collection_slug: string | null
           created_at: string
           device_id: string | null
@@ -20,7 +20,7 @@ export type Database = {
           sentiment: Database["public"]["Enums"]["sentiment_type"]
         }
         Insert: {
-          category_slug?: string | null
+          method_slug?: string | null
           collection_slug?: string | null
           created_at?: string
           device_id?: string | null
@@ -29,7 +29,7 @@ export type Database = {
           sentiment: Database["public"]["Enums"]["sentiment_type"]
         }
         Update: {
-          category_slug?: string | null
+          method_slug?: string | null
           collection_slug?: string | null
           created_at?: string
           device_id?: string | null
@@ -84,7 +84,7 @@ export type Database = {
         }
         Relationships: []
       }
-      categories: {
+      methods: {
         Row: {
           collection_id: number
           id: number
@@ -105,7 +105,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "categories_collection_id_fkey"
+            foreignKeyName: "methods_collection_id_fkey"
             columns: ["collection_id"]
             isOneToOne: false
             referencedRelation: "collections"
@@ -131,9 +131,9 @@ export type Database = {
         }
         Relationships: []
       }
-      tool_category_leaderboard: {
+      tools_leaderboard: {
         Row: {
-          category_id: number
+          method_id: number
           current_downvotes: number | null
           current_upvotes: number | null
           initial_downvotes: number | null
@@ -141,7 +141,7 @@ export type Database = {
           tool_id: string
         }
         Insert: {
-          category_id: number
+          method_id: number
           current_downvotes?: number | null
           current_upvotes?: number | null
           initial_downvotes?: number | null
@@ -149,7 +149,7 @@ export type Database = {
           tool_id: string
         }
         Update: {
-          category_id?: number
+          method_id?: number
           current_downvotes?: number | null
           current_upvotes?: number | null
           initial_downvotes?: number | null
@@ -158,14 +158,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "tool_category_leaderboard_category_id_fkey"
-            columns: ["category_id"]
+            foreignKeyName: "tools_leaderboard_method_id_fkey"
+            columns: ["method_id"]
             isOneToOne: false
-            referencedRelation: "categories"
+            referencedRelation: "methods"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "tool_category_leaderboard_tool_id_fkey"
+            foreignKeyName: "tools_leaderboard_tool_id_fkey"
             columns: ["tool_id"]
             isOneToOne: false
             referencedRelation: "tools"
@@ -177,21 +177,21 @@ export type Database = {
         Row: {
           id: number
           tool_id: string
-          category_id: number
+          method_id: number
           pro_text: string
           con_text: string
         }
         Insert: {
           id?: number
           tool_id: string
-          category_id: number
+          method_id: number
           pro_text: string
           con_text: string
         }
         Update: {
           id?: number
           tool_id?: string
-          category_id?: number
+          method_id?: number
           pro_text?: string
           con_text?: string
         }
@@ -204,10 +204,10 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "tool_pros_and_cons_category_id_fkey"
-            columns: ["category_id"]
+            foreignKeyName: "tool_pros_and_cons_method_id_fkey"
+            columns: ["method_id"]
             isOneToOne: false
-            referencedRelation: "categories"
+            referencedRelation: "methods"
             referencedColumns: ["id"]
           },
         ]
@@ -268,7 +268,7 @@ export type Database = {
       }
       votes: {
         Row: {
-          category_id: number
+          method_id: number
           created_at: string
           device_id: string | null
           id: number
@@ -278,7 +278,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
-          category_id: number
+          method_id: number
           created_at?: string
           device_id?: string | null
           id?: number
@@ -288,7 +288,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
-          category_id?: number
+          method_id?: number
           created_at?: string
           device_id?: string | null
           id?: number
@@ -299,10 +299,10 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "votes_category_id_fkey"
-            columns: ["category_id"]
+            foreignKeyName: "votes_method_id_fkey"
+            columns: ["method_id"]
             isOneToOne: false
-            referencedRelation: "categories"
+            referencedRelation: "methods"
             referencedColumns: ["id"]
           },
           {

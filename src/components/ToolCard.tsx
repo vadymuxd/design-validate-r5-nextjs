@@ -14,7 +14,7 @@ export interface VoteResult {
 
 interface ToolCardProps {
   toolId: string;
-  categoryId: number;
+  methodId: number;
   name: string;
   description: string | null;
   logo: string | null;
@@ -28,7 +28,7 @@ interface ToolCardProps {
 
 export function ToolCard({
   toolId,
-  categoryId,
+  methodId,
   name,
   description,
   logo,
@@ -50,7 +50,7 @@ export function ToolCard({
       const response = await fetch('/api/votes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tool_id: toolId, category_id: categoryId, sentiment }),
+        body: JSON.stringify({ tool_id: toolId, method_id: methodId, sentiment }),
       });
 
       const result = await response.json();

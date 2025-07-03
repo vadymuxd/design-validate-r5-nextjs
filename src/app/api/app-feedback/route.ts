@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sentiment, collection_slug, category_slug } = body;
+    const { sentiment, collection_slug, method_slug } = body;
 
     if (sentiment !== 'LIKE' && sentiment !== 'DISLIKE') {
       return NextResponse.json(
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       .insert({
         sentiment,
         collection_slug,
-        category_slug,
+        method_slug,
         ip_address,
         device_id,
       });

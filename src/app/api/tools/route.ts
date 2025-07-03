@@ -8,7 +8,7 @@ type ProcessedTool = {
   description: string | null;
   logo_url: string | null;
   website_url: string | null;
-  category_id: number;
+  method_id: number;
   upvotes: number;
   downvotes: number;
   net_score: number;
@@ -38,33 +38,33 @@ type SupabaseLeaderboardResponse = {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const categorySlug = searchParams.get('category_slug');
+    const methodSlug = searchParams.get('method_slug');
 
-    if (!categorySlug) {
+    if (!methodSlug) {
       return NextResponse.json(
-        { error: 'category_slug is required' },
+        { error: 'method_slug is required' },
         { status: 400 }
       );
     }
 
-    // Fetch the category to get its ID
-    const { data: category, error: categoryError } = await supabase
-      .from('categories')
+    // Fetch the method to get its ID
+    const { data: method, error: methodError } = await supabase
+      .from('methods')
       .select('id')
-      .eq('slug', categorySlug)
+      .eq('slug', methodSlug)
       .single();
 
-    if (categoryError || !category) {
-      console.error('Error fetching category:', categoryError);
+    if (methodError || !method) {
+      console.error('Error fetching method:', methodError);
       return NextResponse.json(
-        { error: 'Failed to find category' },
+        { error: 'Failed to find method' },
         { status: 404 }
       );
     }
 
-    // Fetch tools linked to this category via the leaderboard table
+    // Fetch tools linked to this method via the tools_leaderboard table
     const { data, error: toolsError } = await supabase
-      .from('tool_category_leaderboard')
+      .from('tools_leaderboard')
       .select(`
         initial_upvotes,
         initial_downvotes,
@@ -82,10 +82,10 @@ export async function GET(request: NextRequest) {
           website_url
         )
       `)
-      .eq('category_id', category.id);
+      .eq('method_id', method.id);
 
     if (toolsError) {
-      console.error('Error fetching tools for category:', toolsError);
+      console.error('Error fetching tools for method:', toolsError);
       return NextResponse.json(
         { error: 'Failed to fetch tools' },
         { status: 500 }
@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
 
         return {
           ...toolData,
-          category_id: category.id,
+          method_id: method.id,
           upvotes: totalUpvotes,
           downvotes: totalDownvotes,
           net_score: netScore,

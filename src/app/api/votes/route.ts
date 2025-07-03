@@ -4,14 +4,14 @@ import { NextRequest, NextResponse } from 'next/server';
 // This function will be triggered by a database webhook or a cron job in a real-world scenario.
 // For the purpose of this refactor, we are calling it directly after a successful vote.
 // This is not a production-ready approach for high-traffic sites but is suitable for this context.
-async function updateLeaderboard(tool_id: string, category_id: number) {
+async function updateLeaderboard(tool_id: string, method_id: number) {
   try {
     // Count UPVOTES
     const { count: upvotes, error: upvoteError } = await supabase
       .from('votes')
       .select('*', { count: 'exact', head: true })
       .eq('tool_id', tool_id)
-      .eq('category_id', category_id)
+      .eq('method_id', method_id)
       .eq('sentiment', 'UPVOTE');
 
     // Count DOWNVOTES
@@ -19,7 +19,7 @@ async function updateLeaderboard(tool_id: string, category_id: number) {
       .from('votes')
       .select('*', { count: 'exact', head: true })
       .eq('tool_id', tool_id)
-      .eq('category_id', category_id)
+      .eq('method_id', method_id)
       .eq('sentiment', 'DOWNVOTE');
 
     if (upvoteError || downvoteError) {
@@ -27,15 +27,15 @@ async function updateLeaderboard(tool_id: string, category_id: number) {
       return;
     }
 
-    // Update the leaderboard table
+    // Update the tools_leaderboard table
     const { error: updateError } = await supabase
-      .from('tool_category_leaderboard')
+      .from('tools_leaderboard')
       .update({
         current_upvotes: upvotes ?? 0,
         current_downvotes: downvotes ?? 0,
       })
       .eq('tool_id', tool_id)
-      .eq('category_id', category_id);
+      .eq('method_id', method_id);
     
     if (updateError) {
       console.error('Error updating leaderboard:', updateError);
@@ -50,7 +50,7 @@ async function updateLeaderboard(tool_id: string, category_id: number) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { sentiment, tool_id, category_id } = body;
+    const { sentiment, tool_id, method_id } = body;
 
     // 1. Validate sentiment
     if (sentiment !== 'UPVOTE' && sentiment !== 'DOWNVOTE') {
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
       .from('votes')
       .select('id, sentiment')
       .eq('tool_id', tool_id)
-      .eq('category_id', category_id)
+      .eq('method_id', method_id)
       .eq('device_id', device_id)
       .single();
 
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
         }
         
         // After a successful update, update the leaderboard and return the correct status
-        await updateLeaderboard(tool_id, category_id);
+        await updateLeaderboard(tool_id, method_id);
         return NextResponse.json({ status: 'VOTE_UPDATED', message: 'Your vote has been updated!' });
       }
     } else {
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
         .insert({
           sentiment,
           tool_id,
-          category_id,
+          method_id,
           ip_address,
           device_id,
         });
@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
       }
 
       // After a successful insert, update the leaderboard and return the correct status
-      await updateLeaderboard(tool_id, category_id);
+      await updateLeaderboard(tool_id, method_id);
       return NextResponse.json({ status: 'VOTE_CREATED', message: 'Thanks for your feedback!' });
     }
 

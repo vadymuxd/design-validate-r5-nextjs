@@ -3,8 +3,8 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    const { data: categories, error } = await supabase
-      .from('categories')
+    const { data: methods, error } = await supabase
+      .from('methods')
       .select(`
         id,
         name,
@@ -16,28 +16,28 @@ export async function GET() {
           slug
         )
       `)
-      .eq('collections.slug', 'tools') // Only get categories from the "tools" collection
+      .eq('collections.slug', 'tools') // Only get methods from the "tools" collection
       .order('id');
 
     if (error) {
       console.error('Database error:', error);
       return NextResponse.json(
-        { error: 'Failed to fetch categories' },
+        { error: 'Failed to fetch methods' },
         { status: 500 }
       );
     }
 
     // Transform the data to match the expected format
-    const formattedCategories = categories?.map(category => ({
-      id: category.id,
-      name: category.name,
-      slug: category.slug,
-      collection_id: category.collection_id
+    const formattedMethods = methods?.map(method => ({
+      id: method.id,
+      name: method.name,
+      slug: method.slug,
+      collection_id: method.collection_id
     })) || [];
 
-    return NextResponse.json({ categories: formattedCategories });
+    return NextResponse.json({ methods: formattedMethods });
   } catch (error) {
-    console.error('Error fetching categories:', error);
+    console.error('Error fetching methods:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
