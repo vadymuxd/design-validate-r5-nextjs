@@ -12,8 +12,11 @@ import Image from 'next/image';
 import LottieAnimation from '@/components/LottieAnimation';
 import animationData from '../../../public/gifs/cube-2.json';
 import { ToastMessage } from '@/components/ToastMessage';
+import { useSearchParams } from 'next/navigation';
+import { Footer } from '@/components/Footer';
 
 export default function ToolsPage() {
+  const searchParams = useSearchParams();
   const [methods, setMethods] = useState<ApiMethod[]>([]);
   const [activeMethodSlug, setActiveMethodSlug] = useState<string>('');
   const [tools, setTools] = useState<ApiTool[]>([]);
@@ -70,12 +73,22 @@ export default function ToolsPage() {
     fetchMethods();
   }, [fetchMethods]);
 
-  // Set first method as active when methods are loaded
+  // Set active method based on URL parameter or first method when methods are loaded
   useEffect(() => {
     if (methods.length > 0 && !activeMethodSlug) {
-      setActiveMethodSlug(methods[0].slug);
+      const urlMethodSlug = searchParams.get('method_slug');
+      
+      // Check if the URL method slug exists in the methods list
+      const methodExists = urlMethodSlug && methods.some(method => method.slug === urlMethodSlug);
+      
+      if (methodExists) {
+        setActiveMethodSlug(urlMethodSlug);
+      } else {
+        // Fallback to first method if URL method doesn't exist or isn't provided
+        setActiveMethodSlug(methods[0].slug);
+      }
     }
-  }, [methods, activeMethodSlug]);
+  }, [methods, activeMethodSlug, searchParams]);
 
   // Fetch tools when active method changes
   useEffect(() => {
@@ -225,6 +238,12 @@ export default function ToolsPage() {
           )
         )}
       </PageLoader>
+
+      {!methodsLoading && !isLoading && (
+        <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
+          <Footer />
+        </footer>
+      )}
 
       <ToastMessage
         message={toastMessage}

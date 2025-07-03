@@ -2,9 +2,11 @@
 
 import { Feedback } from '@/components/Feedback';
 import Image from 'next/image';
+import { Footer } from '@/components/Footer';
 
 export default function CommunityPage() {
   return (
+    <>
     <main className="page-container">
       {/* Header */}
       <div className="header-section">
@@ -36,5 +38,10 @@ export default function CommunityPage() {
         </div>
       </div>
     </main>
+    
+    <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
+      <Footer />
+    </footer>
+    </>
   );
 } 

@@ -2,6 +2,7 @@ import CollectionCard from '@/components/CollectionCard';
 import { TitleNavigation } from '@/components/TitleNavigation';
 import { PageLoader } from '@/components/PageLoader';
 import { Metadata } from 'next';
+import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: "Design. Validate: Community-Driven Tools, Methods & Frameworks",
@@ -52,9 +53,10 @@ const collections = [
 
 export default function Home() {
   return (
+    <div className="flex flex-col" style={{ minHeight: 'calc(100vh - 60px)' }}>
     <PageLoader
       titleNavigation={<TitleNavigation showNav={false} />}
-      className="bg-gradient-to-b from-black from-52.457% to-[#353535]"
+      className="bg-gradient-to-b from-black from-52.457% to-[#353535] flex flex-col px-0 flex-grow"
     >
       <div className="text-center">
         <h1 className="sr-only">Community-Driven Collections for Design Validation</h1>
@@ -64,29 +66,22 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="pb-20 sm:pb-32 w-full max-w-[730px] mx-auto">
+      <div className="flex-grow flex flex-col justify-center w-full max-w-[730px] mx-auto">
         <div className="flex flex-wrap justify-center gap-4">
-          {collections.map((collection) => {
-            const isToolsCard = collection.title === 'Tools';
-            return (
-              <CollectionCard
-                key={collection.title}
-                title={collection.title}
-                href={collection.href}
-                imageUrl={collection.imageUrl}
-                imageOpacityClass={isToolsCard ? 'opacity-100' : 'opacity-20'}
-                textContainerClass={
-                  isToolsCard ? 'bg-white' : 'bg-[#383838]'
-                }
-                textColorClass={isToolsCard ? 'text-black' : 'text-white'}
-                imageHoverOpacityClass={
-                  isToolsCard ? '' : 'group-hover:opacity-30'
-                }
-              />
-            );
-          })}
+          {collections.map((collection) => (
+            <CollectionCard
+              key={collection.title}
+              title={collection.title}
+              href={collection.href}
+              imageUrl={collection.imageUrl}
+            />
+          ))}
         </div>
       </div>
     </PageLoader>
+    <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
+      <Footer />
+    </footer>
+    </div>
   );
 }

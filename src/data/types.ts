@@ -19,4 +19,9 @@ export interface ApiMethod {
   id: number;
   name: string;
   slug: string;
+  description: string | null;
+  collection_id: number;
+  net_score: number;
+  current_upvotes: number;
+  current_downvotes: number;
 }

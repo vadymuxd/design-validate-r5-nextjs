@@ -3,6 +3,7 @@ import React from 'react';
 import { ContactForm } from '@/components/ContactForm';
 import { ContentCard } from '@/components/ContentCard';
 import Image from 'next/image';
+import { Footer } from '@/components/Footer';
 
 const CrownIcon = () => <Image src="/icons/goal=crown.svg" alt="" width={24} height={24} />;
 const MaskIcon = () => <Image src="/icons/goal=mask.svg" alt="" width={24} height={24} />;
@@ -151,6 +152,10 @@ export default function AboutPage() {
           <ContactForm />
         </div>
       </section>
+
+      <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
+        <Footer />
+      </footer>
       </div>
   );
 } 

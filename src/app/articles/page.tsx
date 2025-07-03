@@ -3,10 +3,12 @@
 import { Feedback } from '@/components/Feedback';
 import { TitleNavigation } from '@/components/TitleNavigation';
 import Image from 'next/image';
+import { Footer } from '@/components/Footer';
 
 export default function ArticlesPage() {
   return (
-    <main className="page-container">
+    <div className="flex flex-col" style={{ minHeight: 'calc(100vh - 60px)' }}>
+    <main className="page-container flex-grow" style={{ minHeight: 'auto' }}>
       {/* Header */}
       <div className="header-section">
         <TitleNavigation />
@@ -36,11 +38,16 @@ export default function ArticlesPage() {
         <div className="flex flex-col items-center gap-4">
           <h3 className="h3 text-[var(--foreground)]">Coming Soon</h3>
           <p className="body text-[var(--foreground)] text-center max-w-[520px]">
-            We&apos;re gathering insightful articles on design validation, data-driven design, and user research. Check back soon for our curated collection.
+            We&apos;re curating the best articles on design validation from industry leaders, researchers, and practitioners. Learn from expert insights and methodologies.
           </p>
           <Feedback collectionSlug="articles" />
         </div>
       </div>
     </main>
+    
+    <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
+      <Footer />
+    </footer>
+    </div>
   );
 } 

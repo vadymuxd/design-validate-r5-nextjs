@@ -3,23 +3,50 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    const { data: methods, error } = await supabase
-      .from('methods')
-      .select(`
-        id,
-        name,
-        slug,
-        collection_id,
-        collections!inner(
+    // Try to get methods with calculated net scores using the function
+    let { data: methods, error } = await supabase
+      .rpc('get_methods_with_scores');
+
+    // If the function doesn't exist yet, fall back to basic query
+    if (error && (error.message?.includes('function') || error.message?.includes('does not exist'))) {
+      console.log('Database function not found, using fallback query');
+      
+      const { data: fallbackMethods, error: fallbackError } = await supabase
+        .from('methods')
+        .select(`
           id,
           name,
-          slug
-        )
-      `)
-      .eq('collections.slug', 'tools') // Only get methods from the "tools" collection
-      .order('id');
+          slug,
+          collection_id,
+          collections!inner(
+            id,
+            name,
+            slug
+          )
+        `)
+        .eq('collections.slug', 'tools')
+        .order('id');
 
-    if (error) {
+      if (fallbackError) {
+        console.error('Fallback database error:', fallbackError);
+        return NextResponse.json(
+          { error: 'Failed to fetch methods' },
+          { status: 500 }
+        );
+      }
+
+      // Transform fallback data to match expected format with clear error message
+      methods = fallbackMethods?.map(method => ({
+        id: method.id,
+        name: method.name,
+        slug: method.slug,
+        description: "There is error to connect to your database",
+        collection_id: method.collection_id,
+        net_score: 0, // Placeholder until script is run
+        current_upvotes: 0,
+        current_downvotes: 0
+      })) || [];
+    } else if (error) {
       console.error('Database error:', error);
       return NextResponse.json(
         { error: 'Failed to fetch methods' },
@@ -27,15 +54,7 @@ export async function GET() {
       );
     }
 
-    // Transform the data to match the expected format
-    const formattedMethods = methods?.map(method => ({
-      id: method.id,
-      name: method.name,
-      slug: method.slug,
-      collection_id: method.collection_id
-    })) || [];
-
-    return NextResponse.json({ methods: formattedMethods });
+    return NextResponse.json({ methods: methods || [] });
   } catch (error) {
     console.error('Error fetching methods:', error);
     return NextResponse.json(

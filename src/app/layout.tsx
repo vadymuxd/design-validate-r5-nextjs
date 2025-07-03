@@ -94,9 +94,6 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen">
         <TopNav />
           <main className="flex-grow">{children}</main>
-          <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
-            <Footer />
-          </footer>
         </div>
       </body>
     </html>

@@ -90,18 +90,27 @@ export type Database = {
           id: number
           name: string
           slug: string
+          description: string | null
+          current_upvotes: number | null
+          current_downvotes: number | null
         }
         Insert: {
           collection_id: number
           id?: number
           name: string
           slug: string
+          description?: string | null
+          current_upvotes?: number | null
+          current_downvotes?: number | null
         }
         Update: {
           collection_id?: number
           id?: number
           name?: string
           slug?: string
+          description?: string | null
+          current_upvotes?: number | null
+          current_downvotes?: number | null
         }
         Relationships: [
           {
