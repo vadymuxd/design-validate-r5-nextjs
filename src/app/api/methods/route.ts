@@ -4,8 +4,10 @@ import { supabase } from '@/lib/supabase';
 export async function GET() {
   try {
     // Try to get methods with calculated net scores using the function
-    let { data: methods, error } = await supabase
+    const { data: initialMethods, error } = await supabase
       .rpc('get_methods_with_scores');
+
+    let methods = initialMethods;
 
     // If the function doesn't exist yet, fall back to basic query
     if (error && (error.message?.includes('function') || error.message?.includes('does not exist'))) {
