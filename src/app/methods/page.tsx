@@ -6,7 +6,6 @@ import { MethodCard } from '@/components/MethodCard';
 import { ApiMethod } from '@/data/types';
 import { useState, useEffect } from 'react';
 import { ToastMessage } from '@/components/ToastMessage';
-import { PageLoader } from '@/components/PageLoader';
 import LottieAnimation from '@/components/LottieAnimation';
 import animationData from '../../../public/gifs/cube-2.json';
 import { Footer } from '@/components/Footer';

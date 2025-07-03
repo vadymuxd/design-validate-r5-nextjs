@@ -55,10 +55,11 @@ export async function GET() {
     }
 
     return NextResponse.json({ methods: methods || [] });
-  } catch (error) {
+  } catch (err) {
+    const error = err as Error;
     console.error('Error fetching methods:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to fetch methods' },
       { status: 500 }
     );
   }
