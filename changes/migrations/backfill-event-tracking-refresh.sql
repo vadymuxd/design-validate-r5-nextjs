@@ -1,41 +1,15 @@
--- Event Tracking Tools Backfill - Step by Step Instructions
--- Run these queries IN ORDER, one at a time
+-- Backfill Event Tracking Tools - Refresh with Updated Data
+-- Run this script to update vote counts and add missing tools
 
--- ============================================================================
--- STEP 1: Add Adobe Analytics tool (if it doesn't exist)
--- ============================================================================
+-- First, add Adobe Analytics if it doesn't exist
 INSERT INTO tools (name, description, website_url, logo_url) 
-VALUES ('Adobe Analytics', 'Provides the most comprehensive enterprise-grade analytics for the entire digital journey', 'https://business.adobe.com/products/analytics/adobe-analytics.html', '/tools-logos/adobe-analytics.png')
+VALUES ('Adobe Analytics', 'Provides the most comprehensive enterprise-grade analytics for the entire digital journey', 'https://business.adobe.com/products/analytics/adobe-analytics.html', '/tools-logos/adobe-analytics.jpg')
 ON CONFLICT (name) DO NOTHING;
 
--- ============================================================================
--- STEP 2: Get Adobe Analytics UUID (copy this for next steps)
--- ============================================================================
-SELECT id, name FROM tools WHERE name = 'Adobe Analytics';
+-- Get the Adobe Analytics tool_id for later use
+-- You'll need to run this query first to get the UUID, then use it in the leaderboard insert
 
--- ============================================================================
--- STEP 3: Add Adobe Analytics to leaderboard 
--- REPLACE 'PASTE_ADOBE_UUID_HERE' with the actual UUID from Step 2
--- ============================================================================
-INSERT INTO tool_category_leaderboard (tool_id, category_id, initial_upvotes, initial_downvotes, current_upvotes, current_downvotes)
-VALUES ('PASTE_ADOBE_UUID_HERE', 2, 220, 140, 0, 0)
-ON CONFLICT (tool_id, category_id) DO UPDATE SET
-    initial_upvotes = 220,
-    initial_downvotes = 140;
-
--- ============================================================================
--- STEP 4: Add Adobe Analytics pros/cons
--- REPLACE 'PASTE_ADOBE_UUID_HERE' with the same UUID from Step 2
--- ============================================================================
-INSERT INTO tool_pros_and_cons (tool_id, category_id, pro_text, con_text)
-VALUES ('PASTE_ADOBE_UUID_HERE', 2, 
-        'Unmatched power for deep data analysis, integrates with Adobe''s ecosystem', 
-        'Extremely complex with a steep learning curve, requires dedicated analyst support')
-ON CONFLICT DO NOTHING;
-
--- ============================================================================
--- STEP 5: Update vote counts for existing Event Tracking tools
--- ============================================================================
+-- Update initial vote counts for existing Event Tracking tools
 UPDATE tool_category_leaderboard 
 SET 
     initial_upvotes = CASE tool_id
@@ -48,7 +22,6 @@ SET
         WHEN (SELECT id FROM tools WHERE name = 'Hotjar') THEN 110
         WHEN (SELECT id FROM tools WHERE name = 'Google Analytics 4') THEN 200
         WHEN (SELECT id FROM tools WHERE name = 'LogRocket') THEN 90
-        WHEN (SELECT id FROM tools WHERE name = 'Indicative') THEN 130
         ELSE initial_upvotes
     END,
     initial_downvotes = CASE tool_id
@@ -61,14 +34,28 @@ SET
         WHEN (SELECT id FROM tools WHERE name = 'Hotjar') THEN 50
         WHEN (SELECT id FROM tools WHERE name = 'Google Analytics 4') THEN 160
         WHEN (SELECT id FROM tools WHERE name = 'LogRocket') THEN 50
-        WHEN (SELECT id FROM tools WHERE name = 'Indicative') THEN 30
         ELSE initial_downvotes
     END
-WHERE category_id = 2;
+WHERE category_id = 2; -- Event Tracking category
 
--- ============================================================================
--- STEP 6: Update pros/cons for existing tools with new text
--- ============================================================================
+-- Add Adobe Analytics to leaderboard (replace with actual UUID after inserting the tool)
+-- First get the Adobe Analytics UUID by running: SELECT id FROM tools WHERE name = 'Adobe Analytics';
+-- Then replace 'ADOBE_ANALYTICS_UUID_HERE' with the actual UUID
+
+-- INSERT INTO tool_category_leaderboard (tool_id, category_id, initial_upvotes, initial_downvotes, current_upvotes, current_downvotes)
+-- VALUES ('ADOBE_ANALYTICS_UUID_HERE', 2, 220, 140, 0, 0)
+-- ON CONFLICT (tool_id, category_id) DO UPDATE SET
+--     initial_upvotes = 220,
+--     initial_downvotes = 140;
+
+-- Add pros/cons for Adobe Analytics (replace UUID as above)
+-- INSERT INTO tool_pros_and_cons (tool_id, category_id, pro_text, con_text)
+-- VALUES ('ADOBE_ANALYTICS_UUID_HERE', 2, 
+--         'Unmatched power for deep data analysis, integrates with Adobe''s ecosystem', 
+--         'Extremely complex with a steep learning curve, requires dedicated analyst support')
+-- ON CONFLICT DO NOTHING;
+
+-- Update pros/cons for existing tools if needed
 UPDATE tool_pros_and_cons 
 SET 
     pro_text = CASE 
@@ -97,9 +84,7 @@ SET
     END
 WHERE category_id = 2;
 
--- ============================================================================
--- STEP 7: VERIFICATION - Check final results (should show 11 tools total)
--- ============================================================================
+-- Verification queries
 SELECT 
     t.name,
     tcl.initial_upvotes,
@@ -110,14 +95,5 @@ JOIN tools t ON tcl.tool_id = t.id
 WHERE tcl.category_id = 2
 ORDER BY (tcl.initial_upvotes - tcl.initial_downvotes) DESC;
 
--- ============================================================================
--- STEP 8: VERIFICATION - Check pros/cons were updated
--- ============================================================================
-SELECT 
-    t.name,
-    LEFT(tpc.pro_text, 50) || '...' as pro_preview,
-    LEFT(tpc.con_text, 50) || '...' as con_preview
-FROM tool_pros_and_cons tpc
-JOIN tools t ON tpc.tool_id = t.id
-WHERE tpc.category_id = 2
-ORDER BY t.name; 
+-- Check if Adobe Analytics was added
+SELECT id, name FROM tools WHERE name = 'Adobe Analytics'; 

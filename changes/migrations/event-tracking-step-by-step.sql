@@ -1,33 +1,40 @@
--- Event Tracking Tools Backfill - FINAL QUERIES WITH ADOBE UUID
+-- Event Tracking Tools Backfill - Step by Step Instructions
 -- Run these queries IN ORDER, one at a time
 
 -- ============================================================================
 -- STEP 1: Add Adobe Analytics tool (if it doesn't exist)
 -- ============================================================================
 INSERT INTO tools (name, description, website_url, logo_url) 
-VALUES ('Adobe Analytics', 'Provides the most comprehensive enterprise-grade analytics for the entire digital journey', 'https://business.adobe.com/products/analytics/adobe-analytics.html', '/tools-logos/adobe-analytics.png')
+VALUES ('Adobe Analytics', 'Provides the most comprehensive enterprise-grade analytics for the entire digital journey', 'https://business.adobe.com/products/analytics/adobe-analytics.html', '/tools-logos/adobe-analytics.jpg')
 ON CONFLICT (name) DO NOTHING;
 
 -- ============================================================================
--- STEP 2: Add Adobe Analytics to leaderboard
+-- STEP 2: Get Adobe Analytics UUID (copy this for next steps)
+-- ============================================================================
+SELECT id, name FROM tools WHERE name = 'Adobe Analytics';
+
+-- ============================================================================
+-- STEP 3: Add Adobe Analytics to leaderboard 
+-- REPLACE 'PASTE_ADOBE_UUID_HERE' with the actual UUID from Step 2
 -- ============================================================================
 INSERT INTO tool_category_leaderboard (tool_id, category_id, initial_upvotes, initial_downvotes, current_upvotes, current_downvotes)
-VALUES ('2e2d457c-5b12-4179-899e-8e55b45eae94', 2, 220, 140, 0, 0)
+VALUES ('PASTE_ADOBE_UUID_HERE', 2, 220, 140, 0, 0)
 ON CONFLICT (tool_id, category_id) DO UPDATE SET
     initial_upvotes = 220,
     initial_downvotes = 140;
 
 -- ============================================================================
--- STEP 3: Add Adobe Analytics pros/cons
+-- STEP 4: Add Adobe Analytics pros/cons
+-- REPLACE 'PASTE_ADOBE_UUID_HERE' with the same UUID from Step 2
 -- ============================================================================
 INSERT INTO tool_pros_and_cons (tool_id, category_id, pro_text, con_text)
-VALUES ('2e2d457c-5b12-4179-899e-8e55b45eae94', 2, 
+VALUES ('PASTE_ADOBE_UUID_HERE', 2, 
         'Unmatched power for deep data analysis, integrates with Adobe''s ecosystem', 
         'Extremely complex with a steep learning curve, requires dedicated analyst support')
 ON CONFLICT DO NOTHING;
 
 -- ============================================================================
--- STEP 4: Update vote counts for ALL Event Tracking tools
+-- STEP 5: Update vote counts for existing Event Tracking tools
 -- ============================================================================
 UPDATE tool_category_leaderboard 
 SET 
@@ -60,7 +67,7 @@ SET
 WHERE category_id = 2;
 
 -- ============================================================================
--- STEP 5: Update pros/cons for existing tools with new text
+-- STEP 6: Update pros/cons for existing tools with new text
 -- ============================================================================
 UPDATE tool_pros_and_cons 
 SET 
@@ -91,7 +98,7 @@ SET
 WHERE category_id = 2;
 
 -- ============================================================================
--- STEP 6: VERIFICATION - Check final leaderboard (should show 11 tools)
+-- STEP 7: VERIFICATION - Check final results (should show 11 tools total)
 -- ============================================================================
 SELECT 
     t.name,
@@ -104,7 +111,7 @@ WHERE tcl.category_id = 2
 ORDER BY (tcl.initial_upvotes - tcl.initial_downvotes) DESC;
 
 -- ============================================================================
--- STEP 7: VERIFICATION - Check pros/cons were updated
+-- STEP 8: VERIFICATION - Check pros/cons were updated
 -- ============================================================================
 SELECT 
     t.name,
