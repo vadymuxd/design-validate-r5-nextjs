@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Voter } from './Voter';
 import { ProCon } from './ProCon';
 import { Link } from './Link';
+import { CircularLogo } from './CircularLogo';
 
 export interface VoteResult {
   toolId: string;
@@ -115,14 +116,12 @@ export function ToolCard({
         {/* Desktop Layout */}
         <div className="hidden sm:flex flex-row gap-6 items-start">
           {/* Logo */}
-          <div className="relative w-20 h-20 shrink-0">
+          <div className="shrink-0">
             {logo && (
-              <Image
+              <CircularLogo
                 src={logo}
                 alt={`${name} logo`}
-                fill
-                sizes="80px"
-                className="rounded-full object-cover"
+                size={80}
               />
             )}
           </div>
@@ -213,14 +212,12 @@ export function ToolCard({
         {/* Mobile Layout */}
         <div className="flex sm:hidden flex-col gap-6">
           {/* Logo */}
-          <div className="relative w-20 h-20 shrink-0">
+          <div className="shrink-0">
             {logo && (
-              <Image
+              <CircularLogo
                 src={logo}
                 alt={`${name} logo`}
-                fill
-                sizes="80px"
-                className="rounded-full object-cover"
+                size={80}
               />
             )}
           </div>
