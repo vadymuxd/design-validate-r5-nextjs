@@ -209,6 +209,15 @@ html, body {
   }
 }
 
+/* Gradient utility classes */
+.gradient-black-to-grey {
+  background: linear-gradient(to bottom, #000000 52.457%, #1A1A1A 100%);
+}
+
+.gradient-radial-hero {
+  background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1728 739" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect x="0" y="0" height="100%" width="100%" fill="url(%23grad)" opacity="1"/><defs><radialGradient id="grad" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="10" gradientTransform="matrix(0.000004054 137.52 -142.8 17.481 864 369.5)"><stop stop-color="rgba(22,22,22,1)" offset="0"/><stop stop-color="rgba(11,11,11,1)" offset="0.5"/><stop stop-color="rgba(6,6,6,1)" offset="0.75"/><stop stop-color="rgba(1,1,1,1)" offset="1"/></radialGradient></defs></svg>');
+}
+
 /* SEO-only content - hidden from users but visible to search engines */
 .seo-only {
   position: absolute;

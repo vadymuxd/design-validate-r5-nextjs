@@ -21,11 +21,7 @@ export default function AboutPage() {
     <div className="bg-black text-white">
       {/* Hero and What/Why/How Section with Gradient */}
       <section
-        className="py-20 sm:py-32"
-        style={{
-          backgroundImage:
-            "url('data:image/svg+xml;utf8,<svg viewBox=\\'0 0 1728 739\\' xmlns=\\'http://www.w3.org/2000/svg\\' preserveAspectRatio=\\'none\\'><rect x=\\'0\\' y=\\'0\\' height=\\'100%\\' width=\\'100%\\' fill=\\'url(%23grad)\\' opacity=\\'1\\'/><defs><radialGradient id=\\'grad\\' gradientUnits=\\'userSpaceOnUse\\' cx=\\'0\\' cy=\\'0\\' r=\\'10\\' gradientTransform=\\'matrix(0.000004054 137.52 -142.8 17.481 864 369.5)\\'><stop stop-color=\\'rgba(45,45,45,1)\\' offset=\\'0\\'/><stop stop-color=\\'rgba(23,23,23,1)\\' offset=\\'0.5\\'/><stop stop-color=\\'rgba(12,12,12,1)\\' offset=\\'0.75\\'/><stop stop-color=\\'rgba(2,2,2,1)\\' offset=\\'1\\'/></radialGradient></defs></svg>')",
-        }}
+        className="py-20 sm:py-32 gradient-radial-hero"
       >
         <div className="container mx-auto px-4 text-center">
           <div className="flex justify-center mb-0">

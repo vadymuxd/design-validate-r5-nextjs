@@ -56,7 +56,7 @@ export default function Home() {
     <div className="flex flex-col" style={{ minHeight: 'calc(100vh - 60px)' }}>
     <PageLoader
       titleNavigation={<TitleNavigation showNav={false} />}
-      className="bg-gradient-to-b from-black from-52.457% to-[#353535] flex flex-col px-0 flex-grow"
+      className="gradient-black-to-grey flex flex-col px-0 flex-grow"
     >
       <div className="text-center">
         <h1 className="sr-only">Community-Driven Collections for Design Validation</h1>
