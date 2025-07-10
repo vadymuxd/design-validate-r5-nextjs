@@ -30,7 +30,7 @@ UPDATE methods SET initial_score = 2543 WHERE name = 'A/B Testing';
 UPDATE methods SET initial_score = 2311 WHERE name = 'User Feedback';
 UPDATE methods SET initial_score = 2189 WHERE name = 'Event Tracking';
 UPDATE methods SET initial_score = 1976 WHERE name = 'Funnels';
-UPDATE methods SET initial_score = 1854 WHERE name = 'UX Data Analysis';
+UPDATE methods SET initial_score = 1854 WHERE name = 'User Data Intelligence';
 UPDATE methods SET initial_score = 1672 WHERE name = 'Heatmaps';
 UPDATE methods SET initial_score = 1539 WHERE name = 'Session Replays';
 UPDATE methods SET initial_score = 1287 WHERE name = 'Concept Testing';

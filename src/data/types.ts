@@ -25,4 +25,10 @@ export interface ApiMethod {
   current_upvotes: number;
   current_downvotes: number;
   initial_score: number;
+  metadata?: {
+    research_type?: 'qualitative' | 'mixed' | 'quantitative';
+    design_timing?: 'before' | 'during' | 'after';
+    user_awareness?: 'explicit' | 'implicit';
+    cognitive_stage?: 'react' | 'think' | 'act';
+  };
 }

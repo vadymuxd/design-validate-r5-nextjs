@@ -11,7 +11,7 @@ export type Database = {
     Tables: {
       app_feedback: {
         Row: {
-          method_slug: string | null
+          context_slug: string | null
           collection_slug: string | null
           created_at: string
           device_id: string | null
@@ -20,7 +20,7 @@ export type Database = {
           sentiment: Database["public"]["Enums"]["sentiment_type"]
         }
         Insert: {
-          method_slug?: string | null
+          context_slug?: string | null
           collection_slug?: string | null
           created_at?: string
           device_id?: string | null
@@ -29,7 +29,7 @@ export type Database = {
           sentiment: Database["public"]["Enums"]["sentiment_type"]
         }
         Update: {
-          method_slug?: string | null
+          context_slug?: string | null
           collection_slug?: string | null
           created_at?: string
           device_id?: string | null

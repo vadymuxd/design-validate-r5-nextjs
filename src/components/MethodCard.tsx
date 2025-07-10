@@ -16,6 +16,7 @@ interface MethodCardProps {
   description: string;
   voteCount: number;
   onVote?: (methodId: number, sentiment: 'UPVOTE' | 'DOWNVOTE') => Promise<VoteResult>;
+  hideDivider?: boolean;
 }
 
 export function MethodCard({
@@ -25,6 +26,7 @@ export function MethodCard({
   description,
   voteCount,
   onVote,
+  hideDivider = false,
 }: MethodCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -50,7 +52,7 @@ export function MethodCard({
   };
 
   return (
-    <div className="border-b border-[#2D2D2D] last:border-b-0">
+    <div className={hideDivider ? "" : "border-b border-[#2D2D2D] last:border-b-0"}>
       <div className="py-4">
         {/* Collapsed Header */}
         <div className="flex items-center justify-between">

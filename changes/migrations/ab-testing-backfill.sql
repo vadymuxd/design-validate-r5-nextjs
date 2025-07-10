@@ -6,7 +6,7 @@
 -- ============================================================================
 INSERT INTO tools (name, description, website_url, logo_url) VALUES
 ('Optimizely', 'An enterprise-grade platform for robust, server-side experimentation', 'https://www.optimizely.com/', '/tools-logos/optimizely.png'),
-('VWO', 'An all-in-one platform combining testing with behavioral analytics', 'https://vwo.com/', '/tools-logos/vwo.png'),
+('VWO', 'An all-in-one platform combining testing with behavioral analytics', 'https://vwo.com/', '/tools-logos/vwo2.png'),
 ('Google Optimize', 'A free, widely-used tool that integrates natively with Google Analytics', 'https://optimize.google.com/', '/tools-logos/google-optimize.png'),
 ('AB Tasty', 'A unified platform for experimentation, personalization, and feature management', 'https://www.abtasty.com/', '/tools-logos/ab-tasty.png'),
 ('Kameleoon', 'A fast, reliable platform with a strong focus on personalization and AI features', 'https://www.kameleoon.com/', '/tools-logos/kameleoon.png'),

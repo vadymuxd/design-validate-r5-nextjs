@@ -203,7 +203,7 @@ function ToolsPageContent() {
                   This is a synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit. Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users from listed sources plus unique users&apos; votes on this site. The initial sentiment analysis done by Gemini 2.5 Pro
                 </p>
                 {currentMethod && (
-                  <Feedback collectionSlug="tools" methodSlug={currentMethod.slug} />
+                  <Feedback collectionSlug="tools" contextSlug={currentMethod.slug} />
                 )}
               </div>
             </>
@@ -233,7 +233,7 @@ function ToolsPageContent() {
                 {`We're working hard to bring you a curated list of tools for this method. Like or dislike to help us prioritize!`}
               </p>
               {currentMethod && (
-                <Feedback collectionSlug="tools" methodSlug={currentMethod.slug} />
+                <Feedback collectionSlug="tools" contextSlug={currentMethod.slug} />
               )}
             </div>
           )

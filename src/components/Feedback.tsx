@@ -6,10 +6,10 @@ import { ToastMessage } from './ToastMessage';
 
 interface FeedbackProps {
   collectionSlug: string;
-  methodSlug?: string;
+  contextSlug?: string;
 }
 
-export const Feedback: React.FC<FeedbackProps> = ({ collectionSlug, methodSlug }) => {
+export const Feedback: React.FC<FeedbackProps> = ({ collectionSlug, contextSlug }) => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastVariant, setToastVariant] = useState<'default' | 'warning'>('default');
@@ -36,7 +36,7 @@ export const Feedback: React.FC<FeedbackProps> = ({ collectionSlug, methodSlug }
         body: JSON.stringify({
           sentiment,
           collection_slug: collectionSlug,
-          method_slug: methodSlug,
+          context_slug: contextSlug,
         }),
       });
 

@@ -3,12 +3,16 @@
 import { Feedback } from '@/components/Feedback';
 import { TitleNavigation } from '@/components/TitleNavigation';
 import { MethodCard } from '@/components/MethodCard';
+import { Pill } from '@/components/Pill';
 import { ApiMethod } from '@/data/types';
+import { METHOD_VIEWS, groupMethodsByView } from '@/data/methodViews';
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { ToastMessage } from '@/components/ToastMessage';
 import LottieAnimation from '@/components/LottieAnimation';
 import animationData from '../../../public/gifs/cube-2.json';
 import { Footer } from '@/components/Footer';
+import { Suspense } from 'react';
 
 interface VoteResult {
   status: string;
@@ -17,9 +21,11 @@ interface VoteResult {
   sentiment: string;
 }
 
-export default function MethodsPage() {
+function MethodsPageContent() {
+  const searchParams = useSearchParams();
   const [methods, setMethods] = useState<ApiMethod[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeView, setActiveView] = useState<string>('all');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState<'default' | 'warning'>('default');
@@ -44,6 +50,16 @@ export default function MethodsPage() {
 
     fetchMethods();
   }, []);
+
+  // Set active view based on URL parameter
+  useEffect(() => {
+    const urlView = searchParams.get('view');
+    if (urlView && METHOD_VIEWS[urlView]) {
+      setActiveView(urlView);
+    } else {
+      setActiveView('all');
+    }
+  }, [searchParams]);
 
   // Handle voting on methods (UNIFIED with tool voting logic)
   const handleMethodVote = async (methodId: number, sentiment: 'UPVOTE' | 'DOWNVOTE'): Promise<VoteResult> => {
@@ -139,61 +155,144 @@ export default function MethodsPage() {
     }
   };
 
+  const handleViewClick = (viewId: string) => {
+    if (viewId !== activeView) {
+      setActiveView(viewId);
+      // Update URL without page reload
+      const newUrl = viewId === 'all' ? '/methods' : `/methods?view=${viewId}`;
+      window.history.pushState({}, '', newUrl);
+    }
+  };
+
+  // Get current view configuration
+  const currentView = METHOD_VIEWS[activeView];
+  
+  // Group methods for current view
+  const groupedMethods = groupMethodsByView(methods, activeView);
+
+  // Render single column layout
+  const renderSingleColumn = (methodsToRender: ApiMethod[]) => (
+    <div className="w-full max-w-[400px] mx-auto pt-12">
+      <div className="flex flex-col">
+        {methodsToRender.map((method) => (
+          <MethodCard 
+            key={method.id} 
+            methodId={method.id}
+            name={method.name}
+            slug={method.slug}
+            description={method.description || ''}
+            voteCount={method.net_score}
+            onVote={handleMethodVote}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
+  // Render multi-column layout
+  const renderMultiColumn = () => {
+    if (!currentView.columns) return null;
+
+    return (
+      <div className="w-full px-4 sm:px-8 pt-12">
+        <div className="flex flex-col md:flex-row gap-16 justify-center">
+          {currentView.columns.map((column, index) => {
+            const columnKey = column.name.toLowerCase();
+            const columnMethods = groupedMethods[columnKey] || [];
+            const isLastColumn = index === currentView.columns!.length - 1;
+            
+                          return (
+                <div key={column.name} className="flex flex-col w-full max-w-[400px] relative">
+                  <div className="mb-6">
+                    <h3 className="h3 text-white mb-2">{column.name}</h3>
+                    <p className="annotation text-[var(--color-grey-light)]">{column.description}</p>
+                  </div>
+                  <div className="flex flex-col">
+                    {columnMethods.map((method) => (
+                      <MethodCard 
+                        key={method.id} 
+                        methodId={method.id}
+                        name={method.name}
+                        slug={method.slug}
+                        description={method.description || ''}
+                        voteCount={method.net_score}
+                        onVote={handleMethodVote}
+                        hideDivider={currentView.isMultiColumn}
+                      />
+                    ))}
+                  </div>
+                  {/* Full-width divider for mobile only */}
+                  {!isLastColumn && (
+                    <div className="md:hidden mt-8 mb-8 relative">
+                      <div className="absolute w-screen h-px bg-[#2D2D2D] left-1/2 -translate-x-1/2"></div>
+                    </div>
+                  )}
+                </div>
+              );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       {/* Top Section with gradient */}
       <div className="w-full bg-gradient-to-b from-black from-52.457% to-[#353535] pb-12 px-4 sm:px-8">
         <div className="w-full max-w-[730px] mx-auto flex flex-col items-center gap-8 pt-12">
           <TitleNavigation />
+          
+          {/* View Pills */}
+          <div className="w-full max-w-[730px] flex flex-col gap-2">
+            <div className="flex gap-2 flex-wrap justify-center">
+              {Object.values(METHOD_VIEWS).map((view) => (
+                <Pill
+                  key={view.id}
+                  label={view.name}
+                  isActive={view.id === activeView}
+                  onClick={() => handleViewClick(view.id)}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Dynamic Description */}
           <div className="flex flex-col items-center gap-4 text-center">
             <p className="body text-white max-w-[520px]">
-              All validation methods are sorted by net score of &apos;negative&apos; and &apos;positive&apos; mentions by users from G2, 
-              Capterra, TrustRadius, and Reddit plus unique users&apos; votes on this site. Initial analysis done by Gemini 2.5 Pro 
-              (user sentiment analysis from late 2023 - mid-2025)
+              {currentView.description}
             </p>
           </div>
-          <Feedback collectionSlug="methods" />
+          
+          <Feedback collectionSlug="methods" contextSlug={activeView} />
         </div>
       </div>
 
       {/* Methods Section with preloader */}
       <div className="bg-black px-4 sm:px-8 pb-16">
-        <div className="w-full max-w-[730px] mx-auto">
-          <div className="w-full max-w-[400px] mx-auto pt-12">
-            <div className="flex flex-col">
-              {isLoading ? (
-                <div className="flex justify-center items-center h-64">
-                  <LottieAnimation
-                    animationData={animationData}
-                    className="w-full h-auto max-w-[200px]"
-                  />
-                </div>
-              ) : methods.length > 0 ? (
-                methods.map((method) => (
-                  <MethodCard 
-                    key={method.id} 
-                    methodId={method.id}
-                    name={method.name}
-                    slug={method.slug}
-                    description={method.description || ''}
-                    voteCount={method.net_score}
-                    onVote={handleMethodVote}
-                  />
-                ))
-              ) : (
-                <div className="flex justify-center items-center py-16">
-                  <div className="text-white">No methods found</div>
-                </div>
-              )}
+        <div className={`w-full ${currentView.isMultiColumn ? '' : 'max-w-[730px] mx-auto'}`}>
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <LottieAnimation
+                animationData={animationData}
+                className="w-full h-auto max-w-[200px]"
+              />
             </div>
-          </div>
+          ) : methods.length > 0 ? (
+            currentView.isMultiColumn ? renderMultiColumn() : renderSingleColumn(methods)
+          ) : (
+            <div className="flex justify-center items-center py-16">
+              <div className="text-white">No methods found</div>
+            </div>
+          )}
         </div>
       </div>
+      
       {!isLoading && (
         <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
           <Footer />
         </footer>
       )}
+      
       <ToastMessage
         message={toastMessage}
         isVisible={showToast}
@@ -201,5 +300,20 @@ export default function MethodsPage() {
         variant={toastVariant}
       />
     </>
+  );
+}
+
+export default function MethodsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center h-64">
+        <LottieAnimation
+          animationData={animationData}
+          className="w-full h-auto max-w-[200px]"
+        />
+      </div>
+    }>
+      <MethodsPageContent />
+    </Suspense>
   );
 } 

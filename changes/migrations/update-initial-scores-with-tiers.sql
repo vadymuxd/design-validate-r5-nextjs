@@ -20,7 +20,7 @@ UPDATE methods SET initial_score = 1310 WHERE name = 'User Interviews';    -- Ti
 UPDATE methods SET initial_score = 1180 WHERE name = 'Funnels';            -- Tier 2: Foundational
 
 -- TIER 3: Important Specialism
-UPDATE methods SET initial_score = 950 WHERE name = 'UX Data Analysis';    -- Tier 3: Important Specialism
+UPDATE methods SET initial_score = 950 WHERE name = 'User Data Intelligence';    -- Tier 3: Important Specialism
 UPDATE methods SET initial_score = 730 WHERE name = 'Heatmaps';            -- Tier 3: Important Specialism
 UPDATE methods SET initial_score = 560 WHERE name = 'Concept Testing';     -- Tier 3: Important Specialism
 
