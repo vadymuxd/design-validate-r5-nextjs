@@ -20,6 +20,7 @@ export async function GET() {
           name,
           slug,
           collection_id,
+          initial_score,
           collections!inner(
             id,
             name,
@@ -44,9 +45,10 @@ export async function GET() {
         slug: method.slug,
         description: "There is error to connect to your database",
         collection_id: method.collection_id,
-        net_score: 0, // Placeholder until script is run
+        net_score: method.initial_score || 0, // Use initial_score as fallback
         current_upvotes: 0,
-        current_downvotes: 0
+        current_downvotes: 0,
+        initial_score: method.initial_score || 0
       })) || [];
     } else if (error) {
       console.error('Database error:', error);

@@ -3,13 +3,10 @@ import { Link } from './Link';
 import { Button } from './Button';
 
 interface VoteResult {
-  voteStatus: string;
+  status: string;
   message: string;
-  variant: 'default' | 'warning';
   method_id: number;
   sentiment: string;
-  upvotes?: number;
-  downvotes?: number;
 }
 
 interface MethodCardProps {

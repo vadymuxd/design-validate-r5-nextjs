@@ -93,6 +93,7 @@ export type Database = {
           description: string | null
           current_upvotes: number | null
           current_downvotes: number | null
+          initial_score: number | null
         }
         Insert: {
           collection_id: number
@@ -102,6 +103,7 @@ export type Database = {
           description?: string | null
           current_upvotes?: number | null
           current_downvotes?: number | null
+          initial_score?: number | null
         }
         Update: {
           collection_id?: number
@@ -111,6 +113,7 @@ export type Database = {
           description?: string | null
           current_upvotes?: number | null
           current_downvotes?: number | null
+          initial_score?: number | null
         }
         Relationships: [
           {
@@ -277,34 +280,40 @@ export type Database = {
       }
       votes: {
         Row: {
-          method_id: number
+          method_id: number | null
           created_at: string
           device_id: string | null
           id: number
           ip_address: string | null
           sentiment: Database["public"]["Enums"]["vote_type"]
-          tool_id: string
+          tool_id: string | null
           updated_at: string | null
+          vote_type: Database["public"]["Enums"]["vote_entity_type"]
+          entity_id: string
         }
         Insert: {
-          method_id: number
+          method_id?: number | null
           created_at?: string
           device_id?: string | null
           id?: number
           ip_address?: string | null
           sentiment: Database["public"]["Enums"]["vote_type"]
-          tool_id: string
+          tool_id?: string | null
           updated_at?: string | null
+          vote_type: Database["public"]["Enums"]["vote_entity_type"]
+          entity_id: string
         }
         Update: {
-          method_id?: number
+          method_id?: number | null
           created_at?: string
           device_id?: string | null
           id?: number
           ip_address?: string | null
           sentiment?: Database["public"]["Enums"]["vote_type"]
-          tool_id?: string
+          tool_id?: string | null
           updated_at?: string | null
+          vote_type?: Database["public"]["Enums"]["vote_entity_type"]
+          entity_id?: string
         }
         Relationships: [
           {
@@ -333,6 +342,7 @@ export type Database = {
     Enums: {
       sentiment_type: "LIKE" | "DISLIKE"
       vote_type: "UPVOTE" | "DOWNVOTE"
+      vote_entity_type: "tool" | "method" | "case" | "metric" | "article" | "framework"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -24,4 +24,5 @@ export interface ApiMethod {
   net_score: number;
   current_upvotes: number;
   current_downvotes: number;
+  initial_score: number;
 }

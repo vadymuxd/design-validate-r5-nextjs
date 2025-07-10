@@ -50,7 +50,12 @@ export function ToolCard({
       const response = await fetch('/api/votes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tool_id: toolId, method_id: methodId, sentiment }),
+        body: JSON.stringify({ 
+          vote_type: 'tool', 
+          entity_id: toolId, 
+          context_id: methodId, 
+          sentiment 
+        }),
       });
 
       const result = await response.json();

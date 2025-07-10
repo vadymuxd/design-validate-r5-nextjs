@@ -11,13 +11,10 @@ import animationData from '../../../public/gifs/cube-2.json';
 import { Footer } from '@/components/Footer';
 
 interface VoteResult {
-  voteStatus: string;
+  status: string;
   message: string;
-  variant: 'default' | 'warning';
   method_id: number;
   sentiment: string;
-  upvotes?: number;
-  downvotes?: number;
 }
 
 export default function MethodsPage() {
@@ -48,45 +45,39 @@ export default function MethodsPage() {
     fetchMethods();
   }, []);
 
-  // Handle voting on methods
+  // Handle voting on methods (UNIFIED with tool voting logic)
   const handleMethodVote = async (methodId: number, sentiment: 'UPVOTE' | 'DOWNVOTE'): Promise<VoteResult> => {
     try {
-      const response = await fetch('/api/method-votes', {
+      const response = await fetch('/api/votes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          method_id: methodId,
+          vote_type: 'method',
+          entity_id: methodId.toString(),
           sentiment: sentiment
         }),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        
+      const result = await response.json();
+
+      if (response.ok) { // Status 200-299
         // Update the local state to reflect the vote change
-        if (result.voteStatus === 'VOTE_CREATED' || result.voteStatus === 'VOTE_UPDATED') {
+        if (result.status === 'VOTE_CREATED' || result.status === 'VOTE_UPDATED') {
           setMethods(currentMethods => 
             currentMethods.map(method => {
               if (method.id === methodId) {
-                // Update current votes and recalculate net score
-                const newCurrentUpvotes = result.upvotes || method.current_upvotes;
-                const newCurrentDownvotes = result.downvotes || method.current_downvotes;
-                
-                // The net score includes both tool votes and direct method votes
-                // We need to recalculate based on the vote change
+                // Calculate net score change based on vote action
                 let netScoreChange = 0;
-                if (result.voteStatus === 'VOTE_CREATED') {
+                if (result.status === 'VOTE_CREATED') {
                   netScoreChange = sentiment === 'UPVOTE' ? 1 : -1;
-                } else if (result.voteStatus === 'VOTE_UPDATED') {
+                } else if (result.status === 'VOTE_UPDATED') {
                   netScoreChange = sentiment === 'UPVOTE' ? 2 : -2; // Switching from one to the other
                 }
 
                 return {
                   ...method,
-                  current_upvotes: newCurrentUpvotes,
-                  current_downvotes: newCurrentDownvotes,
                   net_score: method.net_score + netScoreChange
                 };
               }
@@ -95,28 +86,53 @@ export default function MethodsPage() {
           );
         }
 
-        // Show toast message
-        setToastMessage(result.message);
-        setToastVariant(result.variant);
+        // Show success toast (SAME as tools)
+        setToastMessage(result.message || 'Thanks for your feedback!');
+        setToastVariant('default');
         setShowToast(true);
 
-        return result;
+        return {
+          status: result.status,
+          message: result.message,
+          method_id: methodId,
+          sentiment: sentiment
+        };
+      } else if (response.status === 409) { // Conflict - already voted (SAME as tools)
+        // Show warning toast (SAME as tools)
+        setToastMessage(result.message || 'You have already voted for this!');
+        setToastVariant('warning');
+        setShowToast(true);
+
+        return {
+          status: 'VOTE_UNCHANGED',
+          message: result.message,
+          method_id: methodId,
+          sentiment: sentiment
+        };
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to vote');
+        // Other errors (SAME as tools)
+        setToastMessage(result.message || 'An error occurred.');
+        setToastVariant('warning');
+        setShowToast(true);
+
+        return {
+          status: 'ERROR',
+          message: result.message,
+          method_id: methodId,
+          sentiment: sentiment
+        };
       }
     } catch (error) {
       console.error('Error voting on method:', error);
       const errorResult: VoteResult = {
-        voteStatus: 'ERROR',
-        message: 'Failed to submit vote. Please try again.',
-        variant: 'warning',
+        status: 'ERROR',
+        message: 'An unexpected error occurred.',
         method_id: methodId,
         sentiment: sentiment
       };
       
       setToastMessage(errorResult.message);
-      setToastVariant(errorResult.variant);
+      setToastVariant('warning');
       setShowToast(true);
       
       return errorResult;
