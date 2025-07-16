@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { Resend } from 'resend';
 
 // Helper function to detect browser from user agent
 function detectBrowser(userAgent: string): string {
@@ -86,6 +87,95 @@ async function getLocationFromIP(ip: string): Promise<{
   } catch (error) {
     console.error('Error getting location from IP:', error);
     return null;
+  }
+}
+
+// Helper function to send new user email notification
+async function sendNewUserEmail(userInfo: any, deviceData: any) {
+  try {
+    const apiKey = process.env.RESEND_API_KEY;
+    
+    if (!apiKey || apiKey === 'your_resend_api_key_here') {
+      console.log('Resend API key not configured, skipping new user email.');
+      return false;
+    }
+
+    const resend = new Resend(apiKey);
+    
+    // Format the email content with user information
+    const emailContent = `
+      <h2>🎉 New User Detected on Design Validate</h2>
+      <p>A new user has been added to the users table:</p>
+      
+      <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3>User Information:</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">User ID:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${userInfo.user_id}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Device ID:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.deviceId}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Device Type:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.deviceType || 'Unknown'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Operating System:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.os || 'Unknown'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Browser:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.browser || 'Unknown'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">City:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.city || 'Unknown'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Region:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.region || 'Unknown'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Country:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.country || 'Unknown'}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">IP Address:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.ipAddress}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">User Agent:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; word-break: break-all;">${deviceData.userAgent}</td>
+          </tr>
+        </table>
+      </div>
+      
+      <p style="margin-top: 20px;">
+        <em>This email was automatically generated when a new user was detected on Design Validate.</em><br>
+        <em>Timestamp: ${new Date().toISOString()}</em>
+      </p>
+      
+      <hr style="margin: 20px 0;">
+      <p style="color: #666; font-size: 12px;">
+        Visit the <a href="https://design-validate.com/admin">Admin Dashboard</a> to view detailed analytics.
+      </p>
+    `;
+
+    await resend.emails.send({
+      from: 'Design Validate <noreply@design-validate.com>',
+      to: 'info@design-validate.com',
+      subject: 'New user detected',
+      html: emailContent,
+    });
+
+    console.log('New user email sent successfully');
+    return true;
+  } catch (error) {
+    console.error('Error sending new user email:', error);
+    return false;
   }
 }
 
@@ -176,6 +266,32 @@ export async function POST(request: NextRequest) {
         region,
         country
       });
+
+      // Send email notification for new user
+      try {
+        const deviceData = {
+          deviceId,
+          deviceType,
+          os,
+          browser,
+          city,
+          region,
+          country,
+          ipAddress,
+          userAgent
+        };
+
+        const emailSent = await sendNewUserEmail(userInfo, deviceData);
+        
+        if (emailSent) {
+          console.log('New user email notification sent successfully');
+        } else {
+          console.log('New user email notification failed or was skipped');
+        }
+      } catch (emailError) {
+        console.error('Error sending new user email:', emailError);
+        // Don't fail the request if email fails
+      }
     }
 
     return NextResponse.json({
