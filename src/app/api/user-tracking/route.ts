@@ -90,8 +90,26 @@ async function getLocationFromIP(ip: string): Promise<{
   }
 }
 
+// Types for email function
+interface UserInfo {
+  user_id: number;
+  is_new_user: boolean;
+}
+
+interface DeviceData {
+  deviceId: string;
+  deviceType: string;
+  os: string;
+  browser: string;
+  city: string | null;
+  region: string | null;
+  country: string | null;
+  ipAddress: string;
+  userAgent: string;
+}
+
 // Helper function to send new user email notification
-async function sendNewUserEmail(userInfo: any, deviceData: any) {
+async function sendNewUserEmail(userInfo: UserInfo, deviceData: DeviceData): Promise<boolean> {
   try {
     const apiKey = process.env.RESEND_API_KEY;
     
