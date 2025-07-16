@@ -44,8 +44,9 @@ export function UserAnalyticsDashboard() {
         } else {
           setError(data.error || 'Failed to fetch analytics');
         }
-      } catch (err) {
+      } catch (error) {
         setError('Network error fetching analytics');
+        console.error('Error fetching analytics:', error);
       } finally {
         setLoading(false);
       }
