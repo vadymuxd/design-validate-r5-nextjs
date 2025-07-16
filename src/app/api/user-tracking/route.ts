@@ -1,0 +1,292 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { supabase } from '@/lib/supabase';
+
+// Helper function to detect browser from user agent
+function detectBrowser(userAgent: string): string {
+  const ua = userAgent.toLowerCase();
+  
+  if (ua.includes('chrome') && !ua.includes('edg')) {
+    return 'Chrome';
+  } else if (ua.includes('firefox')) {
+    return 'Firefox';
+  } else if (ua.includes('safari') && !ua.includes('chrome')) {
+    return 'Safari';
+  } else if (ua.includes('edge')) {
+    return 'Edge';
+  } else if (ua.includes('opera')) {
+    return 'Opera';
+  } else if (ua.includes('brave')) {
+    return 'Brave';
+  }
+  
+  return 'Unknown';
+}
+
+// Helper function to detect OS from user agent
+function detectOS(userAgent: string): string {
+  const ua = userAgent.toLowerCase();
+  
+  if (ua.includes('macintosh')) {
+    return 'macOS';
+  } else if (ua.includes('windows nt')) {
+    return 'Windows';
+  } else if (ua.includes('linux') && !ua.includes('android')) {
+    return 'Linux';
+  } else if (ua.includes('android')) {
+    return 'Android';
+  } else if (ua.includes('iphone') || ua.includes('ipad')) {
+    return 'iOS';
+  }
+  
+  return 'Unknown';
+}
+
+// Helper function to detect device type from user agent
+function detectDeviceType(userAgent: string): string {
+  const ua = userAgent.toLowerCase();
+  
+  // Check for mobile devices first
+  if (/mobile|android|iphone|phone|blackberry|opera mini|windows phone/i.test(ua)) {
+    return 'mobile';
+  }
+  
+  // Check for tablets
+  if (/tablet|ipad|playbook|kindle/i.test(ua)) {
+    return 'tablet';
+  }
+  
+  // Check for desktop/laptop devices
+  if (/macintosh|windows nt|linux|ubuntu|fedora|centos|debian/i.test(ua)) {
+    return 'desktop';
+  }
+  
+  // Default to desktop for unknown devices
+  return 'desktop';
+}
+
+// Helper function to get location from IP (city, region, country)
+async function getLocationFromIP(ip: string): Promise<{
+  city: string | null;
+  region: string | null;
+  country: string | null;
+} | null> {
+  if (ip === 'unknown' || ip === '127.0.0.1' || ip.startsWith('192.168.') || ip.startsWith('10.')) {
+    return null; // Local IP addresses
+  }
+  
+  try {
+    const response = await fetch(`http://ip-api.com/json/${ip}?fields=city,regionName,country`);
+    const data = await response.json();
+    
+    return {
+      city: data.city || null,
+      region: data.regionName || null,
+      country: data.country || null
+    };
+  } catch (error) {
+    console.error('Error getting location from IP:', error);
+    return null;
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    // Get client information
+    const ipAddress = request.headers.get('x-forwarded-for')?.split(',')[0] || 
+                     request.headers.get('x-real-ip') || 
+                     'unknown';
+    const userAgent = request.headers.get('user-agent') || 'unknown';
+    
+    // Generate device ID using the same method as votes and contact tables
+    const deviceId = Buffer.from(userAgent).toString('base64').substring(0, 50);
+    
+    // Detect device information
+    const browser = detectBrowser(userAgent);
+    const os = detectOS(userAgent);
+    const deviceType = detectDeviceType(userAgent);
+    
+    // Get location from IP (with error handling)
+    let city: string | null = null;
+    let region: string | null = null;
+    let country: string | null = null;
+    
+    try {
+      const locationData = await getLocationFromIP(ipAddress);
+      if (locationData) {
+        city = locationData.city;
+        region = locationData.region;
+        country = locationData.country;
+      }
+    } catch (error) {
+      console.error('Error getting location from IP:', error);
+      // Continue without location data
+    }
+    
+    console.log('User tracking data:', {
+      deviceId: deviceId.substring(0, 20) + '...',
+      deviceType,
+      os,
+      browser,
+      city,
+      region,
+      country,
+      ipAddress: ipAddress.substring(0, 10) + '...'
+    });
+
+    // Use the database function to upsert the user
+    const { data: userResult, error: userError } = await supabase
+      .rpc('upsert_user', {
+        p_device_id: deviceId,
+        p_device_type: deviceType,
+        p_os: os,
+        p_browser: browser,
+        p_city: city,
+        p_region: region,
+        p_country: country,
+        p_user_agent: userAgent,
+        p_ip_address: ipAddress
+      });
+
+    if (userError) {
+      console.error('Database error in user tracking:', userError);
+      return NextResponse.json(
+        { error: 'Failed to track user', details: userError.message },
+        { status: 500 }
+      );
+    }
+
+    const userInfo = userResult?.[0];
+    
+    if (!userInfo) {
+      console.error('No user info returned from upsert_user function');
+      return NextResponse.json(
+        { error: 'Failed to get user info' },
+        { status: 500 }
+      );
+    }
+
+    // Log new user creation (for analytics)
+    if (userInfo.is_new_user) {
+      console.log('New user created:', {
+        userId: userInfo.user_id,
+        deviceType,
+        os,
+        browser,
+        city,
+        region,
+        country
+      });
+    }
+
+    return NextResponse.json({
+      success: true,
+      userId: userInfo.user_id,
+      isNewUser: userInfo.is_new_user,
+      message: userInfo.is_new_user ? 'New user created' : 'User updated'
+    });
+
+  } catch (error) {
+    console.error('General error in user tracking:', error);
+    return NextResponse.json(
+      { error: 'An unexpected error occurred' },
+      { status: 500 }
+    );
+  }
+}
+
+// GET endpoint for user analytics (optional - for admin use)
+export async function GET() {
+  try {
+    // Get user statistics by device type
+    const { data: deviceStats, error: deviceError } = await supabase
+      .rpc('get_user_stats_by_device_type');
+
+    if (deviceError) {
+      console.error('Error fetching device stats:', deviceError);
+      return NextResponse.json(
+        { error: 'Failed to fetch device statistics' },
+        { status: 500 }
+      );
+    }
+
+    // Get user statistics by OS
+    const { data: osStats, error: osError } = await supabase
+      .rpc('get_user_stats_by_os');
+
+    if (osError) {
+      console.error('Error fetching OS stats:', osError);
+      return NextResponse.json(
+        { error: 'Failed to fetch OS statistics' },
+        { status: 500 }
+      );
+    }
+
+    // Get user statistics by country
+    const { data: countryStats, error: countryError } = await supabase
+      .rpc('get_user_stats_by_country');
+
+    if (countryError) {
+      console.error('Error fetching country stats:', countryError);
+      return NextResponse.json(
+        { error: 'Failed to fetch country statistics' },
+        { status: 500 }
+      );
+    }
+
+    // Get user statistics by city
+    const { data: cityStats, error: cityError } = await supabase
+      .rpc('get_user_stats_by_city');
+
+    if (cityError) {
+      console.error('Error fetching city stats:', cityError);
+      return NextResponse.json(
+        { error: 'Failed to fetch city statistics' },
+        { status: 500 }
+      );
+    }
+
+    // Get user statistics by region
+    const { data: regionStats, error: regionError } = await supabase
+      .rpc('get_user_stats_by_region');
+
+    if (regionError) {
+      console.error('Error fetching region stats:', regionError);
+      return NextResponse.json(
+        { error: 'Failed to fetch region statistics' },
+        { status: 500 }
+      );
+    }
+
+    // Get total user count
+    const { count: totalUsers, error: countError } = await supabase
+      .from('users')
+      .select('*', { count: 'exact', head: true });
+
+    if (countError) {
+      console.error('Error fetching total user count:', countError);
+      return NextResponse.json(
+        { error: 'Failed to fetch user count' },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      analytics: {
+        totalUsers,
+        deviceStats,
+        osStats,
+        countryStats,
+        cityStats,
+        regionStats
+      }
+    });
+
+  } catch (error) {
+    console.error('Error in user analytics:', error);
+    return NextResponse.json(
+      { error: 'An unexpected error occurred' },
+      { status: 500 }
+    );
+  }
+}

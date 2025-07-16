@@ -255,26 +255,53 @@ export type Database = {
         Row: {
           created_at: string
           device_id: string | null
-          email: string
+          email: string | null
           id: number
           ip_address: string | null
           name: string | null
+          device_type: string | null
+          os: string | null
+          browser: string | null
+          city: string | null
+          region: string | null
+          country: string | null
+          user_agent: string | null
+          last_seen_at: string | null
+          first_seen_at: string | null
         }
         Insert: {
           created_at?: string
           device_id?: string | null
-          email: string
+          email?: string | null
           id?: number
           ip_address?: string | null
           name?: string | null
+          device_type?: string | null
+          os?: string | null
+          browser?: string | null
+          city?: string | null
+          region?: string | null
+          country?: string | null
+          user_agent?: string | null
+          last_seen_at?: string | null
+          first_seen_at?: string | null
         }
         Update: {
           created_at?: string
           device_id?: string | null
-          email?: string
+          email?: string | null
           id?: number
           ip_address?: string | null
           name?: string | null
+          device_type?: string | null
+          os?: string | null
+          browser?: string | null
+          city?: string | null
+          region?: string | null
+          country?: string | null
+          user_agent?: string | null
+          last_seen_at?: string | null
+          first_seen_at?: string | null
         }
         Relationships: []
       }

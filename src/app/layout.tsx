@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import TopNav from "@/components/TopNav";
+import { UserTracking } from "@/components/UserTracking";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -111,6 +112,8 @@ export default function RootLayout({
         <TopNav />
           <main className="flex-grow">{children}</main>
         </div>
+        {/* User tracking component - tracks users on page load */}
+        <UserTracking enabled={true} debug={process.env.NODE_ENV === 'development'} />
       </body>
     </html>
   );
