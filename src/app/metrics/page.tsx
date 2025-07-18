@@ -180,10 +180,6 @@ export default function MeasuresPage() {
     setActiveSubCategory(currentView.columns[newIdx].name);
   };
 
-  const handleIconClick = () => {
-    setIsPopupOpen(true);
-  };
-
   const handleMinusClick = () => {
     setPopupAction('remove');
     setIsPopupOpen(true);
