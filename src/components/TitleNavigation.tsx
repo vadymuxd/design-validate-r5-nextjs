@@ -4,9 +4,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 const pages = [
-  { href: '/tools', label: 'Tools' },
   { href: '/methods', label: 'Methods' },
   { href: '/metrics', label: 'Metrics' },
+  { href: '/tools', label: 'Tools' },
   { href: '/frameworks', label: 'Frameworks' },
   { href: '/cases', label: 'Cases' },
   { href: '/articles', label: 'Articles' },

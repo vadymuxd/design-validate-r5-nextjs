@@ -7,6 +7,8 @@ import { MetricLetterCard } from '@/components/MetricLetterCard';
 import { SubNavigation } from '@/components/SubNavigation';
 import { Pill } from '@/components/Pill';
 import { Footer } from '@/components/Footer';
+import { Link } from '@/components/Link';
+import { Popup } from '@/components/Popup';
 import { ApiMetric } from '@/data/types';
 import { METRIC_VIEWS, groupMetricsByView } from '@/data/metricViews';
 import { useState, useEffect } from 'react';
@@ -19,6 +21,8 @@ export default function MeasuresPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState<string>('all');
   const [activeSubCategory, setActiveSubCategory] = useState<string>('');
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupAction, setPopupAction] = useState<'add' | 'remove'>('add');
 
   // Get current view configuration
   const currentView = METRIC_VIEWS[activeView] || METRIC_VIEWS['all'];
@@ -176,6 +180,35 @@ export default function MeasuresPage() {
     setActiveSubCategory(currentView.columns[newIdx].name);
   };
 
+  const handleIconClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleMinusClick = () => {
+    setPopupAction('remove');
+    setIsPopupOpen(true);
+  };
+
+  const handlePlusClick = () => {
+    setPopupAction('add');
+    setIsPopupOpen(true);
+  };
+
+  const handlePopupClose = () => {
+    setIsPopupOpen(false);
+  };
+
+  const handlePopupConfirm = () => {
+    // Redirect to about/contact form the same as feedback button
+    if (window.location.pathname === '/about') {
+      const el = document.getElementById('contact-form');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.href = '/about#contact-form';
+    }
+    setIsPopupOpen(false);
+  };
+
   return (
     <div className="bg-black text-white">
       {/* Top Section with gradient */}
@@ -199,7 +232,7 @@ export default function MeasuresPage() {
 
           {/* Description */}
           <div className="flex flex-col items-center gap-4 text-center">
-            <p className="body text-white max-w-[520px]">
+            <p className="body text-white">
               {getDynamicDescription()}
             </p>
           </div>
@@ -207,19 +240,31 @@ export default function MeasuresPage() {
           {/* Metrics Count */}
           <div className="flex flex-col items-center gap-4 text-center">
             <div className="flex items-center gap-4">
-              <img 
-                src="/icons/minus.svg" 
-                alt="Minus" 
-                className="w-6 h-6"
-              />
+              <button 
+                onClick={handleMinusClick}
+                className="cursor-pointer hover:opacity-80 transition-opacity"
+                aria-label="Remove metric"
+              >
+                <img 
+                  src="/icons/minus.svg" 
+                  alt="Minus" 
+                  className="w-6 h-6"
+                />
+              </button>
               <h3 className="h3 text-white">
                 {getFilteredMetrics().length}
               </h3>
-              <img 
-                src="/icons/plus.svg" 
-                alt="Plus" 
-                className="w-6 h-6"
-              />
+              <button 
+                onClick={handlePlusClick}
+                className="cursor-pointer hover:opacity-80 transition-opacity"
+                aria-label="Add metric"
+              >
+                <img 
+                  src="/icons/plus.svg" 
+                  alt="Plus" 
+                  className="w-6 h-6"
+                />
+              </button>
             </div>
           </div>
         </div>
@@ -315,9 +360,32 @@ export default function MeasuresPage() {
         </div>
       </div>
 
+      {/* Feedback button below metrics */}
+      <div className="flex justify-center mt-8 mb-2 pb-20">
+        <Link 
+          variant="feedback"
+          onClick={() => {
+            if (window.location.pathname === '/about') {
+              const el = document.getElementById('contact-form');
+              if (el) el.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              window.location.href = '/about#contact-form';
+            }
+          }}
+        />
+      </div>
+
       <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
         <Footer />
       </footer>
+
+      {/* Popup */}
+      <Popup 
+        isOpen={isPopupOpen}
+        onClose={handlePopupClose}
+        onConfirm={handlePopupConfirm}
+        action={popupAction}
+      />
     </div>
   );
 }

@@ -105,9 +105,9 @@ const TopNav = () => {
   }, [isMenuOpen, isMounted]);
 
   const dropdownLinks = [
-    { href: '/tools', label: 'Tools' },
     { href: '/methods', label: 'Methods' },
     { href: '/metrics', label: 'Metrics' },
+    { href: '/tools', label: 'Tools' },
     { href: '/frameworks', label: 'Frameworks' },
     { href: '/cases', label: 'Cases' },
     { href: '/articles', label: 'Articles' },

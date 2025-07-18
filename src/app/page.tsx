@@ -29,11 +29,6 @@ const collections = [
     imageUrl: '/images/Abstract/Star 1.png',
   },
   {
-    title: 'Frameworks',
-    href: '/frameworks',
-    imageUrl: '/images/Abstract/Circle 1.png',
-  },
-  {
     title: 'Metrics',
     href: '/metrics',
     imageUrl: '/images/Abstract/Circle 2.png',
@@ -42,6 +37,11 @@ const collections = [
     title: 'Tools',
     href: '/tools',
     imageUrl: '/images/Abstract/Triangle 1.png',
+  },
+  {
+    title: 'Frameworks',
+    href: '/frameworks',
+    imageUrl: '/images/Abstract/Circle 1.png',
   },
   { title: 'Cases', href: '/cases', imageUrl: '/images/Abstract/Ciecle 3.png' },
   {
