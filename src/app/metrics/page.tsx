@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { Feedback } from '@/components/Feedback';
 import { TitleNavigation } from '@/components/TitleNavigation';
 import { MetricCard } from '@/components/MetricCard';
 import { MetricLetterCard } from '@/components/MetricLetterCard';
@@ -16,15 +15,6 @@ import animationData from '../../../public/gifs/cube-2.json';
 
 export default function MeasuresPage() {
   // Mobile: Cycle subcategory left/right
-  const handleSubCategoryChange = (direction: 'prev' | 'next') => {
-    if (!currentView.isMultiColumn || !currentView.columns) return;
-    const idx = currentView.columns.findIndex(col => col.name === activeSubCategory);
-    if (idx === -1) return;
-    let newIdx = direction === 'prev' ? idx - 1 : idx + 1;
-    if (newIdx < 0) newIdx = currentView.columns.length - 1;
-    if (newIdx >= currentView.columns.length) newIdx = 0;
-    setActiveSubCategory(currentView.columns[newIdx].name);
-  };
   const [metrics, setMetrics] = useState<ApiMetric[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState<string>('all');
@@ -168,6 +158,13 @@ export default function MeasuresPage() {
   }, []);
 
   const handleViewClick = (viewId: string) => {
+    if (viewId !== activeView) {
+      setActiveView(viewId);
+      const newUrl = viewId === 'all' ? '/metrics' : `/metrics?view=${viewId}`;
+      window.history.pushState({}, '', newUrl);
+    }
+  };
+
   // Mobile: Cycle subcategory left/right
   const handleSubCategoryChange = (direction: 'prev' | 'next') => {
     if (!currentView.isMultiColumn || !currentView.columns) return;
@@ -177,12 +174,6 @@ export default function MeasuresPage() {
     if (newIdx < 0) newIdx = currentView.columns.length - 1;
     if (newIdx >= currentView.columns.length) newIdx = 0;
     setActiveSubCategory(currentView.columns[newIdx].name);
-  };
-    if (viewId !== activeView) {
-      setActiveView(viewId);
-      const newUrl = viewId === 'all' ? '/metrics' : `/metrics?view=${viewId}`;
-      window.history.pushState({}, '', newUrl);
-    }
   };
 
   return (
@@ -329,4 +320,4 @@ export default function MeasuresPage() {
       </footer>
     </div>
   );
-} 
+}
