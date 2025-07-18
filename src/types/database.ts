@@ -359,6 +359,39 @@ export type Database = {
           },
         ]
       }
+      metrics: {
+        Row: {
+          id: number
+          name: string
+          slug: string | null
+          description: string | null
+          type: string | null
+          metadata: Json | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: number
+          name: string
+          slug?: string | null
+          description?: string | null
+          type?: string | null
+          metadata?: Json | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: number
+          name?: string
+          slug?: string | null
+          description?: string | null
+          type?: string | null
+          metadata?: Json | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

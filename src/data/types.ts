@@ -32,3 +32,20 @@ export interface ApiMethod {
     cognitive_stage?: 'react' | 'think' | 'act';
   };
 }
+
+export interface ApiMetric {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | null;
+  type: 'Time' | 'Ratio' | 'Count' | 'Scale' | 'Composite' | 'Money';
+  metadata?: {
+    data_source?: string[];
+    design_goal?: string[];
+    business_goal?: string[];
+    user_journey_stage?: string[];
+    measurement_timing?: string[];
+  };
+  created_at?: string;
+  updated_at?: string;
+}

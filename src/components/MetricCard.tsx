@@ -1,0 +1,116 @@
+import React, { useState } from 'react';
+import Image from 'next/image';
+
+interface MetricCardProps {
+  name: string;
+  type: 'Time' | 'Ratio' | 'Count' | 'Scale' | 'Composite' | 'Money';
+  description?: string | null;
+  className?: string;
+}
+
+export function MetricCard({
+  name,
+  type,
+  description,
+  className = '',
+}: MetricCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Map metric types to their corresponding icons
+  const getIconPath = (metricType: string) => {
+    const iconMap = {
+      'Time': '/icons/metric-time.svg',
+      'Ratio': '/icons/metric-ratio.svg',
+      'Count': '/icons/metric-count.svg',
+      'Scale': '/icons/metric-scale.svg',
+      'Composite': '/icons/metric-composite.svg',
+      'Money': '/icons/metric-money.svg',
+    };
+    return iconMap[metricType as keyof typeof iconMap] || '/icons/metric-time.svg';
+  };
+
+  return (
+    <div
+      className={`
+        w-[140px] h-[140px] 
+        rounded-lg 
+        cursor-pointer
+        perspective-1000
+        ${className}
+      `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div
+        className={`
+          w-full h-full
+          relative
+          transform-style-preserve-3d
+          transition-transform duration-250
+          ${isHovered ? 'rotate-y-180' : ''}
+        `}
+      >
+        {/* Front Side - Normal State */}
+        <div
+          className={`
+            absolute inset-0
+            w-full h-full
+            bg-[#1A1A1A]
+            border border-[var(--color-grey-dark)]
+            rounded-lg
+            flex flex-col
+            gap-2
+            backface-hidden
+          `}
+          style={{
+            padding: '16px 16px 32px 16px'
+          }}
+        >
+          {/* Icon */}
+          <div className="flex justify-start">
+            <Image
+              src={getIconPath(type)}
+              alt={`${type} metric icon`}
+              width={15}
+              height={15}
+            />
+          </div>
+          
+          {/* Metric Name */}
+          <div className="flex items-start">
+            <span className="label-default text-white leading-tight">
+              {name}
+            </span>
+          </div>
+        </div>
+
+        {/* Back Side - Hover State */}
+        <div
+          className={`
+            absolute inset-0
+            w-full h-full
+            bg-white
+            border border-[var(--color-grey-dark)]
+            rounded-lg
+            flex flex-col
+            justify-center
+            items-center
+            backface-hidden
+            rotate-y-180
+            text-center
+          `}
+          style={{
+            padding: '16px'
+          }}
+        >
+          {/* Description */}
+          {description && (
+            <span className="annotation text-black leading-tight">
+              {description}
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
