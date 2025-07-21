@@ -1,6 +1,6 @@
 'use client';
 
-import Lottie from 'lottie-react';
+import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import React, { useRef, useEffect } from 'react';
 
 interface LottieAnimationProps {
@@ -14,7 +14,7 @@ const LottieAnimation: React.FC<LottieAnimationProps> = ({
   className,
   speed = 1,
 }) => {
-  const lottieRef = useRef<any>(null);
+  const lottieRef = useRef<LottieRefCurrentProps | null>(null);
 
   useEffect(() => {
     if (lottieRef.current) {
