@@ -124,11 +124,11 @@ export function TitleNavigation({ showNav = true }: { showNav?: boolean }) {
           )}
         </div>
         
-        <h1 className="font-['Inter'] font-bold text-[40px] text-center flex flex-wrap items-center justify-center gap-x-2">
+        <h1 className="font-['Bai_Jamjuree'] font-bold text-[40px] text-center flex flex-wrap items-center justify-center gap-x-2">
             {!isOpen && <span className="text-white">Design. Validate</span>}
             {showNav && currentPage && (
               <span 
-                className={`cursor-pointer ${hoveredItem ? 'text-white' : 'text-[#FF3654]'}`}
+                className={`cursor-pointer ${hoveredItem ? 'text-white' : 'text-[#FF3654]'} font-['Bai_Jamjuree']`}
                 onClick={handleClick}
               >
                 {isOpen ? currentPage.label : `/ ${currentPage.label}`}
@@ -147,7 +147,7 @@ export function TitleNavigation({ showNav = true }: { showNav?: boolean }) {
           .map((page) => (
             <button
               key={page.href} 
-              className={`font-['Inter'] font-bold text-[40px] py-1 whitespace-nowrap cursor-pointer ${
+              className={`font-['Bai_Jamjuree'] font-bold text-[40px] py-1 whitespace-nowrap cursor-pointer ${
                 hoveredItem === page.href ? 'text-[#FF3654]' : 'text-white'
               }`}
               onClick={() => handleMenuItemClick(page.href)}

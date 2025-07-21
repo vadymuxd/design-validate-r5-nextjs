@@ -6,16 +6,16 @@ import { Footer } from '@/components/Footer';
 
 export const metadata: Metadata = {
   title: "Design. Validate: Community-Driven Tools, Methods & Frameworks",
-  description: "Explore community-driven collections of tools, methods, frameworks, and articles to validate your design and measure the success of your digital solutions. Join a community of designers, product managers, and engineers.",
+  description: "Explore community-driven collections of tools, methods, frameworks, and articles to validate design and measure the success of your digital solutions. Join a community of designers, product managers, and engineers.",
   keywords: ["design validation", "UX design", "product design", "design tools", "design methods", "design frameworks", "usability testing", "A/B testing", "design metrics", "data-driven design"],
   openGraph: {
     title: "Design. Validate: Community-Driven Tools, Methods & Frameworks",
-    description: "Explore community-driven collections to validate your design and measure the success of your digital solutions.",
+    description: "Explore community-driven collections to validate design and measure the success of your digital solutions.",
     url: "https://www.design-validate.com",
   },
   twitter: {
     title: "Design. Validate: Community-Driven Tools, Methods & Frameworks",
-    description: "Explore community-driven collections to validate your design and measure the success of your digital solutions.",
+    description: "Explore community-driven collections to validate design and measure the success of your digital solutions.",
   },
   alternates: {
     canonical: "https://www.design-validate.com",
@@ -61,7 +61,7 @@ export default function Home() {
       <div className="text-center">
         <h1 className="sr-only">Community-Driven Collections for Design Validation</h1>
         <p className="body mt-4 max-w-xl mx-auto">
-          Community-driven collections to validate your design and measure the
+          Community-driven collections to validate design and measure the
           success of your digital solutions
         </p>
       </div>

@@ -34,7 +34,7 @@
 
 /* Typography classes from Figma */
 .h1 {
-  font-family: var(--font-family);
+  font-family: 'Bai Jamjuree', var(--font-family);
   font-size: 40px;
   font-weight: 700;
   line-height: 1.5;
