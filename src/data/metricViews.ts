@@ -20,10 +20,10 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
     description: 'All metrics and KPIs to measure design success and impact.',
     isMultiColumn: false
   },
-  'data-type': {
-    id: 'data-type',
-    name: 'Data Type',
-    description: 'Metrics organized by data type: Time, Ratio, Count, Scale, Composite, and Money measurements.',
+  'metric-type': {
+    id: 'metric-type',
+    name: 'Metric Type',
+    description: 'Metrics organized by metric type: Time, Ratio, Count, Scale, Composite, and Money measurements.',
     isMultiColumn: true,
     columns: [
       {
@@ -52,9 +52,9 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
       }
     ]
   },
-  'data-source': {
-    id: 'data-source',
-    name: 'Data Source',
+  'user-data': {
+    id: 'user-data',
+    name: 'User Data',
     description: 'Metrics grouped by how data is collected: user behaviors, user attitudes, and non-user evaluation.',
     isMultiColumn: true,
     columns: [
@@ -180,7 +180,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
 
 // Metric metadata interface - structure based on database metadata
 export interface MetricMetadata {
-  data_source?: string[];
+  user_data?: string[];
   design_goal?: string[];
   business_goal?: string[];
   user_journey_stage?: string[];
@@ -206,35 +206,34 @@ export function groupMetricsByView(metrics: ApiMetric[], viewId: string): Record
   metrics.forEach(metric => {
     const metadata = metric.metadata as MetricMetadata;
     if (!metadata) {
-      // If no metadata, put in first group as fallback
-      const firstKey = Object.keys(grouped)[0];
-      if (firstKey) grouped[firstKey].push(metric);
+      // Skip metrics without metadata - don't add to any group
+      // This prevents incorrect categorization
       return;
     }
 
     let targetGroups: string[] = [];
     
     switch (viewId) {
-      case 'data-type':
-        // For data-type, use the metric.type field directly
+      case 'metric-type':
+        // For metric-type, use the metric.type field directly
         if (metric.type) {
           targetGroups = [metric.type.toLowerCase()];
         }
         break;
-      case 'data-source':
-        targetGroups = (metadata.data_source || []).map(s => s.toLowerCase().replace(/\s+/g, ' '));
+      case 'user-data':
+        targetGroups = (metadata.user_data || []).map((s: string) => s.toLowerCase().replace(/\s+/g, ' '));
         break;
       case 'design-goal':
-        targetGroups = (metadata.design_goal || []).map(s => s.toLowerCase());
+        targetGroups = (metadata.design_goal || []).map((s: string) => s.toLowerCase());
         break;
       case 'business-goal':
-        targetGroups = (metadata.business_goal || []).map(s => s.toLowerCase());
+        targetGroups = (metadata.business_goal || []).map((s: string) => s.toLowerCase());
         break;
       case 'user-journey-stage':
-        targetGroups = (metadata.user_journey_stage || []).map(s => s.toLowerCase());
+        targetGroups = (metadata.user_journey_stage || []).map((s: string) => s.toLowerCase());
         break;
       case 'measurement-timing':
-        targetGroups = (metadata.measurement_timing || []).map(s => s.toLowerCase().replace('-', '-'));
+        targetGroups = (metadata.measurement_timing || []).map((s: string) => s.toLowerCase().replace('-', '-'));
         break;
       default:
         targetGroups = ['all'];
@@ -242,9 +241,9 @@ export function groupMetricsByView(metrics: ApiMetric[], viewId: string): Record
 
     // Add metric to appropriate groups
     if (targetGroups.length === 0) {
-      // Fallback to first group if no metadata found
-      const firstKey = Object.keys(grouped)[0];
-      if (firstKey) grouped[firstKey].push(metric);
+      // Skip metrics without proper metadata - don't add to any group
+      // This prevents metrics from being incorrectly categorized
+      return;
     } else {
       targetGroups.forEach(groupKey => {
         if (grouped[groupKey]) {
@@ -256,11 +255,9 @@ export function groupMetricsByView(metrics: ApiMetric[], viewId: string): Record
           );
           if (matchingKey) {
             grouped[matchingKey].push(metric);
-          } else {
-            // Fallback to first group
-            const firstKey = Object.keys(grouped)[0];
-            if (firstKey) grouped[firstKey].push(metric);
           }
+          // Remove fallback to first group - if no match found, skip the metric
+          // This prevents incorrect categorization
         }
       });
     }

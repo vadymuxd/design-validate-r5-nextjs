@@ -63,7 +63,7 @@ export default function MeasuresPage() {
 
     // Create dynamic descriptions based on view and subcategory combinations
     const viewDescriptions: Record<string, Record<string, string>> = {
-      'data-type': {
+      'metric-type': {
         'Time': 'Metrics grouped by the type of data they represent, for example measuring time-based interactions where duration and speed of user actions are tracked.',
         'Ratio': 'Metrics grouped by the type of data they represent, for example measuring percentage-based outcomes that show proportions and success rates.',
         'Count': 'Metrics grouped by the type of data they represent, for example measuring numerical counts of user actions, events, and behaviors.',
@@ -71,7 +71,7 @@ export default function MeasuresPage() {
         'Composite': 'Metrics grouped by the type of data they represent, for example measuring complex calculations that combine multiple data points into comprehensive scores.',
         'Money': 'Metrics grouped by the type of data they represent, for example measuring financial outcomes that demonstrate business value and revenue impact.'
       },
-      'data-source': {
+      'user-data': {
         'User Behaviours': 'Metrics grouped by how data is collected, for example measuring from observing and tracking actual user interactions and behaviors in real-time.',
         'User Attitudes': 'Metrics grouped by how data is collected, for example measuring from gathering user opinions, feedback, and subjective experiences through surveys and interviews.',
         'Non-User Evaluation': 'Metrics grouped by how data is collected, for example measuring from expert analysis, automated testing, and system-generated evaluations independent of direct user input.'

@@ -40,7 +40,7 @@ export interface ApiMetric {
   description: string | null;
   type: 'Time' | 'Ratio' | 'Count' | 'Scale' | 'Composite' | 'Money';
   metadata?: {
-    data_source?: string[];
+    user_data?: string[];
     design_goal?: string[];
     business_goal?: string[];
     user_journey_stage?: string[];
