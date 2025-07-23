@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { TitleNavigation } from '@/components/TitleNavigation';
 import { MetricCard } from '@/components/MetricCard';
 import { MetricLetterCard } from '@/components/MetricLetterCard';
@@ -236,28 +237,32 @@ export default function MeasuresPage() {
           {/* Metrics Count */}
           <div className="flex flex-col items-center gap-4 text-center">
             <div className="flex items-center gap-4">
-              <button 
+              <button
                 onClick={handleMinusClick}
                 className="cursor-pointer hover:opacity-80 transition-opacity"
                 aria-label="Remove metric"
               >
-                <img 
+                <Image 
                   src="/icons/minus.svg" 
                   alt="Minus" 
+                  width={24}
+                  height={24}
                   className="w-6 h-6"
                 />
               </button>
               <h3 className="h3 text-white">
                 {getFilteredMetrics().length}
               </h3>
-              <button 
+              <button
                 onClick={handlePlusClick}
                 className="cursor-pointer hover:opacity-80 transition-opacity"
                 aria-label="Add metric"
               >
-                <img 
+                <Image 
                   src="/icons/plus.svg" 
                   alt="Plus" 
+                  width={24}
+                  height={24}
                   className="w-6 h-6"
                 />
               </button>
@@ -289,9 +294,11 @@ export default function MeasuresPage() {
                     onClick={() => handleSubCategoryChange('prev')}
                     className="p-2"
                   >
-                    <img
+                    <Image
                       src="/icons/Chevron=Down.svg"
                       alt="Previous"
+                      width={24}
+                      height={24}
                       className="w-6 h-6 text-white rotate-90"
                       style={{ filter: 'invert(1)' }}
                     />
@@ -304,9 +311,11 @@ export default function MeasuresPage() {
                     onClick={() => handleSubCategoryChange('next')}
                     className="p-2"
                   >
-                    <img
+                    <Image
                       src="/icons/Chevron=Down.svg"
                       alt="Next"
+                      width={24}
+                      height={24}
                       className="w-6 h-6 text-white -rotate-90"
                       style={{ filter: 'invert(1)' }}
                     />
