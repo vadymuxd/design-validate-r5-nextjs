@@ -258,14 +258,22 @@ export async function POST(request: NextRequest) {
       }
     } else {
       // New vote: insert using new scalable structure
-      const voteData: any = {
+      const voteData: {
+        vote_type: string;
+        entity_id: string;
+        sentiment: string;
+        ip_address: string;
+        device_id: string;
+        tool_id: string | null;
+        method_id?: number;
+      } = {
         vote_type,
         entity_id,
         sentiment,
         ip_address,
         device_id,
         // Legacy fields for backward compatibility during transition
-        tool_id: vote_type === 'tool' ? entity_id : null,
+        tool_id: vote_type === 'tool' ? entity_id : null
       };
       
       // Only add method_id if it's actually needed/provided

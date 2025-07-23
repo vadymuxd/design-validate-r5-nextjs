@@ -6,7 +6,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient<Database>(supabaseUrl, supabaseKey);
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Fetch frameworks from the database
     const { data, error } = await supabase
