@@ -33,6 +33,24 @@ export interface ApiMethod {
   };
 }
 
+export interface ApiFramework {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | null;
+  link: string | null;
+  picture: string | null;
+  initial_upvotes: number;
+  initial_downvotes: number;
+  current_upvotes: number;
+  current_downvotes: number;
+  upvotes: number; // total upvotes (initial + current)
+  downvotes: number; // total downvotes (initial + current)
+  net_score: number; // upvotes - downvotes (for ranking)
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface ApiMetric {
   id: number;
   name: string;

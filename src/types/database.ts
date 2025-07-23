@@ -9,6 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      frameworks: {
+        Row: {
+          id: number
+          name: string
+          slug: string
+          description: string | null
+          link: string | null
+          picture: string | null
+          initial_upvotes: number | null
+          initial_downvotes: number | null
+          current_upvotes: number | null
+          current_downvotes: number | null
+          created_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          id?: number
+          name: string
+          slug: string
+          description?: string | null
+          link?: string | null
+          picture?: string | null
+          initial_upvotes?: number | null
+          initial_downvotes?: number | null
+          current_upvotes?: number | null
+          current_downvotes?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          id?: number
+          name?: string
+          slug?: string
+          description?: string | null
+          link?: string | null
+          picture?: string | null
+          initial_upvotes?: number | null
+          initial_downvotes?: number | null
+          current_upvotes?: number | null
+          current_downvotes?: number | null
+          created_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       app_feedback: {
         Row: {
           context_slug: string | null

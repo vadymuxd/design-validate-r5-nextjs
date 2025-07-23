@@ -27,8 +27,7 @@ async function updateAggregatedCounts(voteType: VoteEntityType, entityId: string
         console.log(`Article vote aggregation not yet implemented for entity: ${entityId}`);
         break;
       case 'framework':
-        // Future: Update framework aggregated counts
-        console.log(`Framework vote aggregation not yet implemented for entity: ${entityId}`);
+        await updateFrameworkVoteCounts(entityId);
         break;
       default:
         console.error(`Unknown vote type: ${voteType}`);
@@ -120,6 +119,47 @@ async function updateMethodVoteCounts(methodId: string) {
 
   } catch (error) {
     console.error('Unexpected error in updateMethodVoteCounts:', error);
+  }
+}
+
+// Update framework vote counts
+async function updateFrameworkVoteCounts(frameworkId: string) {
+  try {
+    // Count votes for this framework using new structure
+    const { count: upvotes, error: upvoteError } = await supabase
+      .from('votes')
+      .select('*', { count: 'exact', head: true })
+      .eq('vote_type', 'framework')
+      .eq('entity_id', frameworkId)
+      .eq('sentiment', 'UPVOTE');
+
+    const { count: downvotes, error: downvoteError } = await supabase
+      .from('votes')
+      .select('*', { count: 'exact', head: true })
+      .eq('vote_type', 'framework')
+      .eq('entity_id', frameworkId)
+      .eq('sentiment', 'DOWNVOTE');
+
+    if (upvoteError || downvoteError) {
+      console.error('Error counting framework votes:', upvoteError || downvoteError);
+      return;
+    }
+
+    // Update the frameworks table with current vote counts
+    const { error: updateError } = await supabase
+      .from('frameworks')
+      .update({
+        current_upvotes: upvotes ?? 0,
+        current_downvotes: downvotes ?? 0,
+      })
+      .eq('id', parseInt(frameworkId));
+    
+    if (updateError) {
+      console.error('Error updating framework vote counts:', updateError);
+    }
+
+  } catch (error) {
+    console.error('Unexpected error in updateFrameworkVoteCounts:', error);
   }
 }
 
@@ -218,22 +258,31 @@ export async function POST(request: NextRequest) {
       }
     } else {
       // New vote: insert using new scalable structure
+      const voteData: any = {
+        vote_type,
+        entity_id,
+        sentiment,
+        ip_address,
+        device_id,
+        // Legacy fields for backward compatibility during transition
+        tool_id: vote_type === 'tool' ? entity_id : null,
+      };
+      
+      // Only add method_id if it's actually needed/provided
+      if (vote_type === 'method') {
+        voteData.method_id = parseInt(entity_id);
+      } else if (context_id) {
+        voteData.method_id = context_id;
+      }
+      
       const { error: insertError } = await supabase
         .from('votes')
-        .insert({
-          vote_type,
-          entity_id,
-          method_id: vote_type === 'method' ? parseInt(entity_id) : (context_id || null),
-          sentiment,
-          ip_address,
-          device_id,
-          // Legacy fields for backward compatibility during transition
-          tool_id: vote_type === 'tool' ? entity_id : null,
-        });
+        .insert(voteData);
 
       if (insertError) {
         console.error('Error inserting vote:', insertError);
-        return NextResponse.json({ message: 'Failed to save vote' }, { status: 500 });
+        console.error('Insert data was:', voteData);
+        return NextResponse.json({ message: 'Failed to save vote', error: insertError.message }, { status: 500 });
       }
 
       // Update aggregated counts
