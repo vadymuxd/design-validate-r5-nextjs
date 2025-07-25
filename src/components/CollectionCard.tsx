@@ -28,9 +28,11 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
       <div className="hidden sm:flex flex-col w-[200px] h-auto bg-[var(--color-black-lighter)] border border-[var(--color-grey-dark)] overflow-hidden transition-all duration-200 hover:bg-[var(--color-grey-darkest)]">
         {/* Top: Counter */}
         <div className="pt-12 text-center">
-          <span className="label-default text-[var(--color-grey-dark)]">
-            {count.toLocaleString()}
-          </span>
+          <div className="w-[20px] mx-auto flex justify-center">
+            <span className="label-default text-[var(--color-grey-dark)]">
+              {count.toLocaleString()}
+            </span>
+          </div>
         </div>
         
         {/* Middle: SVG Image */}
@@ -56,9 +58,11 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
       <div className="flex sm:hidden flex-row items-center w-full h-[80px] bg-[var(--color-black-lighter)] border border-[var(--color-grey-dark)] overflow-hidden transition-all duration-200 hover:bg-[var(--color-grey-darkest)]">
         {/* Left: Counter */}
         <div className="flex items-center justify-center px-4 flex-shrink-0">
-          <span className="label-default text-[var(--color-grey-dark)]">
-            {count.toLocaleString()}
-          </span>
+          <div className="w-[20px] flex justify-center">
+            <span className="label-default text-[var(--color-grey-dark)]">
+              {count.toLocaleString()}
+            </span>
+          </div>
         </div>
         
         {/* Middle: SVG Image */}
