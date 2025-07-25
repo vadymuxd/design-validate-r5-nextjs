@@ -110,7 +110,6 @@ const TopNav = () => {
     { href: '/tools', label: 'Tools' },
     { href: '/frameworks', label: 'Frameworks' },
     { href: '/cases', label: 'Cases' },
-    { href: '/articles', label: 'Articles' },
   ];
 
   const mainLinks = [

@@ -42,20 +42,20 @@ export function PageLoader({
         !isContentLoaded ? 'min-h-screen' : ''
       }`}
     >
-      <div className="flex flex-col items-center py-12 px-4 sm:px-8 gap-8 flex-1">
+      <div className="flex flex-col items-center py-12 px-4 sm:px-8 flex-1">
         {/* TitleNavigation is always visible */}
         {titleNavigation}
 
         {/* Preloader or Content */}
         {!isContentLoaded ? (
-          <div className="flex justify-center items-center h-64">
+          <div className="flex justify-center items-center h-64 mt-8">
             <LottieAnimation
               animationData={animationData}
               className="w-full h-auto max-w-[200px]"
             />
           </div>
         ) : (
-          <div className="w-full flex flex-col items-center gap-8 animate-fadeIn">
+          <div className="w-full flex flex-col items-center animate-fadeIn">
             {children}
           </div>
         )}

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const pages = [
   { href: '/methods', label: 'Methods' },
@@ -9,7 +10,6 @@ const pages = [
   { href: '/tools', label: 'Tools' },
   { href: '/frameworks', label: 'Frameworks' },
   { href: '/cases', label: 'Cases' },
-  { href: '/articles', label: 'Articles' },
 ];
 
 export function TitleNavigation({ showNav = true }: { showNav?: boolean }) {
@@ -22,6 +22,22 @@ export function TitleNavigation({ showNav = true }: { showNav?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const currentPage = pages.find((p) => p.href === pathname);
+
+  // Helper function to get SVG path based on current page
+  const getSvgPath = () => {
+    if (!currentPage) return null; // Homepage doesn't have an SVG
+    return `/images/Collections/Type=${currentPage.label}, Screen=Desktop.svg`;
+  };
+
+  // Helper function to get container size
+  const getContainerSize = () => {
+    return pathname === '/' ? 60 : 150; // 60px for homepage, 150px for other pages
+  };
+
+  // Helper function to check if we should show SVG (not on homepage)
+  const shouldShowSvg = () => {
+    return pathname !== '/' && currentPage;
+  };
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -93,39 +109,57 @@ export function TitleNavigation({ showNav = true }: { showNav?: boolean }) {
         className="relative flex flex-col items-center gap-4 z-50"
       >
         <div 
-          className="w-[60px] h-[60px] flex items-center justify-center cursor-pointer"
+          className={`flex items-center justify-center cursor-pointer`}
+          style={{ width: `${getContainerSize()}px`, height: `${getContainerSize()}px` }}
           onClick={handleLogoClick}
           title={contentLoaded ? 'Go to homepage' : undefined}
         >
           {showLogo && (
-            <div className={`w-full h-full ${contentLoaded ? 'logo-animate' : ''}`}> 
-              <svg
-                viewBox="0 0 60 60"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-full h-full"
-              >
-                <circle cx="30" cy="30" r="30" fill="url(#gradient)" />
-                <defs>
-                  <linearGradient
-                    id="gradient"
-                    x1="30"
-                    y1="0"
-                    x2="30"
-                    y2="60"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#FF3654" />
-                    <stop offset="1" stopColor="#FF3654" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-              </svg>
+            <div className="w-full h-full">
+              {shouldShowSvg() ? (
+                <Image
+                  src={getSvgPath()!}
+                  alt={currentPage?.label || ''}
+                  width={150}
+                  height={150}
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <div className="relative w-[60px] h-[30px] overflow-hidden">
+                    {/* Red "D" layer (bottom) - animated from bottom */}
+                    <div className={`absolute inset-0 z-10 ${contentLoaded ? 'logo-animate' : ''}`}>
+                      <Image
+                        src="/logo/Logo-p2-red-d.svg"
+                        alt="Design Validate Logo Red D"
+                        width={60}
+                        height={60}
+                        className="w-full h-auto object-contain"
+                      />
+                    </div>
+                    {/* Black "V" layer (top) - static */}
+                    <div className="absolute inset-0 z-20">
+                      <Image
+                        src="/logo/Logo-p1-black-v.svg"
+                        alt="Design Validate Logo Black V"
+                        width={60}
+                        height={60}
+                        className="w-full h-auto object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </div>
         
         <h1 className="font-['Bai_Jamjuree'] font-bold text-[40px] text-center flex flex-wrap items-center justify-center gap-x-2">
-            {!isOpen && <span className="text-white">Design. Validate</span>}
+            {!isOpen && (
+              <span className="text-white">
+                {pathname === '/' ? 'Design. Validate' : 'Validate'}
+              </span>
+            )}
             {showNav && currentPage && (
               <span 
                 className={`cursor-pointer ${hoveredItem ? 'text-white' : 'text-[#FF3654]'} font-['Bai_Jamjuree']`}

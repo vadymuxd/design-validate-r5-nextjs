@@ -147,7 +147,7 @@ function ToolsPageContent() {
       <PageLoader titleNavigation={<TitleNavigation />}>
         {/* Methods */}
         <div className="w-full max-w-[730px] flex flex-col gap-2">
-          <div className="flex gap-2 flex-wrap justify-center">
+          <div className="flex gap-2 flex-wrap justify-center py-8">
             {methodsLoading ? (
               <div className="flex justify-center items-center h-12">
                 <div className="text-white">Loading methods...</div>
