@@ -42,7 +42,7 @@ export function PageLoader({
         !isContentLoaded ? 'min-h-screen' : ''
       }`}
     >
-      <div className="flex flex-col items-center py-12 px-4 sm:px-8 flex-1">
+      <div className="flex flex-col items-center pb-12 px-4 sm:px-8 flex-1">
         {/* TitleNavigation is always visible */}
         {titleNavigation}
 

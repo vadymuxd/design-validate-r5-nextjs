@@ -95,7 +95,7 @@ export default function FrameworksPage() {
     <>
       {/* Top Section with gradient */}
       <div className="w-full gradient-black-to-grey pb-12 px-4 sm:px-8">
-        <div className="w-full max-w-[730px] mx-auto flex flex-col items-center gap-8 pt-12">
+        <div className="w-full max-w-[730px] mx-auto flex flex-col items-center gap-8 pt-0">
           <TitleNavigation />
           
           {/* Description */}
@@ -112,8 +112,8 @@ export default function FrameworksPage() {
 
       {/* Frameworks Section */}
       <div 
-        className={`px-4 sm:px-8 pb-16 transition-all duration-1000 ${
-          isLoading ? 'bg-black' : 'bg-[var(--color-grey-dark)]'
+        className={`px-4 sm:px-8 pb-16 ${
+          isLoading ? 'bg-black' : 'bg-[var(--color-grey-darkest)]'
         }`}
       >
         <div className="w-full max-w-[1280px] mx-auto">

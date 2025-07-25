@@ -239,7 +239,7 @@ function MethodsPageContent() {
     <>
       {/* Top Section with gradient */}
       <div className="w-full gradient-black-to-grey pb-12 px-4 sm:px-8">
-        <div className="w-full max-w-[730px] mx-auto flex flex-col items-center gap-8 pt-12">
+        <div className="w-full max-w-[730px] mx-auto flex flex-col items-center gap-8 pt-0">
           <TitleNavigation />
           
           {/* View Pills */}

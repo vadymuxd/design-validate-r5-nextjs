@@ -35,11 +35,15 @@ export function CollectionGrid() {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row justify-center w-full">
+    <div className="flex flex-wrap justify-center w-full gap-0">
       {collections.map((collection, index) => (
         <div 
           key={collection.title} 
-          className={`${index > 0 ? "mt-[-1px] sm:mt-0 sm:ml-[-1px]" : ""} w-full sm:w-auto`}
+          className="w-full sm:w-auto sm:min-w-[200px] sm:flex-shrink-0"
+          style={{
+            marginTop: '-1px',
+            marginLeft: index > 0 ? '-1px' : '0'
+          }}
         >
           <CollectionCard
             title={collection.title}
