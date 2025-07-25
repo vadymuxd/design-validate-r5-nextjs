@@ -22,29 +22,6 @@ export const metadata: Metadata = {
   },
 };
 
-const collections = [
-  {
-    title: 'Methods',
-    href: '/methods',
-  },
-  {
-    title: 'Metrics',
-    href: '/metrics',
-  },
-  {
-    title: 'Tools',
-    href: '/tools',
-  },
-  {
-    title: 'Frameworks',
-    href: '/frameworks',
-  },
-  { 
-    title: 'Cases', 
-    href: '/cases',
-  },
-];
-
 export default function Home() {
   return (
     <div className="flex flex-col" style={{ minHeight: 'calc(100vh - 60px)' }}>
@@ -65,7 +42,7 @@ export default function Home() {
       </div>
     </PageLoader>
     <footer className="bg-black py-12">
-      <Footer noBorder={true} />
+      <Footer />
     </footer>
     </div>
   );

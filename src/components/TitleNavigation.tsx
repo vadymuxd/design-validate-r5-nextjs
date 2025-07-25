@@ -106,7 +106,7 @@ export function TitleNavigation({ showNav = true }: { showNav?: boolean }) {
       
       <div 
         ref={containerRef}
-        className="relative flex flex-col items-center gap-4 z-50"
+        className={`relative flex flex-col items-center z-50 ${pathname === '/' ? 'gap-4' : 'gap-0'}`}
       >
         <div 
           className={`flex items-center justify-center cursor-pointer`}

@@ -7,11 +7,7 @@ import { Button } from './Button';
 import LottieAnimation from './LottieAnimation';
 import cubeBlackAnimation from '../../public/gifs/black_3_cubes.json';
 
-interface FooterProps {
-  noBorder?: boolean;
-}
-
-export const Footer = ({ noBorder = false }: FooterProps) => {
+export const Footer = () => {
   const [showPopup, setShowPopup] = useState(false);
   return (
     <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-9 w-full">
