@@ -13,11 +13,18 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: {
     template: "%s | Design. Validate",
-    default: "Design. Validate - Tools, Methods & Frameworks for Design Validation",
+    default: "Design. Validate - Community-Driven Tools, Methods & Frameworks for Design Validation",
   },
-  description: "Comprehensive platform for design validation featuring tools, methods, frameworks, and case studies. Make data-driven design decisions with curated resources and community insights.",
+  description: "Design. Validate is the comprehensive platform for design validation featuring tools, methods, frameworks, and case studies. Make data-driven design decisions with curated resources and community insights.",
   keywords: [
+    "Design. Validate",
+    "design-validate", 
+    "design validate",
     "design validation",
+    "UX metrics",
+    "UX measuring",
+    "ux validation",
+    "validate ux",
     "UX research",
     "design tools",
     "usability testing",
@@ -33,8 +40,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     siteName: "Design. Validate",
-    title: "Design. Validate - Tools, Methods & Frameworks for Design Validation",
-    description: "Comprehensive platform for design validation featuring tools, methods, frameworks, and case studies.",
+    title: "Design. Validate - Community-Driven Tools, Methods & Frameworks for Design Validation",
+    description: "Design. Validate is the comprehensive platform for design validation featuring tools, methods, frameworks, and case studies.",
     images: ["/icon.png"],
     url: "https://www.design-validate.com",
   },
@@ -53,9 +60,6 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-  },
-  verification: {
-    google: '', // Add Google Search Console verification ID when available
   },
 };
 

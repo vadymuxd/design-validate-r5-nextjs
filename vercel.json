@@ -1,14 +1,24 @@
 {
   "redirects": [
     {
+      "source": "/",
+      "destination": "https://www.design-validate.com/",
+      "permanent": true,
+      "has": [
+        {
+          "type": "host",
+          "value": "design-validate.com"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "destination": "https://www.design-validate.com/$1",
       "permanent": true,
       "has": [
         {
-          "type": "header",
-          "key": "x-forwarded-proto",
-          "value": "http"
+          "type": "host",
+          "value": "design-validate.com"
         }
       ]
     }
