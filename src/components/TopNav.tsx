@@ -124,7 +124,7 @@ const TopNav = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 right-0 z-[60] transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'} bg-black ${isMenuOpen ? '' : 'border-b border-[var(--color-grey-dark)]'}`}>
+      <header className={`fixed top-0 left-0 right-0 z-[60] transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'} bg-black ${isMenuOpen ? '' : 'border-b border-[var(--color-grey-darkest)]'}`}>
         <nav className="px-9 py-4 flex justify-between items-center">
           <Link href="/">
             <div className="relative h-6 w-6">
@@ -213,7 +213,7 @@ const TopNav = () => {
           </div>
         </nav>
       </header>
-      {pathname !== '/about' && <div className="h-16"></div>} {/* Spacer for the fixed header, rendered on all pages except 'About' */}
+{pathname !== '/about' && pathname !== '/' && <div className="h-16"></div>} {/* Spacer for the fixed header, not on homepage or about */}
 
       {/* Mobile Menu */}
       <div

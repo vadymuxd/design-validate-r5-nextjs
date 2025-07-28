@@ -51,12 +51,17 @@ export default function Home() {
           }),
         }}
       />
-    <div className="flex flex-col" style={{ minHeight: 'calc(100vh - 60px)' }}>
+    <div 
+      className="flex flex-col pt-16 min-h-screen" 
+      style={{ 
+        background: 'radial-gradient(circle at top left, #19252eff 0%, #080A0B 100%)'
+      }}
+    >
       <PageLoader
         titleNavigation={<TitleNavigation showNav={false} />}
-        className="bg-black flex flex-col px-0 flex-grow"
+        className="bg-transparent flex flex-col px-0 flex-grow"
       >
-        <div className="text-center" style={{ marginTop: '24px' }}>
+        <div className="text-center" style={{ marginTop: '24px', marginBottom: 0 }}>
           <h1 className="sr-only">Design. Validate: Community-Driven Collections for Design Validation</h1>
           <p className="body max-w-xl mx-auto">
             Community-driven collections to validate design and measure the
@@ -64,13 +69,11 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="flex-grow flex flex-col justify-center w-full" style={{ marginTop: '80px' }}>
+        <div className="flex-grow flex flex-col justify-center w-full" style={{ marginTop: '80px', marginBottom: 0 }}>
           <CollectionGrid />
         </div>
       </PageLoader>
-      <footer className="bg-black py-12">
-        <Footer />
-      </footer>
+      <Footer noBorder />
     </div>
     </>
   );

@@ -241,9 +241,7 @@ function ToolsPageContent() {
       </PageLoader>
 
       {!methodsLoading && !isLoading && (
-        <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
-          <Footer />
-        </footer>
+        <Footer />
       )}
 
       <ToastMessage

@@ -7,10 +7,14 @@ import { Button } from './Button';
 import LottieAnimation from './LottieAnimation';
 import cubeBlackAnimation from '../../public/gifs/black_3_cubes.json';
 
-export const Footer = () => {
+interface FooterProps {
+  noBorder?: boolean;
+}
+
+export const Footer = ({ noBorder = false }: FooterProps) => {
   const [showPopup, setShowPopup] = useState(false);
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-9 w-full">
+    <div className={`bg-black flex flex-col md:flex-row items-center justify-center gap-4 md:gap-9 w-full py-12 ${noBorder ? '' : 'border-t border-[var(--color-grey-darkest)]'}`}>
       <Link href="/about#contact-form">
         <span
           className={`label-mini text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200`}

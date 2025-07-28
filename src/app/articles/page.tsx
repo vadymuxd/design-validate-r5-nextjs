@@ -45,9 +45,7 @@ export default function ArticlesPage() {
       </div>
     </main>
     
-    <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
-      <Footer />
-    </footer>
+    <Footer />
     </div>
   );
 } 

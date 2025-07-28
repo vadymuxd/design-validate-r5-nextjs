@@ -52,7 +52,7 @@ export function MethodCard({
   };
 
   return (
-    <div className={hideDivider ? "" : "border-b border-[#2D2D2D] last:border-b-0"}>
+    <div className={hideDivider ? "" : "border-b border-[var(--color-grey-darkest)] last:border-b-0"}>
       <div className="py-4">
         {/* Collapsed Header */}
         <div className="flex items-center justify-between">

@@ -224,7 +224,7 @@ function MethodsPageContent() {
                   {/* Full-width divider for mobile only */}
                   {!isLastColumn && (
                     <div className="md:hidden mt-8 mb-8 relative">
-                      <div className="absolute w-screen h-px bg-[#2D2D2D] left-1/2 -translate-x-1/2"></div>
+                      <div className="absolute w-screen h-px bg-[var(--color-grey-darkest)] left-1/2 -translate-x-1/2"></div>
                     </div>
                   )}
                 </div>
@@ -288,9 +288,7 @@ function MethodsPageContent() {
       </div>
       
       {!isLoading && (
-        <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
-          <Footer />
-        </footer>
+        <Footer />
       )}
       
       <ToastMessage

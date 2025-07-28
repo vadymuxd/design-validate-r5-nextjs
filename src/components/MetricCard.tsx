@@ -55,32 +55,39 @@ export function MetricCard({
           className={`
             absolute inset-0
             w-full h-full
-            bg-[#1A1A1A]
-            border border-[var(--color-grey-dark)]
             rounded-lg
             flex flex-col
             gap-2
             backface-hidden
           `}
           style={{
-            padding: '16px 16px 32px 16px'
+            background: 'linear-gradient(180deg, #41444D 0%, #172129 100%)',
+            padding: '1px'
           }}
         >
-          {/* Icon */}
-          <div className="flex justify-start">
-            <Image
-              src={getIconPath(type)}
-              alt={`${type} metric icon`}
-              width={15}
-              height={15}
-            />
-          </div>
-          
-          {/* Metric Name */}
-          <div className="flex items-start">
-            <span className="label-default text-white leading-tight">
-              {name}
-            </span>
+          <div
+            className="w-full h-full rounded-lg flex flex-col gap-2"
+            style={{
+              padding: '16px 16px 32px 16px',
+              background: 'linear-gradient(135deg, #182229 0%, #121A1F 100%)'
+            }}
+          >
+            {/* Icon */}
+            <div className="flex justify-start">
+              <Image
+                src={getIconPath(type)}
+                alt={`${type} metric icon`}
+                width={15}
+                height={15}
+              />
+            </div>
+            
+            {/* Metric Name */}
+            <div className="flex items-start">
+              <span className="label-default text-white leading-tight">
+                {name}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -89,8 +96,6 @@ export function MetricCard({
           className={`
             absolute inset-0
             w-full h-full
-            bg-white
-            border border-[var(--color-grey-dark)]
             rounded-lg
             flex flex-col
             justify-center
@@ -100,15 +105,23 @@ export function MetricCard({
             text-center
           `}
           style={{
-            padding: '16px'
+            background: 'linear-gradient(180deg, #41444D 0%, #172129 100%)',
+            padding: '1px'
           }}
         >
-          {/* Description */}
-          {description && (
-            <span className="annotation text-black leading-tight">
-              {description}
-            </span>
-          )}
+          <div
+            className="w-full h-full bg-white rounded-lg flex flex-col justify-center items-center text-center"
+            style={{
+              padding: '16px'
+            }}
+          >
+            {/* Description */}
+            {description && (
+              <span className="annotation text-black leading-tight">
+                {description}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

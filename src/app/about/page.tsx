@@ -149,9 +149,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
-        <Footer />
-      </footer>
+      <Footer />
       </div>
   );
 } 

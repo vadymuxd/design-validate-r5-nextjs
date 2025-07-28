@@ -4,13 +4,13 @@
   /* Base colors */
   --color-white: #FFFFFF;
   --color-black: #000000;
-  --color-black-lighter: #141414;
+  --color-black-lighter: #172128;
   --color-red: #FF3654;
   --color-green: #77DB95;
   --color-grey-light: #F2F2F7;
   --color-grey-medium: #BEBEC1;
-  --color-grey-dark: #383838;
-  --color-grey-darkest: #242424;
+  --color-grey-dark: #41444E;
+  --color-grey-darkest: #1D2931;
   --color-link: #007AFF;
 
   /* System colors */
@@ -213,7 +213,7 @@ html, body {
 
 /* Gradient utility classes */
 .gradient-black-to-grey {
-  background: linear-gradient(to bottom, #000000 52.457%, #1A1A1A 100%);
+  background: linear-gradient(to bottom, #000000 52.457%, #162026 100%);
 }
 
 .gradient-radial-hero {

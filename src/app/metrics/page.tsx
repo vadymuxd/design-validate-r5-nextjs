@@ -380,9 +380,7 @@ export default function MeasuresPage() {
         />
       </div>
 
-      <footer className="bg-black py-12 border-t border-[var(--color-grey-dark)]">
-        <Footer />
-      </footer>
+      <Footer />
 
       {/* Popup */}
       <Popup 
