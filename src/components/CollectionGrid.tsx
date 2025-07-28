@@ -36,7 +36,7 @@ export function CollectionGrid() {
 
   return (
     <div className="flex flex-wrap justify-center w-full gap-[2px]">
-      {collections.map((collection, index) => (
+      {collections.map((collection) => (
         <div 
           key={collection.title} 
           className="w-full sm:w-auto sm:min-w-[200px] sm:flex-shrink-0"
