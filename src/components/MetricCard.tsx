@@ -32,7 +32,7 @@ export function MetricCard({
   return (
     <div
       className={`
-        w-[140px] h-[140px] 
+        w-[120px] h-[120px] sm:w-[140px] sm:h-[140px]
         rounded-lg 
         cursor-pointer
         perspective-1000
@@ -84,7 +84,7 @@ export function MetricCard({
             
             {/* Metric Name */}
             <div className="flex items-start">
-              <span className="label-default text-white leading-tight">
+              <span className="label-responsive text-white leading-tight">
                 {name}
               </span>
             </div>

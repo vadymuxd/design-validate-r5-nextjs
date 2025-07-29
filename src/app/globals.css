@@ -83,6 +83,22 @@
   line-height: 1;
 }
 
+/* Responsive label class - mini on mobile, default on desktop */
+.label-responsive {
+  font-family: var(--font-family);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+  .label-responsive {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+}
+
 .annotation {
   font-family: var(--font-family);
   font-size: 12px;

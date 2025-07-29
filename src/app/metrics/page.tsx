@@ -232,7 +232,7 @@ export default function MeasuresPage() {
       </div>
 
       {/* Metrics Section */}
-      <div className="bg-black pb-16" style={{ paddingLeft: '36px', paddingRight: '36px' }}>
+      <div className="bg-black pb-16 px-2 sm:px-9">
         <div className="w-full">
           {/* SubNavigation - only show for multi-column views */}
           {currentView.isMultiColumn && subCategories.length > 0 && (

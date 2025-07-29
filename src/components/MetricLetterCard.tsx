@@ -12,7 +12,7 @@ export function MetricLetterCard({
   return (
     <div
       className={`
-        w-[140px] h-[140px] 
+        w-[120px] h-[120px] sm:w-[140px] sm:h-[140px]
         bg-[var(--color-grey-dark)]
         rounded-lg 
         flex flex-col 
