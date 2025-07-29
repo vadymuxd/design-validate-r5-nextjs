@@ -17,7 +17,7 @@ export default function CommunityPage() {
       <div className="content-area" style={{ justifyContent: 'flex-start' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Image 
-            src="/gifs/Matrix_Cats-ezgif.com-crop.gif" 
+            src="/gifs/cat.gif" 
             alt="Community coming soon" 
             width={400}
             height={0}
@@ -42,4 +42,4 @@ export default function CommunityPage() {
     <Footer />
     </>
   );
-} 
+}

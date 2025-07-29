@@ -23,7 +23,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
   'metric-type': {
     id: 'metric-type',
     name: 'Metric Type',
-    description: 'Metrics by type: Time, Ratio, Count, Scale, Composite, Money.',
+    description: 'Metrics organized by their measurement type. Select a type below to explore specific metrics.',
     isMultiColumn: true,
     columns: [
       {
@@ -55,7 +55,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
   'user-data': {
     id: 'user-data',
     name: 'User Data',
-    description: 'Metrics by data source: user behaviors, attitudes, and non-user evaluation.',
+    description: 'Metrics organized by how data is collected from users. Select a data source below to explore specific metrics.',
     isMultiColumn: true,
     columns: [
       {
@@ -75,7 +75,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
   'design-goal': {
     id: 'design-goal',
     name: 'Design Objectives',
-    description: 'Metrics by design objective: discoverability, desirability, usability, engagement.',
+    description: 'Metrics organized by key design objectives. Select an objective below to explore specific metrics.',
     isMultiColumn: true,
     columns: [
       {
@@ -99,7 +99,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
   'business-goal': {
     id: 'business-goal',
     name: 'Business Outcomes',
-    description: 'Metrics by business objective: adoption, conversion, satisfaction, retention, revenue, referral.',
+    description: 'Metrics organized by business impact areas. Select an outcome below to explore specific metrics.',
     isMultiColumn: true,
     columns: [
       {
@@ -131,7 +131,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
   'user-journey-stage': {
     id: 'user-journey-stage',
     name: 'User Journey Stage',
-    description: 'Metrics by user journey stage: awareness, onboarding, usage, retention, advocacy.',
+    description: 'Metrics organized by stages of the user journey. Select a stage below to explore specific metrics.',
     isMultiColumn: true,
     columns: [
       {

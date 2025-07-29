@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { TitleNavigation } from '@/components/TitleNavigation';
 import { MetricCard } from '@/components/MetricCard';
 import { MetricLetterCard } from '@/components/MetricLetterCard';
-import { SubNavigation } from '@/components/SubNavigation';
 import { Pill } from '@/components/Pill';
 import { Footer } from '@/components/Footer';
 import { Link } from '@/components/Link';
@@ -21,6 +20,9 @@ export default function MeasuresPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState<string>('all');
   const [activeSubCategory, setActiveSubCategory] = useState<string>('');
+  const [showSummaryView, setShowSummaryView] = useState<boolean>(false);
+  const [viewsVisited, setViewsVisited] = useState<Set<string>>(new Set(['all'])); // Track which views have been visited
+  const [lastActiveSubCategories, setLastActiveSubCategories] = useState<Record<string, string>>({}); // Remember last active subcategory per view
 
   // Get current view configuration
   const currentView = METRIC_VIEWS[activeView] || METRIC_VIEWS['all'];
@@ -39,8 +41,8 @@ export default function MeasuresPage() {
       return metrics; // Show all metrics for 'All' view
     }
     
-    if (!activeSubCategory) {
-      // If no subcategory selected, return empty array
+    if (!activeSubCategory || showSummaryView) {
+      // If no subcategory selected or in summary view, return empty array
       return [];
     }
     
@@ -48,13 +50,26 @@ export default function MeasuresPage() {
     return groupedMetrics[subCategoryKey] || [];
   };
 
+  // Get metrics count for a specific subcategory (used in summary view)
+  const getSubCategoryMetricsCount = (subCategoryName: string) => {
+    const subCategoryKey = subCategoryName.toLowerCase();
+    return groupedMetrics[subCategoryKey]?.length || 0;
+  };
+
   // Get dynamic description based on view and subcategory
   const getDynamicDescription = () => {
     const filteredMetrics = getFilteredMetrics();
     const count = filteredMetrics.length;
 
-    if (!currentView.isMultiColumn || !activeSubCategory) {
-      // For "All" view, use the actual total count
+    if (!currentView.isMultiColumn || showSummaryView) {
+      // For summary view or "All" view, use the regular description (now explains grouping)
+      if (showSummaryView) {
+        return currentView.description;
+      }
+      return currentView.description.replace(/\d+/, count.toString());
+    }
+
+    if (!activeSubCategory) {
       return currentView.description.replace(/\d+/, count.toString());
     }
 
@@ -70,11 +85,55 @@ export default function MeasuresPage() {
   // Initialize activeSubCategory when view changes
   useEffect(() => {
     if (currentView.isMultiColumn && currentView.columns && currentView.columns.length > 0) {
-      setActiveSubCategory(currentView.columns[0].name);
+      // Check if this view has been visited before
+      if (!viewsVisited.has(activeView)) {
+        // First time visiting this view - show summary
+        setShowSummaryView(true);
+        setActiveSubCategory(''); // No active subcategory in summary view
+        console.log(`First time visiting ${activeView} - showing summary view`);
+      } else {
+        // View has been visited - restore last active subcategory or use first one
+        const lastSubCategory = lastActiveSubCategories[activeView];
+        const targetSubCategory = lastSubCategory || currentView.columns[0].name;
+        setActiveSubCategory(targetSubCategory);
+        setShowSummaryView(false);
+        console.log(`Returning to ${activeView} - restoring subcategory: ${targetSubCategory}`);
+      }
     } else {
       setActiveSubCategory('');
+      setShowSummaryView(false);
     }
-  }, [activeView, currentView]);
+  }, [activeView, currentView, viewsVisited, lastActiveSubCategories]);
+
+  // Handle view change - update visited views and browser history
+  const handleViewClick = (viewId: string) => {
+    if (viewId !== activeView) {
+      setActiveView(viewId);
+      
+      // DON'T mark view as visited immediately - let the useEffect handle it
+      // This ensures we show summary view first time visiting
+      
+      const newUrl = viewId === 'all' ? '/metrics' : `/metrics?view=${viewId}`;
+      window.history.pushState({}, '', newUrl);
+    }
+  };
+
+  // Handle subcategory click - exit summary view and set active subcategory
+  const handleSubCategoryClick = (subCategoryName: string) => {
+    setActiveSubCategory(subCategoryName);
+    setShowSummaryView(false);
+    
+    // Mark view as visited when user drills down to a subcategory
+    setViewsVisited(prev => new Set([...prev, activeView]));
+    
+    // Remember this as the last active subcategory for this view
+    setLastActiveSubCategories(prev => ({
+      ...prev,
+      [activeView]: subCategoryName
+    }));
+    
+    console.log(`Drilling down to ${subCategoryName} in ${activeView} - marking view as visited`);
+  };
 
   // Function to group metrics alphabetically
   const groupMetricsByLetter = (metrics: ApiMetric[]) => {
@@ -121,23 +180,23 @@ export default function MeasuresPage() {
     fetchMetrics();
   }, []);
 
-  const handleViewClick = (viewId: string) => {
-    if (viewId !== activeView) {
-      setActiveView(viewId);
-      const newUrl = viewId === 'all' ? '/metrics' : `/metrics?view=${viewId}`;
-      window.history.pushState({}, '', newUrl);
-    }
-  };
-
   // Mobile: Cycle subcategory left/right
   const handleSubCategoryChange = (direction: 'prev' | 'next') => {
-    if (!currentView.isMultiColumn || !currentView.columns) return;
+    if (!currentView.isMultiColumn || !currentView.columns || showSummaryView) return;
     const idx = currentView.columns.findIndex(col => col.name === activeSubCategory);
     if (idx === -1) return;
     let newIdx = direction === 'prev' ? idx - 1 : idx + 1;
     if (newIdx < 0) newIdx = currentView.columns.length - 1;
     if (newIdx >= currentView.columns.length) newIdx = 0;
-    setActiveSubCategory(currentView.columns[newIdx].name);
+    
+    const newSubCategory = currentView.columns[newIdx].name;
+    setActiveSubCategory(newSubCategory);
+    
+    // Update the last active subcategory for this view
+    setLastActiveSubCategories(prev => ({
+      ...prev,
+      [activeView]: newSubCategory
+    }));
   };
 
   return (
@@ -178,15 +237,78 @@ export default function MeasuresPage() {
           {/* SubNavigation - only show for multi-column views */}
           {currentView.isMultiColumn && subCategories.length > 0 && (
             <>
+              {/* Enhanced Navigation - replaces old SubNavigation */}
               <div className="flex justify-center pt-12 pb-8">
-                <SubNavigation
-                  items={subCategories}
-                  activeItem={activeSubCategory}
-                  onItemClick={setActiveSubCategory}
-                />
+                {/* Mobile version */}
+                <div className="flex flex-wrap justify-center gap-6 sm:hidden">
+                  {subCategories.map((subCategory) => {
+                    const count = getSubCategoryMetricsCount(subCategory);
+                    const isActive = !showSummaryView && activeSubCategory === subCategory;
+                    
+                    if (showSummaryView) {
+                      // Special layout for mobile summary view - single column with inline numbers
+                      return (
+                        <div key={subCategory} className="w-full">
+                          <button
+                            onClick={() => handleSubCategoryClick(subCategory)}
+                            className="w-full text-center cursor-pointer hover:opacity-80 transition-opacity duration-200 flex items-center justify-center gap-2"
+                          >
+                            <span className="h3 text-white">{subCategory}</span>
+                            <span className="annotation text-[var(--color-red)]">{count}</span>
+                          </button>
+                        </div>
+                      );
+                    }
+                    
+                    // Regular mobile navigation when subcategory is active
+                    return (
+                      <button
+                        key={subCategory}
+                        onClick={() => handleSubCategoryClick(subCategory)}
+                        className={`
+                          annotation
+                          transition-colors duration-200
+                          cursor-pointer
+                          hover:text-[var(--color-red)]
+                          ${isActive ? 'text-[var(--color-red)]' : 'text-[var(--color-grey-dark)]'}
+                        `}
+                      >
+                        {subCategory}
+                      </button>
+                    );
+                  })}
+                </div>
+                
+                {/* Desktop version */}
+                <div className="hidden sm:flex justify-center gap-9">
+                  {subCategories.map((subCategory) => {
+                    const count = getSubCategoryMetricsCount(subCategory);
+                    const isActive = !showSummaryView && activeSubCategory === subCategory;
+                    return (
+                      <button
+                        key={subCategory}
+                        onClick={() => handleSubCategoryClick(subCategory)}
+                        className={`
+                          h3
+                          transition-colors duration-200
+                          cursor-pointer
+                          hover:text-white
+                          flex flex-col items-center gap-2
+                          ${isActive ? 'text-white' : 'text-[var(--color-grey-dark)]'}
+                        `}
+                      >
+                        <span>{subCategory}</span>
+                        {showSummaryView && (
+                          <span className="text-red-500 text-sm font-medium">{count}</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              {/* Mobile: Show subcategory name below SubNavigation */}
-              {activeSubCategory && (
+              
+              {/* Mobile: Show subcategory name below SubNavigation - only when NOT in summary view */}
+              {activeSubCategory && !showSummaryView && (
                 <div className="sm:hidden flex items-center justify-center pb-4 mb-8 gap-4">
                   {/* Left chevron */}
                   <button
@@ -234,7 +356,7 @@ export default function MeasuresPage() {
               />
             </div>
           ) : getFilteredMetrics().length > 0 ? (
-            <div className={`flex flex-wrap justify-center gap-2 ${currentView.isMultiColumn ? 'pt-0' : 'pt-12'}`}>
+            <div className={`flex flex-wrap justify-center gap-2 ${currentView.isMultiColumn && !showSummaryView ? 'pt-0' : 'pt-12'}`}>
               {groupMetricsByLetter(getFilteredMetrics()).map(({ letter, metrics: letterMetrics }) => (
                 <React.Fragment key={letter}>
                   {/* Letter Card - only render if more than 20 total metrics */}
@@ -257,9 +379,11 @@ export default function MeasuresPage() {
           ) : (
             <div className="flex flex-col items-center gap-4 pt-12">
               <p className="body text-white text-center">
-                {currentView.isMultiColumn && !activeSubCategory 
-                  ? 'Select a subcategory to view metrics.' 
-                  : 'No metrics available for this selection.'}
+                {showSummaryView 
+                  ? '' // Don't show any message in summary view, let the summary content handle it
+                  : currentView.isMultiColumn && !activeSubCategory 
+                    ? 'Select a subcategory to view metrics.' 
+                    : 'No metrics available for this selection.'}
               </p>
             </div>
           )}
