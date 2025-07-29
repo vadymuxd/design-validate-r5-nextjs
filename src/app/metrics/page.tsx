@@ -9,7 +9,6 @@ import { SubNavigation } from '@/components/SubNavigation';
 import { Pill } from '@/components/Pill';
 import { Footer } from '@/components/Footer';
 import { Link } from '@/components/Link';
-import { Popup } from '@/components/Popup';
 import { ApiMetric } from '@/data/types';
 import { METRIC_VIEWS, groupMetricsByView } from '@/data/metricViews';
 import { useState, useEffect } from 'react';
@@ -22,8 +21,6 @@ export default function MeasuresPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState<string>('all');
   const [activeSubCategory, setActiveSubCategory] = useState<string>('');
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [popupAction, setPopupAction] = useState<'add' | 'remove'>('add');
 
   // Get current view configuration
   const currentView = METRIC_VIEWS[activeView] || METRIC_VIEWS['all'];
@@ -141,31 +138,6 @@ export default function MeasuresPage() {
     if (newIdx < 0) newIdx = currentView.columns.length - 1;
     if (newIdx >= currentView.columns.length) newIdx = 0;
     setActiveSubCategory(currentView.columns[newIdx].name);
-  };
-
-  const handleMinusClick = () => {
-    setPopupAction('remove');
-    setIsPopupOpen(true);
-  };
-
-  const handlePlusClick = () => {
-    setPopupAction('add');
-    setIsPopupOpen(true);
-  };
-
-  const handlePopupClose = () => {
-    setIsPopupOpen(false);
-  };
-
-  const handlePopupConfirm = () => {
-    // Redirect to about/contact form the same as feedback button
-    if (window.location.pathname === '/about') {
-      const el = document.getElementById('contact-form');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.location.href = '/about#contact-form';
-    }
-    setIsPopupOpen(false);
   };
 
   return (
