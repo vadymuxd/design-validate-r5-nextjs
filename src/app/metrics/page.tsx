@@ -53,59 +53,21 @@ export default function MeasuresPage() {
 
   // Get dynamic description based on view and subcategory
   const getDynamicDescription = () => {
+    const filteredMetrics = getFilteredMetrics();
+    const count = filteredMetrics.length;
+
     if (!currentView.isMultiColumn || !activeSubCategory) {
-      return currentView.description;
+      // For "All" view, use the actual total count
+      return currentView.description.replace(/\d+/, count.toString());
     }
 
     const subCategory = currentView.columns?.find(col => col.name === activeSubCategory);
     if (!subCategory) {
-      return currentView.description;
+      return currentView.description.replace(/\d+/, count.toString());
     }
 
-    // Create dynamic descriptions based on view and subcategory combinations
-    const viewDescriptions: Record<string, Record<string, string>> = {
-      'metric-type': {
-        'Time': 'Metrics grouped by the type of data they represent, for example measuring time-based interactions where duration and speed of user actions are tracked.',
-        'Ratio': 'Metrics grouped by the type of data they represent, for example measuring percentage-based outcomes that show proportions and success rates.',
-        'Count': 'Metrics grouped by the type of data they represent, for example measuring numerical counts of user actions, events, and behaviors.',
-        'Scale': 'Metrics grouped by the type of data they represent, for example measuring rating-based evaluations that capture user satisfaction and preferences.',
-        'Composite': 'Metrics grouped by the type of data they represent, for example measuring complex calculations that combine multiple data points into comprehensive scores.',
-        'Money': 'Metrics grouped by the type of data they represent, for example measuring financial outcomes that demonstrate business value and revenue impact.'
-      },
-      'user-data': {
-        'User Behaviours': 'Metrics grouped by how data is collected, for example measuring from observing and tracking actual user interactions and behaviors in real-time.',
-        'User Attitudes': 'Metrics grouped by how data is collected, for example measuring from gathering user opinions, feedback, and subjective experiences through surveys and interviews.',
-        'Non-User Evaluation': 'Metrics grouped by how data is collected, for example measuring from expert analysis, automated testing, and system-generated evaluations independent of direct user input.'
-      },
-      'design-goal': {
-        'Discoverability': 'Metrics categorized by design objectives, for example measuring how effectively users can find and discover features, content, and functionality.',
-        'Desirability': 'Metrics categorized by design objectives, for example measuring how appealing and emotionally engaging the design is to users.',
-        'Usability': 'Metrics categorized by design objectives, for example measuring how easy, efficient, and error-free the user experience is.',
-        'Engagement': 'Metrics categorized by design objectives, for example measuring the depth and quality of user interaction and involvement.'
-      },
-      'business-goal': {
-        'Adoption': 'Metrics aligned with business objectives, for example measuring how successfully users begin using the product and adopt new features.',
-        'Conversion': 'Metrics aligned with business objectives, for example measuring how effectively users complete desired actions that drive business value.',
-        'Satisfaction': 'Metrics aligned with business objectives, for example measuring user happiness, quality perception, and overall product satisfaction.',
-        'Retention': 'Metrics aligned with business objectives, for example measuring how successfully the product keeps users engaged over time.',
-        'Revenue': 'Metrics aligned with business objectives, for example measuring the direct financial impact and monetary value generated.',
-        'Referral': 'Metrics aligned with business objectives, for example measuring user advocacy, recommendations, and word-of-mouth promotion.'
-      },
-      'user-journey-stage': {
-        'Awareness': 'Metrics organized by customer journey phases, for example measuring the effectiveness of initial product discovery and brand recognition.',
-        'Onboarding': 'Metrics organized by customer journey phases, for example measuring how successfully new users learn and start using the product.',
-        'Usage': 'Metrics organized by customer journey phases, for example measuring ongoing product interaction and value realization during active use.',
-        'Retention': 'Metrics organized by customer journey phases, for example measuring user return patterns and long-term engagement sustainability.',
-        'Advocacy': 'Metrics organized by customer journey phases, for example measuring how users promote and recommend the product to others.'
-      },
-      'measurement-timing': {
-        'Real-time': 'Metrics grouped by when they are captured, for example measuring data collected immediately as users interact with the product.',
-        'Post-task': 'Metrics grouped by when they are captured, for example measuring outcomes evaluated after users complete specific tasks or actions.',
-        'Longitudinal': 'Metrics grouped by when they are captured, for example measuring patterns and trends tracked over extended time periods.'
-      }
-    };
-
-    return viewDescriptions[activeView]?.[activeSubCategory] || currentView.description;
+    // Replace the hardcoded number in dynamicDescription with actual count
+    return subCategory.dynamicDescription.replace(/\d+/, count.toString());
   };
 
   // Initialize activeSubCategory when view changes
@@ -234,40 +196,7 @@ export default function MeasuresPage() {
             </p>
           </div>
           
-          {/* Metrics Count */}
-          <div className="flex flex-col items-center gap-4 text-center">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={handleMinusClick}
-                className="cursor-pointer hover:opacity-80 transition-opacity"
-                aria-label="Remove metric"
-              >
-                <Image 
-                  src="/icons/minus.svg" 
-                  alt="Minus" 
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                />
-              </button>
-              <h3 className="h3 text-white">
-                {getFilteredMetrics().length}
-              </h3>
-              <button
-                onClick={handlePlusClick}
-                className="cursor-pointer hover:opacity-80 transition-opacity"
-                aria-label="Add metric"
-              >
-                <Image 
-                  src="/icons/plus.svg" 
-                  alt="Plus" 
-                  width={24}
-                  height={24}
-                  className="w-6 h-6"
-                />
-              </button>
-            </div>
-          </div>
+          {/* ...existing code... */}
         </div>
       </div>
 
@@ -382,13 +311,7 @@ export default function MeasuresPage() {
 
       <Footer />
 
-      {/* Popup */}
-      <Popup 
-        isOpen={isPopupOpen}
-        onClose={handlePopupClose}
-        onConfirm={handlePopupConfirm}
-        action={popupAction}
-      />
+      {/* ...existing code... */}
     </div>
   );
 }

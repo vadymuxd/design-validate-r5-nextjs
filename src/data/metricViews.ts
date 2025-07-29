@@ -17,162 +17,142 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
   'all': {
     id: 'all',
     name: 'All',
-    description: 'All metrics and KPIs to measure design success and impact.',
+    description: '61 metrics to measure design performance and impact.',
     isMultiColumn: false
   },
   'metric-type': {
     id: 'metric-type',
     name: 'Metric Type',
-    description: 'Metrics organized by metric type: Time, Ratio, Count, Scale, Composite, and Money measurements.',
+    description: 'Metrics by type: Time, Ratio, Count, Scale, Composite, Money.',
     isMultiColumn: true,
     columns: [
       {
         name: 'Time',
-        dynamicDescription: 'Metrics grouped by the type of data they represent, for example measuring time-based interactions where duration and speed of user actions are tracked.'
+        dynamicDescription: '8 metrics to measure the duration of user actions and system responses.'
       },
       {
         name: 'Ratio',
-        dynamicDescription: 'Metrics grouped by the type of data they represent, for example measuring percentage-based outcomes that show proportions and success rates.'
+        dynamicDescription: '20 metrics to measure the proportion between user actions as a rate.'
       },
       {
         name: 'Count',
-        dynamicDescription: 'Metrics grouped by the type of data they represent, for example measuring numerical counts of user actions, events, and behaviors.'
+        dynamicDescription: '11 metrics to measure the total volume of user actions and events.'
       },
       {
         name: 'Scale',
-        dynamicDescription: 'Metrics grouped by the type of data they represent, for example measuring rating-based evaluations that capture user satisfaction and preferences.'
+        dynamicDescription: '11 metrics to measure subjective user ratings and perceptions.'
       },
       {
         name: 'Composite',
-        dynamicDescription: 'Metrics grouped by the type of data they represent, for example measuring complex calculations that combine multiple data points into comprehensive scores.'
+        dynamicDescription: '10 metrics to measure combined scores for experience and usability.'
       },
       {
         name: 'Money',
-        dynamicDescription: 'Metrics grouped by the type of data they represent, for example measuring financial outcomes that demonstrate business value and revenue impact.'
+        dynamicDescription: '7 metrics to measure financial outcomes from user activity.'
       }
     ]
   },
   'user-data': {
     id: 'user-data',
     name: 'User Data',
-    description: 'Metrics grouped by how data is collected: user behaviors, user attitudes, and non-user evaluation.',
+    description: 'Metrics by data source: user behaviors, attitudes, and non-user evaluation.',
     isMultiColumn: true,
     columns: [
       {
         name: 'User Behaviours',
-        dynamicDescription: 'Metrics grouped by how data is collected, for example measuring from observing and tracking actual user interactions and behaviors in real-time.'
+        dynamicDescription: '39 metrics to measure user actions, what and how they do it.'
       },
       {
         name: 'User Attitudes',
-        dynamicDescription: 'Metrics grouped by how data is collected, for example measuring from gathering user opinions, feedback, and subjective experiences through surveys and interviews.'
+        dynamicDescription: '14 metrics to measure what users feel and say from opinions and feedback.'
       },
       {
         name: 'Non-User Evaluation',
-        dynamicDescription: 'Metrics grouped by how data is collected, for example measuring from expert analysis, automated testing, and system-generated evaluations independent of direct user input.'
+        dynamicDescription: '8 metrics to measure system performance and expert assessments.'
       }
     ]
   },
   'design-goal': {
     id: 'design-goal',
     name: 'Design Objectives',
-    description: 'Metrics categorized by design objectives: discoverability, desirability, usability, and engagement.',
+    description: 'Metrics by design objective: discoverability, desirability, usability, engagement.',
     isMultiColumn: true,
     columns: [
       {
         name: 'Discoverability',
-        dynamicDescription: 'Metrics categorized by design objectives, for example measuring how effectively users can find and discover features, content, and functionality.'
+        dynamicDescription: '6 metrics to measure how users find features and information.'
       },
       {
         name: 'Desirability',
-        dynamicDescription: 'Metrics categorized by design objectives, for example measuring how appealing and emotionally engaging the design is to users.'
+        dynamicDescription: '5 metrics to measure the product\'s appeal and user trust.'
       },
       {
         name: 'Usability',
-        dynamicDescription: 'Metrics categorized by design objectives, for example measuring how easy, efficient, and error-free the user experience is.'
+        dynamicDescription: '27 metrics to measure the ease and efficiency of the user experience.'
       },
       {
         name: 'Engagement',
-        dynamicDescription: 'Metrics categorized by design objectives, for example measuring the depth and quality of user interaction and involvement.'
+        dynamicDescription: '13 metrics to measure the depth and frequency of user interaction.'
       }
     ]
   },
   'business-goal': {
     id: 'business-goal',
     name: 'Business Outcomes',
-    description: 'Metrics aligned with business objectives: adoption, conversion, satisfaction, retention, revenue, and referral.',
+    description: 'Metrics by business objective: adoption, conversion, satisfaction, retention, revenue, referral.',
     isMultiColumn: true,
     columns: [
       {
         name: 'Adoption',
-        dynamicDescription: 'Metrics aligned with business objectives, for example measuring how successfully users begin using the product and adopt new features.'
+        dynamicDescription: '10 metrics to measure how users begin using the product and its features.'
       },
       {
         name: 'Conversion',
-        dynamicDescription: 'Metrics aligned with business objectives, for example measuring how effectively users complete desired actions that drive business value.'
+        dynamicDescription: '8 metrics to measure how users complete key business actions.'
       },
       {
         name: 'Satisfaction',
-        dynamicDescription: 'Metrics aligned with business objectives, for example measuring user happiness, quality perception, and overall product satisfaction.'
+        dynamicDescription: '19 metrics to measure the quality of the user experience.'
       },
       {
         name: 'Retention',
-        dynamicDescription: 'Metrics aligned with business objectives, for example measuring how successfully the product keeps users engaged over time.'
+        dynamicDescription: '11 metrics to measure how users return and remain active over time.'
       },
       {
         name: 'Revenue',
-        dynamicDescription: 'Metrics aligned with business objectives, for example measuring the direct financial impact and monetary value generated.'
+        dynamicDescription: '4 metrics to measure direct financial results.'
       },
       {
         name: 'Referral',
-        dynamicDescription: 'Metrics aligned with business objectives, for example measuring user advocacy, recommendations, and word-of-mouth promotion.'
+        dynamicDescription: '4 metrics to measure user advocacy and recommendations.'
       }
     ]
   },
   'user-journey-stage': {
     id: 'user-journey-stage',
     name: 'User Journey Stage',
-    description: 'Metrics organized by customer journey phases: awareness, onboarding, usage, retention, and advocacy.',
+    description: 'Metrics by user journey stage: awareness, onboarding, usage, retention, advocacy.',
     isMultiColumn: true,
     columns: [
       {
         name: 'Awareness',
-        dynamicDescription: 'Metrics organized by customer journey phases, for example measuring the effectiveness of initial product discovery and brand recognition.'
+        dynamicDescription: '2 metrics to measure initial user discovery and impression.'
       },
       {
         name: 'Onboarding',
-        dynamicDescription: 'Metrics organized by customer journey phases, for example measuring how successfully new users learn and start using the product.'
+        dynamicDescription: '4 metrics to measure how users get started with the product.'
       },
       {
         name: 'Usage',
-        dynamicDescription: 'Metrics organized by customer journey phases, for example measuring ongoing product interaction and value realization during active use.'
+        dynamicDescription: '13 metrics to measure ongoing interaction with the product.'
       },
       {
         name: 'Retention',
-        dynamicDescription: 'Metrics organized by customer journey phases, for example measuring user return patterns and long-term engagement sustainability.'
+        dynamicDescription: '10 metrics to measure long-term user engagement and loyalty.'
       },
       {
         name: 'Advocacy',
-        dynamicDescription: 'Metrics organized by customer journey phases, for example measuring how users promote and recommend the product to others.'
-      }
-    ]
-  },
-  'measurement-timing': {
-    id: 'measurement-timing',
-    name: 'Measurement Timing',
-    description: 'Metrics grouped by when they are captured: real-time, post-task, or longitudinal.',
-    isMultiColumn: true,
-    columns: [
-      {
-        name: 'Real-time',
-        dynamicDescription: 'Metrics grouped by when they are captured, for example measuring data collected immediately as users interact with the product.'
-      },
-      {
-        name: 'Post-task',
-        dynamicDescription: 'Metrics grouped by when they are captured, for example measuring outcomes evaluated after users complete specific tasks or actions.'
-      },
-      {
-        name: 'Longitudinal',
-        dynamicDescription: 'Metrics grouped by when they are captured, for example measuring patterns and trends tracked over extended time periods.'
+        dynamicDescription: '1 metric to measure how users recommend the product.'
       }
     ]
   }
@@ -184,7 +164,6 @@ export interface MetricMetadata {
   design_goal?: string[];
   business_goal?: string[];
   user_journey_stage?: string[];
-  measurement_timing?: string[];
 }
 
 // Helper function to group metrics by a specific view using database metadata
@@ -232,9 +211,7 @@ export function groupMetricsByView(metrics: ApiMetric[], viewId: string): Record
       case 'user-journey-stage':
         targetGroups = (metadata.user_journey_stage || []).map((s: string) => s.toLowerCase());
         break;
-      case 'measurement-timing':
-        targetGroups = (metadata.measurement_timing || []).map((s: string) => s.toLowerCase().replace('-', '-'));
-        break;
+      // ...existing code...
       default:
         targetGroups = ['all'];
     }
