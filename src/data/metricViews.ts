@@ -23,7 +23,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
   'metric-type': {
     id: 'metric-type',
     name: 'Metric Type',
-    description: 'Metrics organized by their measurement type. Select a type below to explore specific metrics.',
+    description: 'Metrics organized by their measurement data type. Select a type below to explore specific metrics.',
     isMultiColumn: true,
     columns: [
       {
@@ -88,7 +88,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
       },
       {
         name: 'Usability',
-        dynamicDescription: '27 metrics to measure the ease and efficiency of the user experience.'
+        dynamicDescription: '27 metrics to measure the ease and efficiency of the user interface.'
       },
       {
         name: 'Engagement',
@@ -112,7 +112,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
       },
       {
         name: 'Satisfaction',
-        dynamicDescription: '19 metrics to measure the quality of the user experience.'
+        dynamicDescription: '19 metrics to measure user satisfaction from interactions.'
       },
       {
         name: 'Retention',
@@ -148,11 +148,11 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
       },
       {
         name: 'Retention',
-        dynamicDescription: '10 metrics to measure long-term user engagement and loyalty.'
+        dynamicDescription: '10 metrics to measure long-term user engagement.'
       },
       {
         name: 'Advocacy',
-        dynamicDescription: '1 metric to measure how users recommend the product.'
+        dynamicDescription: '1 metric to measure if users would recommend the experience.'
       }
     ]
   }
