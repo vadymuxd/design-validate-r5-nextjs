@@ -14,7 +14,7 @@ export function MetricCard({
   description,
   className = '',
 }: MetricCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   // Map metric types to their corresponding icons
   const getIconPath = (metricType: string) => {
@@ -29,6 +29,9 @@ export function MetricCard({
     return iconMap[metricType as keyof typeof iconMap] || '/icons/metric-time.svg';
   };
 
+  // Toggle flip on click
+  const handleFlip = () => setIsFlipped(f => !f);
+
   return (
     <div
       className={`
@@ -38,8 +41,13 @@ export function MetricCard({
         perspective-1000
         ${className}
       `}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onClick={handleFlip}
+      tabIndex={0}
+      role="button"
+      aria-pressed={isFlipped}
+      onKeyDown={e => {
+        if (e.key === 'Enter' || e.key === ' ') handleFlip();
+      }}
     >
       <div
         className={`
@@ -47,7 +55,7 @@ export function MetricCard({
           relative
           transform-style-preserve-3d
           transition-transform duration-250
-          ${isHovered ? 'rotate-y-180' : ''}
+          ${isFlipped ? 'rotate-y-180' : ''}
         `}
       >
         {/* Front Side - Normal State */}
