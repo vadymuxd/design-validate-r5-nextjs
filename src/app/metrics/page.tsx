@@ -10,11 +10,15 @@ import { Footer } from '@/components/Footer';
 import { Link } from '@/components/Link';
 import { ApiMetric } from '@/data/types';
 import { METRIC_VIEWS, groupMetricsByView } from '@/data/metricViews';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import LottieAnimation from '@/components/LottieAnimation';
 import animationData from '../../../public/gifs/cube-2.json';
 
 export default function MeasuresPage() {
+  // Track which card is flipped (by id)
+  const [flippedCardId, setFlippedCardId] = useState<string | null>(null);
+  const cardsContainerRef = useRef<HTMLDivElement>(null);
+  
   // Mobile: Cycle subcategory left/right
   const [metrics, setMetrics] = useState<ApiMetric[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +27,18 @@ export default function MeasuresPage() {
   const [showSummaryView, setShowSummaryView] = useState<boolean>(false);
   const [viewsVisited, setViewsVisited] = useState<Set<string>>(new Set(['all'])); // Track which views have been visited
   const [lastActiveSubCategories, setLastActiveSubCategories] = useState<Record<string, string>>({}); // Remember last active subcategory per view
+
+  // Click outside to reset flipped card
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (!cardsContainerRef.current) return;
+      if (!cardsContainerRef.current.contains(e.target as Node)) {
+        setFlippedCardId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
 
   // Get current view configuration
   const currentView = METRIC_VIEWS[activeView] || METRIC_VIEWS['all'];
@@ -356,21 +372,25 @@ export default function MeasuresPage() {
               />
             </div>
           ) : getFilteredMetrics().length > 0 ? (
-            <div className={`flex flex-wrap justify-center gap-2 ${currentView.isMultiColumn && !showSummaryView ? 'pt-0' : 'pt-12'}`}>
+            <div
+              ref={cardsContainerRef}
+              className={`flex flex-wrap justify-center gap-2 ${currentView.isMultiColumn && !showSummaryView ? 'pt-0' : 'pt-12'}`}
+            >
               {groupMetricsByLetter(getFilteredMetrics()).map(({ letter, metrics: letterMetrics }) => (
                 <React.Fragment key={letter}>
                   {/* Letter Card - only render if more than 20 total metrics */}
                   {getFilteredMetrics().length > 20 && (
                     <MetricLetterCard letter={letter} />
                   )}
-                  
                   {/* Metrics for this letter */}
                   {letterMetrics.map((metric) => (
-                    <MetricCard 
+                    <MetricCard
                       key={metric.id}
                       name={metric.name}
                       type={metric.type}
                       description={metric.description}
+                      isFlipped={flippedCardId === String(metric.id)}
+                      onFlip={() => setFlippedCardId(flippedCardId === String(metric.id) ? null : String(metric.id))}
                     />
                   ))}
                 </React.Fragment>

@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 
+
 interface MetricCardProps {
   name: string;
   type: 'Time' | 'Ratio' | 'Count' | 'Scale' | 'Composite' | 'Money';
   description?: string | null;
   className?: string;
+  isFlipped?: boolean;
+  onFlip?: () => void;
 }
+
 
 export function MetricCard({
   name,
   type,
   description,
   className = '',
+  isFlipped = false,
+  onFlip,
 }: MetricCardProps) {
-  const [isFlipped, setIsFlipped] = useState(false);
 
   // Map metric types to their corresponding icons
   const getIconPath = (metricType: string) => {
@@ -29,8 +34,12 @@ export function MetricCard({
     return iconMap[metricType as keyof typeof iconMap] || '/icons/metric-time.svg';
   };
 
+
   // Toggle flip on click
-  const handleFlip = () => setIsFlipped(f => !f);
+  const handleFlip = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onFlip) onFlip();
+  };
 
   return (
     <div
@@ -46,7 +55,10 @@ export function MetricCard({
       role="button"
       aria-pressed={isFlipped}
       onKeyDown={e => {
-        if (e.key === 'Enter' || e.key === ' ') handleFlip();
+        if ((e.key === 'Enter' || e.key === ' ') && onFlip) {
+          e.stopPropagation();
+          onFlip();
+        }
       }}
     >
       <div
