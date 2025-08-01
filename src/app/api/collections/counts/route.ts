@@ -23,6 +23,11 @@ export async function GET() {
       .from('metrics')
       .select('*', { count: 'exact', head: true });
 
+    // Get count of cases from cases table
+    const { count: casesCount, error: casesError } = await supabase
+      .from('cases')
+      .select('*', { count: 'exact', head: true });
+
     // Check for errors
     if (methodsError) {
       console.error('Error fetching methods count:', methodsError);
@@ -36,6 +41,9 @@ export async function GET() {
     if (metricsError) {
       console.error('Error fetching metrics count:', metricsError);
     }
+    if (casesError) {
+      console.error('Error fetching cases count:', casesError);
+    }
 
     // Return the counts - default to 0 if there was an error
     return NextResponse.json({
@@ -45,7 +53,7 @@ export async function GET() {
         Tools: toolsCount || 0,
         Frameworks: frameworksCount || 0,
         Metrics: metricsCount || 0,
-        Cases: 0, // Placeholder - no cases table found
+        Cases: casesCount || 0,
       }
     });
 
