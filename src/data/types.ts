@@ -67,3 +67,26 @@ export interface ApiMetric {
   created_at?: string;
   updated_at?: string;
 }
+
+export interface ApiCase {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | null;
+  url: string | null;
+  picture: string | null;
+  release_date: string;
+  methods: string[];
+  initial_upvotes: number;
+  initial_downvotes: number;
+  current_upvotes: number;
+  current_downvotes: number;
+  totalUpvotes: number; // initial + current upvotes
+  totalDownvotes: number; // initial + current downvotes
+  netScore: number; // totalUpvotes - totalDownvotes
+  metadata?: {
+    methods?: string[];
+  };
+  created_at?: string;
+  updated_at?: string;
+}

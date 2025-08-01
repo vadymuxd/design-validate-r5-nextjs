@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useEffect } from 'react';
 import { Link } from './Link';
 import { Button } from './Button';
 
@@ -17,9 +17,10 @@ interface MethodCardProps {
   voteCount: number;
   onVote?: (methodId: number, sentiment: 'UPVOTE' | 'DOWNVOTE') => Promise<VoteResult>;
   hideDivider?: boolean;
+  forceExpanded?: boolean; // Add this prop to force expanded state
 }
 
-export function MethodCard({
+export const MethodCard = forwardRef<HTMLDivElement, MethodCardProps>(({
   methodId,
   name,
   slug,
@@ -27,8 +28,18 @@ export function MethodCard({
   voteCount,
   onVote,
   hideDivider = false,
-}: MethodCardProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  forceExpanded = false, // Default to false
+}, ref) => {
+  const [isExpanded, setIsExpanded] = useState(forceExpanded);
+  const [hasBeenForcedExpanded, setHasBeenForcedExpanded] = useState(false);
+
+  // Sync with forceExpanded prop only once
+  useEffect(() => {
+    if (forceExpanded && !hasBeenForcedExpanded) {
+      setIsExpanded(true);
+      setHasBeenForcedExpanded(true);
+    }
+  }, [forceExpanded, hasBeenForcedExpanded]);
 
   const handleTitleClick = () => {
     setIsExpanded(!isExpanded);
@@ -52,7 +63,11 @@ export function MethodCard({
   };
 
   return (
-    <div className={hideDivider ? "" : "border-b border-[var(--color-grey-darkest)] last:border-b-0"}>
+    <div 
+      ref={ref}
+      id={slug}
+      className={hideDivider ? "" : "border-b border-[var(--color-grey-darkest)] last:border-b-0"}
+    >
       <div className="py-4">
         {/* Collapsed Header */}
         <div className="flex items-center justify-between">
@@ -117,4 +132,6 @@ export function MethodCard({
       </div>
     </div>
   );
-} 
+});
+
+MethodCard.displayName = 'MethodCard'; 

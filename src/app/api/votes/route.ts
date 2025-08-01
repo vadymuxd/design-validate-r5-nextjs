@@ -15,8 +15,7 @@ async function updateAggregatedCounts(voteType: VoteEntityType, entityId: string
         await updateMethodVoteCounts(entityId);
         break;
       case 'case':
-        // Future: Update case aggregated counts
-        console.log(`Case vote aggregation not yet implemented for entity: ${entityId}`);
+        await updateCaseVoteCounts(entityId);
         break;
       case 'metric':
         // Future: Update metric aggregated counts
@@ -160,6 +159,47 @@ async function updateFrameworkVoteCounts(frameworkId: string) {
 
   } catch (error) {
     console.error('Unexpected error in updateFrameworkVoteCounts:', error);
+  }
+}
+
+// Update case vote counts
+async function updateCaseVoteCounts(caseId: string) {
+  try {
+    // Count votes for this case using new structure
+    const { count: upvotes, error: upvoteError } = await supabase
+      .from('votes')
+      .select('*', { count: 'exact', head: true })
+      .eq('vote_type', 'case')
+      .eq('entity_id', caseId)
+      .eq('sentiment', 'UPVOTE');
+
+    const { count: downvotes, error: downvoteError } = await supabase
+      .from('votes')
+      .select('*', { count: 'exact', head: true })
+      .eq('vote_type', 'case')
+      .eq('entity_id', caseId)
+      .eq('sentiment', 'DOWNVOTE');
+
+    if (upvoteError || downvoteError) {
+      console.error('Error counting case votes:', upvoteError || downvoteError);
+      return;
+    }
+
+    // Update the cases table with current vote counts
+    const { error: updateError } = await supabase
+      .from('cases')
+      .update({
+        current_upvotes: upvotes ?? 0,
+        current_downvotes: downvotes ?? 0,
+      })
+      .eq('id', parseInt(caseId));
+    
+    if (updateError) {
+      console.error('Error updating case vote counts:', updateError);
+    }
+
+  } catch (error) {
+    console.error('Unexpected error in updateCaseVoteCounts:', error);
   }
 }
 

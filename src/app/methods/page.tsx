@@ -29,6 +29,7 @@ function MethodsPageContent() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVariant, setToastVariant] = useState<'default' | 'warning'>('default');
+  const [expandedMethodSlug, setExpandedMethodSlug] = useState<string | null>(null);
 
   // Fetch methods from the API
   useEffect(() => {
@@ -50,6 +51,27 @@ function MethodsPageContent() {
 
     fetchMethods();
   }, []);
+
+  // Handle scroll and expand after methods are loaded
+  useEffect(() => {
+    if (!isLoading && methods.length > 0) {
+      const expandedParam = searchParams.get('expanded');
+      if (expandedParam && expandedParam !== expandedMethodSlug) {
+        setExpandedMethodSlug(expandedParam);
+        
+        // Scroll to the element after a short delay to ensure DOM is updated
+        setTimeout(() => {
+          const element = document.getElementById(expandedParam);
+          if (element) {
+            element.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center' 
+            });
+          }
+        }, 100);
+      }
+    }
+  }, [isLoading, methods, searchParams, expandedMethodSlug]);
 
   // Set active view based on URL parameter
   useEffect(() => {
@@ -183,6 +205,7 @@ function MethodsPageContent() {
             description={method.description || ''}
             voteCount={method.net_score}
             onVote={handleMethodVote}
+            forceExpanded={expandedMethodSlug === method.slug}
           />
         ))}
       </div>
@@ -218,6 +241,7 @@ function MethodsPageContent() {
                         voteCount={method.net_score}
                         onVote={handleMethodVote}
                         hideDivider={currentView.isMultiColumn}
+                        forceExpanded={expandedMethodSlug === method.slug}
                       />
                     ))}
                   </div>
