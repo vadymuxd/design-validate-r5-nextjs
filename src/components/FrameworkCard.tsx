@@ -119,8 +119,10 @@ export function FrameworkCard({
     }
   };
 
+  const netBalance = upvotes - downvotes;
+  const netBalanceDisplay = netBalance > 0 ? `+${netBalance}` : netBalance < 0 ? `${netBalance}` : '0';
   return (
-    <div className="bg-white rounded-2xl overflow-hidden">
+    <div className="bg-white overflow-hidden">
       {/* Desktop Layout */}
       <div className="hidden sm:flex flex-row h-[360px]">
         {/* Picture - Fixed 360x360 - First main column */}
@@ -145,21 +147,21 @@ export function FrameworkCard({
           {/* Content - First sub-column */}
           <div className="flex-1 flex flex-col justify-between">
             {/* Header */}
-            <div>
-              <h3 className="h3 text-[var(--color-black)] mb-3">{name}</h3>
-              {/* Desktop: Fixed height container with text truncation */}
-              <div 
-                className="h-[210px] overflow-hidden relative"
-                style={{
-                  display: '-webkit-box',
-                  WebkitLineClamp: 12,
-                  WebkitBoxOrient: 'vertical' as const,
-                  textOverflow: 'ellipsis'
-                }}
-              >
-                <div className="body text-[var(--color-black)]">
-                  {renderParagraphs(description, true)}
-                </div>
+            <div className="mb-3">
+              <h3 className="h3 text-[var(--color-black)] m-0">{name}</h3>
+            </div>
+            {/* Desktop: Fixed height container with text truncation */}
+            <div 
+              className="h-[210px] overflow-hidden relative"
+              style={{
+                display: '-webkit-box',
+                WebkitLineClamp: 12,
+                WebkitBoxOrient: 'vertical' as const,
+                textOverflow: 'ellipsis'
+              }}
+            >
+              <div className="body text-[var(--color-black)]">
+                {renderParagraphs(description, true)}
               </div>
             </div>
 
@@ -171,22 +173,9 @@ export function FrameworkCard({
             </div>
           </div>
 
-          {/* Votes - Second sub-column */}
-          <div className="flex flex-col gap-2 w-[75px] flex-shrink-0">
-            <Voter
-              direction="up"
-              count={upvotes}
-              onClick={() => handleVote('UPVOTE', 'up')}
-              background="grey"
-              isLoading={loadingState === 'up'}
-            />
-            <Voter
-              direction="down"
-              count={downvotes}
-              onClick={() => handleVote('DOWNVOTE', 'down')}
-              background="grey"
-              isLoading={loadingState === 'down'}
-            />
+          {/* Net Balance - Second sub-column */}
+          <div className="flex flex-col items-end w-[75px] flex-shrink-0">
+            <span className="body text-gray-400 text-lg">{netBalanceDisplay}</span>
           </div>
         </div>
       </div>
@@ -212,34 +201,39 @@ export function FrameworkCard({
 
         {/* Content */}
         <div className="p-6 flex flex-col gap-6">
-          {/* Header */}
-          <div>
-            <h3 className="h3 text-[var(--color-black)] mb-3">{name}</h3>
-            <div>{renderParagraphs(description)}</div>
+
+          {/* Header with Net Balance on the same line */}
+          <div className="flex flex-row items-center justify-between mb-3">
+            <h3 className="h3 text-[var(--color-black)] m-0">{name}</h3>
+            <span className="body text-gray-400 text-lg ml-2">{netBalanceDisplay}</span>
           </div>
+          <div>{renderParagraphs(description)}</div>
+
+          {/* Actions - Mobile: Only show Learn more, hide recommend/don't recommend */}
 
           {/* Actions - Mobile: Only show Learn more, hide recommend/don't recommend */}
           <div className="flex flex-col gap-4">
             {link && <Link variant="visit-site" onClick={handleVisitSite} />}
           </div>
 
-          {/* Votes - Mobile: Place after Learn more */}
-          <div className="flex flex-row gap-2 justify-start">
-            <Voter
-              direction="up"
-              count={upvotes}
-              onClick={() => handleVote('UPVOTE', 'up')}
-              background="grey"
-              isLoading={loadingState === 'up'}
-            />
-            <Voter
-              direction="down"
-              count={downvotes}
-              onClick={() => handleVote('DOWNVOTE', 'down')}
-              background="grey"
-              isLoading={loadingState === 'down'}
-            />
-          </div>
+        {/* Net Balance - Mobile: Place after Learn more */}
+        {/* Votes - Mobile: Place after Learn more */}
+        <div className="flex flex-row gap-2 justify-start">
+          <Voter
+            direction="up"
+            count={upvotes}
+            onClick={() => handleVote('UPVOTE', 'up')}
+            background="grey"
+            isLoading={loadingState === 'up'}
+          />
+          <Voter
+            direction="down"
+            count={downvotes}
+            onClick={() => handleVote('DOWNVOTE', 'down')}
+            background="grey"
+            isLoading={loadingState === 'down'}
+          />
+        </div>
         </div>
       </div>
     </div>
