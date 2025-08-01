@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Bai_Jamjuree } from "next/font/google";
 import "./globals.css";
 import TopNav from "@/components/TopNav";
 import { UserTracking } from "@/components/UserTracking";
@@ -8,6 +8,13 @@ const inter = Inter({
   subsets: ["latin"],
   display: 'swap',
   variable: '--font-inter',
+});
+
+const baiJamjuree = Bai_Jamjuree({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: 'swap',
+  variable: '--font-bai-jamjuree',
 });
 
 export const metadata: Metadata = {
@@ -111,7 +118,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} ${baiJamjuree.variable} antialiased`}>
         <div className="flex flex-col min-h-screen">
         <TopNav />
           <main className="flex-grow">{children}</main>

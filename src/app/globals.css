@@ -19,6 +19,7 @@
 
   /* Typography */
   --font-family: 'Inter', sans-serif;
+  --font-bai-jamjuree: var(--font-bai-jamjuree), 'Nunito Sans', 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
 
   /* Layout variables - Edit these to change layout globally */
   --container-max-width: 730px;
@@ -35,7 +36,7 @@
 
 /* Typography classes from Figma */
 .h1 {
-  font-family: 'Bai Jamjuree', var(--font-family);
+  font-family: var(--font-bai-jamjuree);
   font-size: 40px;
   font-weight: 700;
   line-height: 1.5;
