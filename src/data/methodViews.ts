@@ -79,11 +79,11 @@ export const METHOD_VIEWS: Record<string, MethodView> = {
   'cognitive-stage': {
     id: 'cognitive-stage',
     name: 'Cognitive Stage',
-    description: 'Validation methods based on a user interaction cognitive stage: "how users react", "what users understand" and "what users do". Before every digital interaction a user will react to UI first, then they would think (comprehend, identify next steps), and finally they would perform an action.',
+    description: 'Validation methods based on a user interaction cognitive stage: "how users feel", "what users understand" and "what users do". Before every digital interaction a user will feel UI first, then they would think (comprehend, identify next steps), and finally they would perform an action.',
     isMultiColumn: true,
     columns: [
       {
-        name: 'React',
+        name: 'Feel',
         description: 'Methods to validate users sentiment, attitudes, preferences'
       },
       {
@@ -103,7 +103,7 @@ export interface MethodMetadata {
   research_type: 'qualitative' | 'mixed' | 'quantitative';
   design_timing: 'before' | 'during' | 'after';
   user_awareness: 'explicit' | 'implicit';
-  cognitive_stage: 'react' | 'think' | 'act';
+  cognitive_stage: 'feel' | 'think' | 'act';
 }
 
 // NOTE: Method classifications are now stored in database metadata

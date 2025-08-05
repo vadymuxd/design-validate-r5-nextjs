@@ -29,7 +29,7 @@ export interface ApiMethod {
     research_type?: 'qualitative' | 'mixed' | 'quantitative';
     design_timing?: 'before' | 'during' | 'after';
     user_awareness?: 'explicit' | 'implicit';
-    cognitive_stage?: 'react' | 'think' | 'act';
+    cognitive_stage?: 'feel' | 'think' | 'act';
   };
 }
 

@@ -56,7 +56,7 @@ const TopNav = () => {
   useEffect(() => {
     if (!isMounted) return;
 
-    const isSpecialPage = pathname === '/about' || pathname === '/community';
+    const isSpecialPage = pathname === '/about' || pathname === '/community' || pathname === '/cases' || pathname === '/methods' || pathname === '/frameworks' || pathname === '/tools' || pathname === '/metrics';
 
     // Set initial visibility based on page type and scroll position
     if (isSpecialPage) {

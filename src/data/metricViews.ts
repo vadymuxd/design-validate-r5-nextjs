@@ -17,7 +17,7 @@ export const METRIC_VIEWS: Record<string, MetricView> = {
   'all': {
     id: 'all',
     name: 'All',
-    description: '61 metrics to measure design performance and impact.',
+    description: '61 metrics to measure design performance and impact. Select different views above to see when and how to apply them.',
     isMultiColumn: false
   },
   'metric-type': {

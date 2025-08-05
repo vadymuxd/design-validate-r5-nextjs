@@ -27,7 +27,7 @@ UPDATE methods SET metadata = '{
   "research_type": "qualitative",
   "design_timing": "after",
   "user_awareness": "explicit", 
-  "cognitive_stage": "react"
+  "cognitive_stage": "feel"
 }' WHERE slug = 'user-feedback';
 
 -- Event Tracking
@@ -43,7 +43,7 @@ UPDATE methods SET metadata = '{
   "research_type": "mixed",
   "design_timing": "before",
   "user_awareness": "explicit",
-  "cognitive_stage": "react"
+  "cognitive_stage": "feel"
 }' WHERE slug = 'surveys';
 
 -- Usability Testing
@@ -59,7 +59,7 @@ UPDATE methods SET metadata = '{
   "research_type": "qualitative",
   "design_timing": "before",
   "user_awareness": "explicit",
-  "cognitive_stage": "react"
+  "cognitive_stage": "feel"
 }' WHERE slug = 'user-interviews';
 
 -- Funnels
@@ -133,6 +133,30 @@ UPDATE methods SET metadata = '{
   "user_awareness": "explicit",
   "cognitive_stage": "think"
 }' WHERE slug = 'first-click';
+
+-- Accessibility Testing
+UPDATE methods SET metadata = '{
+  "research_type": "mixed",
+  "design_timing": "during",
+  "user_awareness": "explicit",
+  "cognitive_stage": "act"
+}' WHERE slug = 'accessibility-testing';
+
+-- Field Study
+UPDATE methods SET metadata = '{
+  "research_type": "qualitative",
+  "design_timing": "before",
+  "user_awareness": "explicit",
+  "cognitive_stage": "feel"
+}' WHERE slug = 'field-study';
+
+-- Diary Study
+UPDATE methods SET metadata = '{
+  "research_type": "qualitative",
+  "design_timing": "after",
+  "user_awareness": "explicit",
+  "cognitive_stage": "feel"
+}' WHERE slug = 'diary-study';
 
 -- ============================================================================
 -- STEP 3: Verification queries

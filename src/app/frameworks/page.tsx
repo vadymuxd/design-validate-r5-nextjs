@@ -95,13 +95,13 @@ export default function FrameworksPage() {
     <>
       {/* Top Section with gradient */}
       <div className="w-full gradient-black-to-grey pb-12 px-4 sm:px-8">
-        <div className="w-full max-w-[730px] mx-auto flex flex-col items-center gap-8 pt-0">
+        <div className="w-full max-w-[730px] mx-auto flex flex-col items-center gap-8 pt-9">
           <TitleNavigation />
           
           {/* Description */}
           <div className="flex flex-col items-center gap-4 text-center">
             <p className="body text-white max-w-[520px]">
-              This is a curated list of design measuring frameworks and ux models to analyse user experience and setup design objectives. Ranked by an arbitrary relevance base rate plus user votes on this platform.
+              This is a curated list of design measuring frameworks and ux models to analyse user experience and setup design objectives. Ranked by user recommendation votes on this platform.
             </p>
           </div>
           
@@ -143,10 +143,10 @@ export default function FrameworksPage() {
                 ))}
               </div>
 
-              {/* Feedback button below frameworks */}
+              {/* Suggest more button below frameworks */}
               <div className="flex justify-center pt-20 pb-20">
                 <Link 
-                  variant="feedback"
+                  variant="suggest-more"
                   onClick={() => {
                     if (window.location.pathname === '/about') {
                       const el = document.getElementById('contact-form');

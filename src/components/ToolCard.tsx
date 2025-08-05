@@ -118,11 +118,16 @@ export function ToolCard({
           {/* Logo */}
           <div className="shrink-0">
             {logo && (
-              <CircularLogo
-                src={logo}
-                alt={`${name} logo`}
-                size={80}
-              />
+              <button
+                onClick={handleTitleClick}
+                className="hover:cursor-pointer"
+              >
+                <CircularLogo
+                  src={logo}
+                  alt={`${name} logo`}
+                  size={80}
+                />
+              </button>
             )}
           </div>
 
@@ -148,7 +153,12 @@ export function ToolCard({
                       </div>
                     </button>
                   </div>
-                  <p className="body text-[var(--color-black)]">{description}</p>
+                  <button
+                    onClick={handleTitleClick}
+                    className="body text-[var(--color-black)] hover:cursor-pointer text-left"
+                  >
+                    {description}
+                  </button>
                 </div>
               </div>
 
@@ -214,11 +224,16 @@ export function ToolCard({
           {/* Logo */}
           <div className="shrink-0">
             {logo && (
-              <CircularLogo
-                src={logo}
-                alt={`${name} logo`}
-                size={80}
-              />
+              <button
+                onClick={handleTitleClick}
+                className="hover:cursor-pointer"
+              >
+                <CircularLogo
+                  src={logo}
+                  alt={`${name} logo`}
+                  size={80}
+                />
+              </button>
             )}
           </div>
 
@@ -243,7 +258,12 @@ export function ToolCard({
                     </div>
                   </button>
                 </div>
-                <p className="body text-[var(--color-black)]">{description}</p>
+                <button
+                  onClick={handleTitleClick}
+                  className="body text-[var(--color-black)] hover:cursor-pointer text-left"
+                >
+                  {description}
+                </button>
               </div>
             </div>
 

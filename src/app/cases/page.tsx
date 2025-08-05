@@ -89,7 +89,7 @@ export default function CasesPage() {
       <main className="flex-grow">
         {/* Header Section with gradient */}
         <div className="w-full gradient-black-to-grey pb-12 px-4 sm:px-8 bg-black text-white">
-          <div className="w-full max-w-[730px] mx-auto flex flex-col items-center gap-8 pt-0">
+          <div className="w-full max-w-[730px] mx-auto flex flex-col items-center gap-8 pt-9">
             <TitleNavigation />
             
             {/* View Pills */}
