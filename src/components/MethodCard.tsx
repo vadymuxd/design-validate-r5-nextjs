@@ -120,7 +120,7 @@ export const MethodCard = forwardRef<HTMLDivElement, MethodCardProps>(({
               {/* View Tools Button */}
               <div className="w-full [&_button]:w-full [&_button]:bg-white [&_button]:text-black [&_button]:hover:!bg-white [&_button]:hover:opacity-90 [&_button]:border-none">
                 <Button
-                  variant="primary"
+                  variant="filled-white"
                   onClick={handleViewTools}
                 >
                   View tools

@@ -40,14 +40,14 @@ export const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onConfirm, action
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Button
-              variant="ghost"
+              variant="ghost-black"
               onClick={onClose}
               style={{ width: '100%', padding: '12px 24px' }}
             >
               No, cancel
             </Button>
             <Button
-              variant="primary"
+              variant="filled-black"
               onClick={onConfirm}
               style={{ width: '100%', padding: '12px 24px' }}
             >

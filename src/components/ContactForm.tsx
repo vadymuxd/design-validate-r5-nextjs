@@ -128,7 +128,7 @@ export function ContactForm({
             <p className="text-red-500 text-sm text-center">{errorMessage}</p>
           )}
           <Button
-            variant="primary"
+            variant="filled-black"
             onClick={formState === 'error' ? handleTryAgain : handleSubmit}
             disabled={formState === 'loading'}
             icon={formState === 'loading' ? undefined : "/icons/Send.svg"}

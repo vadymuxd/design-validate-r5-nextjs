@@ -79,7 +79,7 @@ export const Footer = ({ noBorder = false }: FooterProps) => {
               
               {/* Button */}
               <Button
-                variant="primary"
+                variant="filled-black"
                 onClick={() => {
                   setShowPopup(false);
                   window.location.href = '/about#contact-form';

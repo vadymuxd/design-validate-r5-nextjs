@@ -7,6 +7,7 @@ interface ContentCardProps {
   variant?: 'dark' | 'light';
   size?: 'medium' | 'small';
   className?: string;
+  onClick?: () => void;
 }
 
 export function ContentCard({
@@ -16,12 +17,14 @@ export function ContentCard({
   variant = 'dark',
   size = 'medium',
   className = '',
+  onClick,
 }: ContentCardProps) {
   const baseClasses = 'rounded-2xl flex flex-col gap-6';
+  const clickableClasses = onClick ? 'cursor-pointer hover:opacity-80 transition-opacity duration-200' : '';
 
   const variantClasses = {
-    dark: 'bg-black border border-[var(--color-grey-dark)] text-white',
-    light: 'bg-[var(--color-grey-light)] text-black',
+    dark: 'bg-black border border-[var(--color-grey-darkest)] text-white',
+    light: 'bg-[var(--color-grey-light)] border border-transparent text-black',
   };
 
   const sizeClasses = {
@@ -46,7 +49,8 @@ export function ContentCard({
 
   return (
     <div
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+      className={`${baseClasses} ${clickableClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+      onClick={onClick}
     >
       {icon && <div className="w-6 h-6">{icon}</div>}
       <h3 className={`${titleSizeClasses[size]} ${titleClasses[variant]}`}>

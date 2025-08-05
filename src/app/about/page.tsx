@@ -38,7 +38,7 @@ export default function AboutPage() {
           </div>
           <h1 className="h1 mb-4">About</h1>
           <p className="body max-w-2xl mx-auto mb-20 sm:mb-32">
-            This is a prototype of a platform to popularise data-driven design
+            This is a space to popularise data-driven design
             and connect like-minded people around it.
         </p>
       </div>

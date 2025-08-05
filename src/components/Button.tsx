@@ -3,18 +3,19 @@ import Image from 'next/image';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'filled-black' | 'filled-white' | 'ghost-white' | 'ghost-black';
   icon?: string;
 }
 
-export function Button({ children, variant = 'primary', icon, className, ...props }: ButtonProps) {
+export function Button({ children, variant = 'filled-black', icon, className, ...props }: ButtonProps) {
   const baseClasses =
     'px-9 py-3 rounded label-default transition-all duration-300 ease-in-out flex items-center justify-center gap-2 cursor-pointer w-fit';
 
   const variantClasses = {
-    primary: 'bg-black text-white hover:bg-gray-800',
-    secondary: 'bg-white text-black border border-gray-200 hover:bg-gray-50',
-    ghost: 'bg-white text-black border border-gray-300 hover:bg-gray-50',
+    'filled-black': 'bg-black text-white hover:bg-gray-800',
+    'filled-white': 'bg-white text-black border border-gray-200 hover:bg-gray-50',
+    'ghost-white': 'bg-transparent text-white border border-white',
+    'ghost-black': 'bg-transparent text-black border border-black',
   };
 
   return (

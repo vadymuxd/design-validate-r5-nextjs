@@ -276,7 +276,7 @@ export function CasesCard({
           {url && (
             <div className="flex md:hidden">
               <Button 
-                variant="primary" 
+                variant="filled-black" 
                 onClick={handleVisitSite}
                 className="w-full"
               >
