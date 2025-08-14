@@ -6,6 +6,7 @@ import { FeedbackPopup } from '@/components/FeedbackPopup';
 import Image from 'next/image';
 import { Footer } from '@/components/Footer';
 import { useState, useRef } from 'react';
+import { Link as ActionLink } from '@/components/Link';
 
 export default function CommunityPage() {
   const [isInterested, setIsInterested] = useState(false);
@@ -165,6 +166,29 @@ export default function CommunityPage() {
             </div>
           </div>
 
+          {/* F. Community Join Links */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-12 mt-[-16px] mb-24">
+            <a
+              href="https://discord.gg/gyqegzFgmU"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <ActionLink
+                variant="join-discord"
+              />
+            </a>
+            <a
+              href="https://join.slack.com/t/design-validate/shared_invite/zt-3be4p5wxi-L4pUtllTvxyPnr9ZMyqDKg"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <ActionLink
+                variant="join-slack"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </main>
