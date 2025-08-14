@@ -138,7 +138,7 @@ export default function CommunityPage() {
                     : '[&_h3]:!text-white'
                 }`}
               >
-                I want to contribute to the content by adding new cases, frameworks, tools. I would be happy to expose my knowledge and experience to others.
+                I want to contribute to the content by adding new cases, frameworks, tools. I would be happy to share my knowledge and experience with others.
               </ContentCard>
               
               <ContentCard
@@ -161,7 +161,7 @@ export default function CommunityPage() {
                     : '[&_h3]:!text-white'
                 }`}
               >
-                I know how this could grow and have ideas how this could benefit me and what this platform could become. I would like to discuss and engage on this as a core team.
+                I know how this could grow and have ideas on how this could benefit me and what this platform could become. I would like to discuss and engage on this as the core team.
               </ContentCard>
             </div>
           </div>
