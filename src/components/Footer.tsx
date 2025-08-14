@@ -14,40 +14,30 @@ interface FooterProps {
 export const Footer = ({ noBorder = false }: FooterProps) => {
   const [showPopup, setShowPopup] = useState(false);
   return (
-    <div className={`bg-black flex flex-col md:flex-row items-center justify-center gap-4 md:gap-9 w-full py-12 ${noBorder ? '' : 'border-t border-[var(--color-grey-darkest)]'}`}>
-      <Link href="/about#contact-form">
-        <span
-          className={`label-mini text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200`}
+  <div className={`bg-black flex flex-col md:flex-row items-center justify-center gap-8 md:gap-9 w-full py-12 ${noBorder ? '' : 'border-t border-[var(--color-grey-darkest)]'}`}>
+      <div className="flex items-center h-full">
+        <button
+          className="label-mini bg-transparent text-white rounded-[24px] px-1.5 py-1 border-white cursor-pointer flex items-center gap-1 h-full hover:text-[var(--color-red)] transition-colors duration-200"
+          style={{ fontWeight: 600, border: 'none', padding: 0 }}
+          onClick={() => setShowPopup(true)}
+          type="button"
         >
-          Contact
-        </span>
-      </Link>
-      <Link href="/about">
-        <span
-          className={`label-mini text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200`}
-        >
-          About
-        </span>
-      </Link>
-      <Link href="/community">
-        <span
-          className={`label-mini text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200`}
-        >
-          Community
-        </span>
-      </Link>
-
-      <button
-        className="label-mini bg-transparent text-white rounded-[24px] px-1.5 py-1 border border-white cursor-pointer flex items-center gap-1"
-        style={{ fontWeight: 600 }}
-        onClick={() => setShowPopup(true)}
-        type="button"
-      >
-        <div className="w-1.5 h-1.5 bg-[var(--color-red)] rounded-full"></div>
-        beta
-      </button>
-
-      <UpdatedAt />
+          <div className="w-1.5 h-1.5 bg-[var(--color-red)] rounded-full"></div>
+          <span className="flex items-center h-full">Beta</span>
+        </button>
+      </div>
+      <div className="flex items-center h-full">
+        <Link href="/about#contact-form">
+          <span
+            className={`label-mini text-[var(--color-grey-light)] hover:text-[var(--color-red)] transition-colors duration-200 flex items-center h-full`}
+          >
+            Feedback
+          </span>
+        </Link>
+      </div>
+      <div className="flex items-center h-full">
+        <UpdatedAt />
+      </div>
 
       {showPopup && (
         <>
