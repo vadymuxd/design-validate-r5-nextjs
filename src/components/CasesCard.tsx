@@ -6,15 +6,24 @@ import { Button } from './Button';
 
 // Method name mapping (slug -> display name)
 const METHOD_NAME_MAP: Record<string, string> = {
+  'usability-testing': 'Usability Testing',
+  'event-tracking': 'Event Tracking',
   'ab-testing': 'A/B Testing',
   'user-data-intelligence': 'User Data Intelligence',
+  'session-replays': 'Session Replays',
+  'heat-maps': 'Heatmaps',
   'surveys': 'Surveys',
-  'funnels': 'Funnels',
-  'usability-testing': 'Usability Testing',
-  'field-studies': 'Field Studies',
+  'user-feedback': 'User Feedback',
   'concept-testing': 'Concept Testing',
   'user-interviews': 'User Interviews',
-  'card-sorting': 'Card Sorting'
+  'card-sorting': 'Card Sorting',
+  'first-click': 'First-Click Testing',
+  'tree-testing': 'Tree Testing',
+  'form-analytics': 'Form Analytics',
+  'funnels': 'Funnels',
+  'accessibility-testing': 'Accessibility Testing',
+  'field-study': 'Field Study',
+  'diary-study': 'Diary Study'
 };
 
 // Utility function to render paragraphs from text with line breaks
