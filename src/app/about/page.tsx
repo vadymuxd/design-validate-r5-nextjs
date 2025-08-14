@@ -52,7 +52,7 @@ export default function AboutPage() {
               </p>
               <br />
               <p>
-                Design deserves more respect and impact. Our mission is build a
+                Design deserves more respect and impact. Our mission is to build a
                 bridge between insights and design—making the process
                 data-driven while popularizing design measurement.
               </p>
@@ -66,21 +66,21 @@ export default function AboutPage() {
               </p>
               <br />
               <p>
-                Content and features are prioritized by community. We vote,
+                Content and features are prioritized by the community. We vote,
                 discuss, share, and learn together, making insights more
                 accessible and (potentially) fun.
               </p>
             </ContentCard>
             <ContentCard title="How" variant="dark" size="medium">
               <p>
-                Every feature, leaderboard, topic, tool, or metric prioritized
+                Every feature, leaderboard, topic, tool, or metric is prioritized
                 by collective knowledge and proven practices. We evolve mechanics
-                and content at it fits the industry and community.
+                and content as it fits the industry and community.
               </p>
               <br />
               <p>
                 Starting with a concept MVP and draft content, we capture user
-                feedback and user engagement to decide on next step. We connect,
+                feedback and user engagement to decide on the next step. We connect,
                 validate, iterate.
               </p>
             </ContentCard>
