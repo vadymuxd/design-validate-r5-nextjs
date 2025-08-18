@@ -1,8 +1,180 @@
 import { supabase } from '@/lib/supabase';
 import { NextRequest, NextResponse } from 'next/server';
+import { Resend } from 'resend';
 
 // Define supported vote types
 type VoteEntityType = 'tool' | 'method' | 'case' | 'metric' | 'article' | 'framework';
+
+// Types for email function
+interface VoteInfo {
+  id: string;
+  vote_type: string;
+  entity_id: string;
+  sentiment: string;
+  method_id?: number;
+  tool_id?: string;
+  created_at: string;
+}
+
+interface VoteDeviceData {
+  deviceId: string;
+  ipAddress: string;
+  userAgent: string;
+}
+
+// Helper function to send new vote email notification
+async function sendNewVoteEmail(voteInfo: VoteInfo, deviceData: VoteDeviceData): Promise<boolean> {
+  try {
+    const apiKey = process.env.RESEND_API_KEY;
+    
+    if (!apiKey || apiKey === 'your_resend_api_key_here') {
+      console.log('Resend API key not configured, skipping new vote email.');
+      return false;
+    }
+
+    const resend = new Resend(apiKey);
+
+    // Get additional context for the vote
+    let entityName = 'Unknown';
+    let methodName = '';
+    let voteContext = '';
+
+    try {
+      // Try to get entity name based on vote type
+      if (voteInfo.vote_type === 'tool' && voteInfo.tool_id) {
+        const { data: tool } = await supabase
+          .from('tools')
+          .select('name')
+          .eq('id', voteInfo.tool_id)
+          .single();
+        if (tool) {
+          entityName = tool.name;
+        }
+      } else if (voteInfo.vote_type === 'method' && voteInfo.entity_id) {
+        const { data: method } = await supabase
+          .from('methods')
+          .select('name')
+          .eq('id', parseInt(voteInfo.entity_id))
+          .single();
+        if (method) {
+          entityName = method.name;
+        }
+      } else if (voteInfo.vote_type === 'framework' && voteInfo.entity_id) {
+        const { data: framework } = await supabase
+          .from('frameworks')
+          .select('name')
+          .eq('id', parseInt(voteInfo.entity_id))
+          .single();
+        if (framework) {
+          entityName = framework.name;
+        }
+      } else if (voteInfo.vote_type === 'case' && voteInfo.entity_id) {
+        const { data: caseStudy } = await supabase
+          .from('cases')
+          .select('name')
+          .eq('id', parseInt(voteInfo.entity_id))
+          .single();
+        if (caseStudy) {
+          entityName = caseStudy.name;
+        }
+      }
+
+      // Get method context if applicable
+      if (voteInfo.method_id) {
+        const { data: method } = await supabase
+          .from('methods')
+          .select('name')
+          .eq('id', voteInfo.method_id)
+          .single();
+        if (method) {
+          methodName = method.name;
+          voteContext = voteInfo.vote_type === 'tool' ? ` (in ${methodName} method)` : '';
+        }
+      }
+    } catch (error) {
+      console.log('Could not fetch entity name for vote email:', error);
+    }
+    
+    // Format the email content with vote information
+    const emailContent = `
+      <h2>🗳️ New Vote Detected on Design Validate</h2>
+      <p>A new vote has been added to the votes table:</p>
+      
+      <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3>Vote Information:</h3>
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Vote ID:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${voteInfo.id}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Vote Type:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${voteInfo.vote_type.toUpperCase()}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Entity Name:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${entityName}${voteContext}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Entity ID:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${voteInfo.entity_id}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Sentiment:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; color: ${voteInfo.sentiment === 'UPVOTE' ? '#22c55e' : '#ef4444'};">
+              ${voteInfo.sentiment === 'UPVOTE' ? '👍 UPVOTE' : '👎 DOWNVOTE'}
+            </td>
+          </tr>
+          ${voteInfo.method_id ? `
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Method Context:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${methodName} (ID: ${voteInfo.method_id})</td>
+          </tr>
+          ` : ''}
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Device ID:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.deviceId}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">IP Address:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${deviceData.ipAddress}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">User Agent:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; word-break: break-all;">${deviceData.userAgent}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Created At:</td>
+            <td style="padding: 8px; border-bottom: 1px solid #ddd;">${new Date(voteInfo.created_at).toLocaleString()}</td>
+          </tr>
+        </table>
+      </div>
+      
+      <p style="margin-top: 20px;">
+        <em>This email was automatically generated when a new vote was detected on Design Validate.</em><br>
+        <em>Timestamp: ${new Date().toISOString()}</em>
+      </p>
+      
+      <hr style="margin: 20px 0;">
+      <p style="color: #666; font-size: 12px;">
+        Visit the <a href="https://design-validate.com/admin">Admin Dashboard</a> to view detailed analytics.
+      </p>
+    `;
+
+    await resend.emails.send({
+      from: 'Design Validate <noreply@design-validate.com>',
+      to: 'info@design-validate.com',
+      subject: `New ${voteInfo.vote_type} vote: ${voteInfo.sentiment}`,
+      html: emailContent,
+    });
+
+    console.log('New vote email sent successfully');
+    return true;
+  } catch (error) {
+    console.error('Error sending new vote email:', error);
+    return false;
+  }
+}
 
 // Update aggregated counts based on vote type
 async function updateAggregatedCounts(voteType: VoteEntityType, entityId: string, contextId?: number) {
@@ -323,9 +495,11 @@ export async function POST(request: NextRequest) {
         voteData.method_id = context_id;
       }
       
-      const { error: insertError } = await supabase
+      const { data: insertedVote, error: insertError } = await supabase
         .from('votes')
-        .insert(voteData);
+        .insert(voteData)
+        .select('*')
+        .single();
 
       if (insertError) {
         console.error('Error inserting vote:', insertError);
@@ -335,6 +509,36 @@ export async function POST(request: NextRequest) {
 
       // Update aggregated counts
       await updateAggregatedCounts(vote_type, entity_id, context_id);
+
+      // Send email notification for new vote
+      try {
+        const deviceData = {
+          deviceId: device_id,
+          ipAddress: ip_address,
+          userAgent: userAgent
+        };
+
+        const voteInfo = {
+          id: insertedVote.id.toString(),
+          vote_type: insertedVote.vote_type,
+          entity_id: insertedVote.entity_id,
+          sentiment: insertedVote.sentiment,
+          method_id: insertedVote.method_id,
+          tool_id: insertedVote.tool_id,
+          created_at: insertedVote.created_at
+        };
+
+        const emailSent = await sendNewVoteEmail(voteInfo, deviceData);
+        
+        if (emailSent) {
+          console.log('New vote email notification sent successfully');
+        } else {
+          console.log('New vote email notification failed or was skipped');
+        }
+      } catch (emailError) {
+        console.error('Error sending new vote email:', emailError);
+        // Don't fail the request if email fails
+      }
       
       return NextResponse.json({ status: 'VOTE_CREATED', message: 'Thanks for your feedback!' });
     }
