@@ -6,24 +6,30 @@ import Image from 'next/image';
 interface FeedbackPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  cardType?: 'viewer' | 'contributor' | 'partner';
+  cardType?: 'viewer' | 'contributor' | 'partner' | 'discord' | 'slack';
+  source?: 'community' | 'footer';
 }
 
 type FormState = 'idle' | 'loading' | 'sent' | 'error';
 
-export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, cardType }) => {
+export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, cardType, source = 'community' }) => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [formState, setFormState] = useState<FormState>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [messageError, setMessageError] = useState('');
   const messageRef = useRef<HTMLTextAreaElement>(null);
+  const emailRef = useRef<HTMLTextAreaElement>(null);
 
-  // Focus message textarea when entering error state  
+  // Focus appropriate field when entering error state  
   useEffect(() => {
-    if (errorMessage && messageRef.current) {
+    if (emailError && emailRef.current) {
+      emailRef.current.focus();
+    } else if (messageError && messageRef.current) {
       messageRef.current.focus();
     }
-  }, [errorMessage]);
+  }, [emailError, messageError]);
 
   // Reset form state when popup opens
   useEffect(() => {
@@ -32,6 +38,8 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
       setMessage('');
       setFormState('idle');
       setErrorMessage('');
+      setEmailError('');
+      setMessageError('');
     }
   }, [isOpen]);
 
@@ -55,6 +63,12 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
           headline: "Hello there!",
           bodyText: "Have big ideas for this platform? We'd love to hear your vision for growth and partnership. Let's build something great."
         };
+      case 'discord':
+      case 'slack':
+        return {
+          headline: "Add email",
+          bodyText: "We are setting up these channels of communication at the moment. Please leave your email address and we invite you as soon as it is ready"
+        };
       default:
         return {
           headline: "Hello there!",
@@ -66,14 +80,27 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
   const content = getContent();
 
   const handleSubmit = async () => {
-    if (!message.trim()) {
-      setErrorMessage('Please enter a message');
-      messageRef.current?.focus();
-      return;
+    // Clear previous errors
+    setEmailError('');
+    setMessageError('');
+    setErrorMessage('');
+
+    // For Discord/Slack, only email is required
+    if (cardType === 'discord' || cardType === 'slack') {
+      if (!email.trim()) {
+        setEmailError('Please enter your email address');
+        return;
+      }
+    } else {
+      // For other types, require either email OR message (not both)
+      if (!email.trim() && !message.trim()) {
+        setEmailError('Please enter your email address or a message');
+        setMessageError('Please enter your email address or a message');
+        return;
+      }
     }
 
     setFormState('loading');
-    setErrorMessage('');
 
     try {
       const response = await fetch('/api/contact', {
@@ -82,9 +109,11 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: message.trim(),
+          message: (cardType === 'discord' || cardType === 'slack') 
+            ? `Invitation request for ${cardType}` 
+            : message.trim() || `Contact request from ${cardType}`,
           email: email.trim() || null,
-          feedback_source: 'community',
+          feedback_source: source,
           component: cardType || 'unknown'
         }),
       });
@@ -116,6 +145,8 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
   const handleReset = () => {
     setFormState('idle');
     setErrorMessage('');
+    setEmailError('');
+    setMessageError('');
     setEmail('');
     setMessage('');
   };
@@ -126,7 +157,11 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
   
   if (formState === 'sent') {
     displayHeading = "It's sent";
-    displayDescription = "Thanks for getting in touch! We'll review your feedback and get back to you if needed.";
+    if (cardType === 'discord' || cardType === 'slack') {
+      displayDescription = "Thanks for joining us. We will invite you and notify you when it is set up";
+    } else {
+      displayDescription = "Thanks for getting in touch! We'll review your feedback and get back to you if needed.";
+    }
   } else if (formState === 'error') {
     displayHeading = "We couldn't send it";
     displayDescription = "Sorry, something happened on the server side. Please try again in a few minutes.";
@@ -165,47 +200,66 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
           
           {formState === 'sent' ? (
             <div className="flex justify-center">
-              <button
-                onClick={handleReset}
-                className="flex items-center gap-2 label-default hover:cursor-pointer"
-                style={{ color: 'var(--color-link)' }}
-              >
-                <span>Send another message</span>
-              </button>
+              {/* Only show "Send another message" for card types that have actual messages */}
+              {cardType !== 'discord' && cardType !== 'slack' && (
+                <button
+                  onClick={handleReset}
+                  className="flex items-center gap-2 label-default hover:cursor-pointer"
+                  style={{ color: 'var(--color-link)' }}
+                >
+                  <span>Send another message</span>
+                </button>
+              )}
             </div>
           ) : (
             <div className="flex flex-col gap-4">
               {/* C. Email input */}
               <div>
                 <Textarea
+                  ref={emailRef}
                   placeholder="Your email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (emailError) {
+                      setEmailError('');
+                      setMessageError(''); // Clear both errors since they're related
+                    }
+                  }}
                   rows={1}
                   className="resize-none"
                   disabled={formState === 'loading'}
                 />
+                {emailError && (
+                  <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                )}
               </div>
 
-              {/* D. Message textarea */}
-              <div>
-                <Textarea
-                  ref={messageRef}
-                  placeholder="Your message"
-                  value={message}
-                  onChange={(e) => {
-                    setMessage(e.target.value);
-                    if (errorMessage) {
-                      setErrorMessage('');
-                    }
-                  }}
-                  style={{ height: '200px' }}
-                  className={`resize-none ${errorMessage ? 'border-red-500 focus:ring-red-500' : ''}`}
-                  disabled={formState === 'loading'}
-                />
-              </div>
+              {/* D. Message textarea - only show for non-Discord/Slack */}
+              {cardType !== 'discord' && cardType !== 'slack' && (
+                <div>
+                  <Textarea
+                    ref={messageRef}
+                    placeholder="Your message"
+                    value={message}
+                    onChange={(e) => {
+                      setMessage(e.target.value);
+                      if (messageError) {
+                        setMessageError('');
+                        setEmailError(''); // Clear both errors since they're related
+                      }
+                    }}
+                    style={{ height: '200px' }}
+                    className="resize-none"
+                    disabled={formState === 'loading'}
+                  />
+                  {messageError && (
+                    <p className="text-red-500 text-sm mt-1">{messageError}</p>
+                  )}
+                </div>
+              )}
 
-              {/* Error message */}
+              {/* Server error message - only for server-side errors */}
               {errorMessage && formState !== 'error' && (
                 <p className="text-red-500 text-sm text-center">{errorMessage}</p>
               )}
@@ -214,7 +268,7 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
               <Button
                 variant="filled-black"
                 onClick={formState === 'error' ? handleTryAgain : handleSubmit}
-                disabled={formState === 'loading' || !message.trim()}
+                disabled={formState === 'loading'}
                 icon={formState === 'loading' ? undefined : "/icons/Send.svg"}
                 className="w-full"
               >
@@ -225,6 +279,8 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
                   </>
                 ) : formState === 'error' ? (
                   'Try again'
+                ) : (cardType === 'discord' || cardType === 'slack') ? (
+                  'Invite me when ready'
                 ) : (
                   'Send message'
                 )}

@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { Button } from './Button';
 import LottieAnimation from './LottieAnimation';
 import cubeBlackAnimation from '../../public/gifs/black_3_cubes.json';
+import { FeedbackPopup } from './FeedbackPopup';
 
 interface FooterProps {
   noBorder?: boolean;
@@ -14,9 +15,21 @@ interface FooterProps {
 
 export const Footer = ({ noBorder = false }: FooterProps) => {
   const [showPopup, setShowPopup] = useState(false);
+  const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
+  const [selectedPlatform, setSelectedPlatform] = useState<'discord' | 'slack'>('discord');
   const pathname = usePathname();
   const isHome = pathname === '/';
   const isCommunity = pathname === '/community';
+
+  const handleDiscordClick = () => {
+    setSelectedPlatform('discord');
+    setShowFeedbackPopup(true);
+  };
+
+  const handleSlackClick = () => {
+    setSelectedPlatform('slack');
+    setShowFeedbackPopup(true);
+  };
   return (
   <div className={`bg-black flex flex-col md:flex-row items-center justify-center gap-8 md:gap-9 w-full py-12 ${noBorder ? '' : 'border-t border-[var(--color-grey-darkest)]'}`}>
       <div className="flex items-center h-full">
@@ -64,11 +77,9 @@ export const Footer = ({ noBorder = false }: FooterProps) => {
       {!isCommunity && (
         <>
           <div className="flex items-center h-full">
-            <Link
-              href="https://discord.gg/gyqegzFgmU"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-[var(--color-red)] transition-colors duration-200 flex items-center"
+            <button
+              onClick={handleDiscordClick}
+              className="text-white hover:text-[var(--color-red)] transition-colors duration-200 flex items-center cursor-pointer"
               aria-label="Join us on Discord"
             >
               <svg
@@ -92,14 +103,12 @@ export const Footer = ({ noBorder = false }: FooterProps) => {
                   </clipPath>
                 </defs>
               </svg>
-            </Link>
+            </button>
           </div>
           <div className="flex items-center h-full">
-            <Link
-              href="https://join.slack.com/t/design-validate/shared_invite/zt-3be4p5wxi-L4pUtllTvxyPnr9ZMyqDKg"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-[var(--color-red)] transition-colors duration-200 flex items-center"
+            <button
+              onClick={handleSlackClick}
+              className="text-white hover:text-[var(--color-red)] transition-colors duration-200 flex items-center cursor-pointer"
               aria-label="Join us on Slack"
             >
               <svg
@@ -116,7 +125,7 @@ export const Footer = ({ noBorder = false }: FooterProps) => {
                   fill="currentColor"
                 />
               </svg>
-            </Link>
+            </button>
           </div>
         </>
       )}
@@ -166,6 +175,15 @@ export const Footer = ({ noBorder = false }: FooterProps) => {
             </div>
           </div>
         </>
+      )}
+
+      {showFeedbackPopup && (
+        <FeedbackPopup
+          isOpen={showFeedbackPopup}
+          onClose={() => setShowFeedbackPopup(false)}
+          cardType={selectedPlatform}
+          source="footer"
+        />
       )}
     </div>
   );

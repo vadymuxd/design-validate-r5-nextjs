@@ -170,12 +170,61 @@ export async function POST(request: NextRequest) {
       } else {
         // Determine email content based on feedback source
         if (finalFeedbackSource === 'community') {
-          // Community feedback email
-          await resend.emails.send({
-            from: 'Community Feedback <noreply@design-validate.com>',
-            to: 'info@design-validate.com',
-            subject: `New Community Feedback - ${finalComponent.charAt(0).toUpperCase() + finalComponent.slice(1)}`,
-            html: `
+          let emailSubject = 'New Community Feedback';
+          let emailContent = '';
+          
+          if (finalComponent === 'discord') {
+            emailSubject = 'New Discord Invitation Request';
+            emailContent = `
+              <h2>🎮 New Discord Invitation Request</h2>
+              <p>Someone wants to join the Design Validate Discord community!</p>
+              
+              <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3>Request Details:</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Platform:</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Discord</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">User Email:</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">${email?.trim() || 'Not provided'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Message:</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">${message.trim()}</td>
+                  </tr>
+                </table>
+              </div>
+            `;
+          } else if (finalComponent === 'slack') {
+            emailSubject = 'New Slack Invitation Request';
+            emailContent = `
+              <h2>💬 New Slack Invitation Request</h2>
+              <p>Someone wants to join the Design Validate Slack workspace!</p>
+              
+              <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3>Request Details:</h3>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Platform:</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">Slack</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">User Email:</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">${email?.trim() || 'Not provided'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd; font-weight: bold;">Message:</td>
+                    <td style="padding: 8px; border-bottom: 1px solid #ddd;">${message.trim()}</td>
+                  </tr>
+                </table>
+              </div>
+            `;
+          } else {
+            // Regular community feedback
+            emailSubject = `New Community Feedback - ${finalComponent.charAt(0).toUpperCase() + finalComponent.slice(1)}`;
+            emailContent = `
               <h2>🎉 New Community Feedback Received</h2>
               <p>Someone is interested in being a <strong>${finalComponent}</strong> on Design Validate!</p>
               
@@ -196,6 +245,15 @@ export async function POST(request: NextRequest) {
                   </tr>
                 </table>
               </div>
+            `;
+          }
+
+          await resend.emails.send({
+            from: 'Community Feedback <noreply@design-validate.com>',
+            to: 'info@design-validate.com',
+            subject: emailSubject,
+            html: `
+              ${emailContent}
 
               <div style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;">
                 <h4>Technical Information:</h4>

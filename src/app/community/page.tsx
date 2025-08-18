@@ -11,7 +11,7 @@ import { Link as ActionLink } from '@/components/Link';
 export default function CommunityPage() {
   const [isInterested, setIsInterested] = useState(false);
   const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
-  const [selectedCardType, setSelectedCardType] = useState<'viewer' | 'contributor' | 'partner'>('viewer');
+  const [selectedCardType, setSelectedCardType] = useState<'viewer' | 'contributor' | 'partner' | 'discord' | 'slack'>('viewer');
   const cardsRef = useRef<HTMLDivElement>(null);
 
   const handleInterestedClick = () => {
@@ -33,9 +33,17 @@ export default function CommunityPage() {
     }
   };
 
-  const handleCardClick = (cardType: 'viewer' | 'contributor' | 'partner') => {
+  const handleCardClick = (cardType: 'viewer' | 'contributor' | 'partner' | 'discord' | 'slack') => {
     setSelectedCardType(cardType);
     setShowFeedbackPopup(true);
+  };
+
+  const handleDiscordClick = () => {
+    handleCardClick('discord');
+  };
+
+  const handleSlackClick = () => {
+    handleCardClick('slack');
   };
 
   return (
@@ -168,26 +176,14 @@ export default function CommunityPage() {
 
           {/* F. Community Join Links */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-12 mt-[-16px] mb-24">
-            <a
-              href="https://discord.gg/gyqegzFgmU"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group"
-            >
-              <ActionLink
-                variant="join-discord"
-              />
-            </a>
-            <a
-              href="https://join.slack.com/t/design-validate/shared_invite/zt-3be4p5wxi-L4pUtllTvxyPnr9ZMyqDKg"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group"
-            >
-              <ActionLink
-                variant="join-slack"
-              />
-            </a>
+            <ActionLink
+              variant="join-discord"
+              onClick={handleDiscordClick}
+            />
+            <ActionLink
+              variant="join-slack"
+              onClick={handleSlackClick}
+            />
           </div>
         </div>
       </div>
@@ -199,6 +195,7 @@ export default function CommunityPage() {
       isOpen={showFeedbackPopup}
       onClose={() => setShowFeedbackPopup(false)}
       cardType={selectedCardType}
+      source="community"
     />
     </>
   );
