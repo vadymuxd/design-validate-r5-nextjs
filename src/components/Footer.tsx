@@ -158,7 +158,11 @@ export const Footer = ({ noBorder = false }: FooterProps) => {
               
               {/* Body text */}
               <p className="body text-black mb-8">
-                This platform is in the early stages of its MVP. At this point, our focus is on validating which types of content generate the most interest, rather than showcasing a polished collection of high-quality items with good UX. You may likely encounter bugs or errors along the way. We greatly appreciate your feedback - please report anything that seems off, or simply engage with the sections you find most interesting.
+                This is a beta version of the platform.
+
+Our current focus is on validating content ideas to see what resonates with users, not on delivering a polished, high-quality user experience. You will likely encounter bugs or errors.
+
+We would love your feedback! Please report anything that seems broken or simply spend time on the sections you find most interesting. Your engagement will be tracked and it will help us to build a better proposition.
               </p>
               
               {/* Button */}
