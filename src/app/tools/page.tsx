@@ -12,12 +12,13 @@ import Image from 'next/image';
 import LottieAnimation from '@/components/LottieAnimation';
 import animationData from '../../../public/gifs/cube-2.json';
 import { ToastMessage } from '@/components/ToastMessage';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Footer } from '@/components/Footer';
 import { Suspense } from 'react';
 
 function ToolsPageContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [methods, setMethods] = useState<ApiMethod[]>([]);
   const [activeMethodSlug, setActiveMethodSlug] = useState<string>('');
   const [tools, setTools] = useState<ApiTool[]>([]);
@@ -106,8 +107,8 @@ function ToolsPageContent() {
 
     // If the vote was successful, update the tool's vote count in the local state
     if (result.voteStatus === 'VOTE_CREATED' || result.voteStatus === 'VOTE_UPDATED') {
-      setTools(currentTools => 
-        currentTools.map(tool => {
+      setTools(currentTools => {
+        const updatedTools = currentTools.map(tool => {
           if (tool.id === result.toolId) {
             let newUpvotes = tool.upvotes;
             let newDownvotes = tool.downvotes;
@@ -126,17 +127,32 @@ function ToolsPageContent() {
                 newUpvotes--;
               }
             }
-            return { ...tool, upvotes: newUpvotes, downvotes: newDownvotes };
+            
+            // Calculate new net score for proper ranking
+            const newNetScore = newUpvotes - newDownvotes;
+            
+            return { 
+              ...tool, 
+              upvotes: newUpvotes, 
+              downvotes: newDownvotes,
+              net_score: newNetScore
+            };
           }
           return tool;
-        })
-      );
+        });
+        
+        // Re-sort tools by net score to maintain proper ranking (same as API sorting)
+        return updatedTools.sort((a, b) => b.net_score - a.net_score);
+      });
     }
   };
 
   const handleMethodClick = (slug: string) => {
     if (slug !== activeMethodSlug) {
       setActiveMethodSlug(slug);
+      // Update the URL to reflect the new method selection
+      const newUrl = `/tools?method_slug=${encodeURIComponent(slug)}`;
+      router.push(newUrl, { scroll: false });
     }
   };
 

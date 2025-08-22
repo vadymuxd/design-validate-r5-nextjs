@@ -9,6 +9,7 @@ export interface ApiTool {
   method_id: number;
   upvotes: number;
   downvotes: number;
+  net_score: number; // upvotes - downvotes (for ranking)
   pro_text: string | null;
   con_text: string | null;
   // The 'pros' and 'cons' are no longer part of the main tool object from the API.
