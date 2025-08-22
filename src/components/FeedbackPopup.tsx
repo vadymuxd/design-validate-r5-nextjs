@@ -66,7 +66,7 @@ export const FeedbackPopup: React.FC<FeedbackPopupProps> = ({ isOpen, onClose, c
       case 'discord':
       case 'slack':
         return {
-          headline: "Add email",
+          headline: "Get invited",
           bodyText: "We are setting up these channels of communication at the moment. Please leave your email address and we invite you as soon as it is ready"
         };
       default:
