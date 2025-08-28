@@ -173,7 +173,7 @@ async function handleAllInView() {
           .neq('method_id', 0); // Exclude "All in" method to avoid double counting
 
         // Get direct "All in" votes (method_id = 0) if they exist
-        const { data: allInScore, error: allInError } = await supabase
+        const { data: allInScore } = await supabase
           .from('tools_leaderboard')
           .select('initial_upvotes, initial_downvotes, current_upvotes, current_downvotes')
           .eq('tool_id', tool.id)

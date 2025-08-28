@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
+interface MethodSortable {
+  id: number;
+}
+
 export async function GET() {
   try {
     // Try to get methods with calculated net scores using the function
@@ -59,7 +63,7 @@ export async function GET() {
     }
 
     return NextResponse.json({ 
-      methods: methods ? methods.sort((a: any, b: any) => {
+      methods: methods ? methods.sort((a: MethodSortable, b: MethodSortable) => {
         // Put "All in" first (id: 0)
         if (a.id === 0) return -1;
         if (b.id === 0) return 1;

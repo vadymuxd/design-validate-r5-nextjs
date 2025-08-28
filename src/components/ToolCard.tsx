@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Voter } from './Voter';
 import { ProCon } from './ProCon';
 import { Link } from './Link';
 import { CircularLogo } from './CircularLogo';
