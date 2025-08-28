@@ -17,6 +17,7 @@ interface ToolCardProps {
   methodId: number;
   name: string;
   description: string | null;
+  featureDescription: string | null;
   logo: string | null;
   url: string | null;
   upvotes: number;
@@ -33,6 +34,7 @@ export function ToolCard({
   methodId,
   name,
   description,
+  featureDescription,
   logo,
   url,
   upvotes,
@@ -46,6 +48,9 @@ export function ToolCard({
   const [isExpanded, setIsExpanded] = useState(false);
   type LoadingState = 'up' | 'down' | 'recommend' | 'dont-recommend' | null;
   const [loadingState, setLoadingState] = useState<LoadingState>(null);
+
+  // Determine which description to display: feature_description if available, otherwise fallback to generic description
+  const displayDescription = featureDescription || description;
 
   const handleVote = async (sentiment: 'UPVOTE' | 'DOWNVOTE', source: LoadingState) => {
     if (loadingState) return;
@@ -182,7 +187,7 @@ export function ToolCard({
                     onClick={handleTitleClick}
                     className="body text-[var(--color-black)] hover:cursor-pointer text-left"
                   >
-                    {description}
+                    {displayDescription}
                   </button>
                 </div>
               </div>
@@ -275,7 +280,7 @@ export function ToolCard({
                   onClick={handleTitleClick}
                   className="body text-[var(--color-black)] hover:cursor-pointer text-left"
                 >
-                  {description}
+                  {displayDescription}
                 </button>
               </div>
             </div>

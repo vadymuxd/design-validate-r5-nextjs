@@ -6,6 +6,7 @@ type ProcessedTool = {
   id: string;
   name: string;
   description: string | null;
+  feature_description: string | null;
   logo_url: string | null;
   website_url: string | null;
   method_id: number;
@@ -25,6 +26,7 @@ type SupabaseLeaderboardResponse = {
   tool_pros_and_cons: {
     pro_text: string | null;
     con_text: string | null;
+    feature_description: string | null;
   } | null;
   tools: {
     id: string;
@@ -77,7 +79,8 @@ export async function GET(request: NextRequest) {
         current_downvotes,
         tool_pros_and_cons (
           pro_text,
-          con_text
+          con_text,
+          feature_description
         ),
         tools (
           id,
@@ -109,7 +112,7 @@ export async function GET(request: NextRequest) {
           return null;
         }
 
-        const proConData = item.tool_pros_and_cons || { pro_text: null, con_text: null };
+        const proConData = item.tool_pros_and_cons || { pro_text: null, con_text: null, feature_description: null };
         const totalUpvotes = (item.initial_upvotes ?? 0) + (item.current_upvotes ?? 0);
         const totalDownvotes = (item.initial_downvotes ?? 0) + (item.current_downvotes ?? 0);
         const netScore = totalUpvotes - totalDownvotes;
@@ -122,6 +125,7 @@ export async function GET(request: NextRequest) {
           net_score: netScore,
           pro_text: proConData.pro_text,
           con_text: proConData.con_text,
+          feature_description: proConData.feature_description,
         };
       })
       .filter((tool): tool is ProcessedTool => tool !== null);

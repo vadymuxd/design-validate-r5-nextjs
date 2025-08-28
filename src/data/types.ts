@@ -4,6 +4,7 @@ export interface ApiTool {
   id: string;
   name: string;
   description: string | null;
+  feature_description: string | null;
   logo_url: string | null;
   website_url: string | null;
   method_id: number;

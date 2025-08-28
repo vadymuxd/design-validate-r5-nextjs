@@ -202,6 +202,7 @@ function ToolsPageContent() {
                     methodId={tool.method_id}
                     name={tool.name}
                     description={tool.description}
+                    featureDescription={tool.feature_description}
                     logo={tool.logo_url}
                     url={tool.website_url}
                     upvotes={tool.upvotes}
