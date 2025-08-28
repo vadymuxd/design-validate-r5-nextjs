@@ -38,7 +38,9 @@ function MethodsPageContent() {
         const response = await fetch('/api/methods');
         if (response.ok) {
           const data = await response.json();
-          setMethods(data.methods || []);
+          // Filter out the "All in" method as it's not a real research method
+          const realMethods = (data.methods || []).filter((method: ApiMethod) => method.id !== 0);
+          setMethods(realMethods);
         } else {
           console.error('Failed to fetch methods');
         }

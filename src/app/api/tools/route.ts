@@ -62,6 +62,11 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Handle "All in" view (method_id = 0)
+    if (method.id === 0) {
+      return await handleAllInView();
+    }
+
     // Fetch tools linked to this method via the tools_leaderboard table
     const { data, error: toolsError } = await supabase
       .from('tools_leaderboard')
@@ -127,6 +132,102 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ tools: sortedTools });
   } catch (error) {
     console.error('Error processing tools request:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+async function handleAllInView() {
+  try {
+    // Get all tools with their basic info
+    const { data: allToolsData, error: toolsError } = await supabase
+      .from('tools')
+      .select(`
+        id,
+        name,
+        description,
+        logo_url,
+        website_url,
+        pro_text,
+        con_text
+      `);
+
+    if (toolsError) {
+      console.error('Error fetching tools:', toolsError);
+      return NextResponse.json(
+        { error: 'Failed to fetch tools data' },
+        { status: 500 }
+      );
+    }
+
+    // For each tool, calculate the total score across all methods + direct "All in" votes
+    const toolsWithScores = await Promise.all(
+      (allToolsData || []).map(async (tool) => {
+        // Get aggregated scores from all method-specific leaderboards (excluding method_id = 0)
+        const { data: methodScores, error: methodError } = await supabase
+          .from('tools_leaderboard')
+          .select('initial_upvotes, initial_downvotes, current_upvotes, current_downvotes')
+          .eq('tool_id', tool.id)
+          .neq('method_id', 0); // Exclude "All in" method to avoid double counting
+
+        // Get direct "All in" votes (method_id = 0) if they exist
+        const { data: allInScore, error: allInError } = await supabase
+          .from('tools_leaderboard')
+          .select('initial_upvotes, initial_downvotes, current_upvotes, current_downvotes')
+          .eq('tool_id', tool.id)
+          .eq('method_id', 0)
+          .maybeSingle(); // Use maybeSingle since "All in" entry might not exist yet
+
+        if (methodError) {
+          console.error('Error fetching method scores:', methodError);
+          return {
+            ...tool,
+            method_id: 0,
+            upvotes: 0,
+            downvotes: 0,
+            net_score: 0,
+            pro_text: tool.pro_text,
+            con_text: tool.con_text,
+          };
+        }
+
+        // Calculate totals from method-specific scores (initial + current)
+        const methodUpvotes = (methodScores || []).reduce((sum, score) => 
+          sum + (score.initial_upvotes || 0) + (score.current_upvotes || 0), 0);
+        const methodDownvotes = (methodScores || []).reduce((sum, score) => 
+          sum + (score.initial_downvotes || 0) + (score.current_downvotes || 0), 0);
+        
+        // Add direct "All in" votes (initial + current) if they exist
+        const allInUpvotes = allInScore ? 
+          (allInScore.initial_upvotes || 0) + (allInScore.current_upvotes || 0) : 0;
+        const allInDownvotes = allInScore ? 
+          (allInScore.initial_downvotes || 0) + (allInScore.current_downvotes || 0) : 0;
+
+        // Total = method scores + direct "All in" votes
+        const totalUpvotes = methodUpvotes + allInUpvotes;
+        const totalDownvotes = methodDownvotes + allInDownvotes;
+        const netScore = totalUpvotes - totalDownvotes;
+
+        return {
+          ...tool,
+          method_id: 0, // All in method ID
+          upvotes: totalUpvotes,
+          downvotes: totalDownvotes,
+          net_score: netScore,
+          pro_text: tool.pro_text,
+          con_text: tool.con_text,
+        };
+      })
+    );
+
+    // Sort by net score (highest first)
+    const sortedTools = toolsWithScores.sort((a, b) => b.net_score - a.net_score);
+
+    return NextResponse.json({ tools: sortedTools });
+  } catch (error) {
+    console.error('Error processing all-in view:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

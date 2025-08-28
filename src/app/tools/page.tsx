@@ -75,7 +75,7 @@ function ToolsPageContent() {
     fetchMethods();
   }, [fetchMethods]);
 
-  // Set active method based on URL parameter or first method when methods are loaded
+  // Set active method based on URL parameter or default to "all-in" when methods are loaded
   useEffect(() => {
     if (methods.length > 0 && !activeMethodSlug) {
       const urlMethodSlug = searchParams.get('method_slug');
@@ -86,8 +86,8 @@ function ToolsPageContent() {
       if (methodExists) {
         setActiveMethodSlug(urlMethodSlug);
       } else {
-        // Fallback to first method if URL method doesn't exist or isn't provided
-        setActiveMethodSlug(methods[0].slug);
+        // Default to "all-in" method instead of first method
+        setActiveMethodSlug('all-in');
       }
     }
   }, [methods, activeMethodSlug, searchParams]);
@@ -194,8 +194,8 @@ function ToolsPageContent() {
           tools.length > 0 ? (
             <>
               {/* Tools Grid */}
-              <div className="w-full max-w-[730px] flex flex-col gap-2">
-                {tools.map((tool) => (
+              <div className="w-full max-w-[730px] flex flex-col gap-px">
+                {tools.map((tool, index) => (
                   <ToolCard
                     key={tool.id}
                     toolId={tool.id}
@@ -209,6 +209,8 @@ function ToolsPageContent() {
                     proText={tool.pro_text}
                     conText={tool.con_text}
                     onVote={handleVote}
+                    isFirst={index === 0}
+                    isLast={index === tools.length - 1}
                   />
                 ))}
               </div>

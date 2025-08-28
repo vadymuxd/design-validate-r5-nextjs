@@ -25,6 +25,8 @@ interface ToolCardProps {
   proText: string | null;
   conText: string | null;
   onVote: (result: VoteResult) => void;
+  isFirst?: boolean; // For top rounded corners
+  isLast?: boolean; // For bottom rounded corners
 }
 
 export function ToolCard({
@@ -39,6 +41,8 @@ export function ToolCard({
   proText,
   conText,
   onVote,
+  isFirst = false,
+  isLast = false,
 }: ToolCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   type LoadingState = 'up' | 'down' | 'recommend' | 'dont-recommend' | null;
@@ -104,14 +108,36 @@ export function ToolCard({
     setIsExpanded(!isExpanded);
   };
 
+  const handleCardClick = () => {
+    if (!isExpanded) {
+      setIsExpanded(true);
+    }
+  };
+
   const handleVisitSite = () => {
     if (url) {
       window.open(url, '_blank');
     }
   };
 
+  // Calculate net score
+  const netBalance = upvotes - downvotes;
+  const netBalanceDisplay = netBalance > 0 ? `+${netBalance}` : netBalance < 0 ? `${netBalance}` : '0';
+
+  // Calculate rounded corners based on position
+  const getRoundedCorners = () => {
+    if (isFirst && isLast) return 'rounded-2xl'; // Single item
+    if (isFirst) return 'rounded-t-2xl'; // First item
+    if (isLast) return 'rounded-b-2xl'; // Last item
+    return ''; // Middle items - no rounded corners
+  };
+
   return (
-    <div className="bg-white rounded-2xl">
+    <div 
+      className={`bg-white ${getRoundedCorners()}`}
+      onClick={handleCardClick}
+      style={{ cursor: !isExpanded ? 'pointer' : 'default' }}
+    >
       <div className="p-6 sm:p-8">
         {/* Desktop Layout */}
         <div className="hidden sm:flex flex-row gap-6 items-start">
@@ -125,7 +151,7 @@ export function ToolCard({
                 <CircularLogo
                   src={logo}
                   alt={`${name} logo`}
-                  size={80}
+                  size={60}
                 />
               </button>
             )}
@@ -200,22 +226,9 @@ export function ToolCard({
             </div>
           </div>
 
-          {/* Votes - Desktop */}
-          <div className="flex flex-col gap-2 w-[75px] flex-shrink-0">
-            <Voter
-              direction="up"
-              count={upvotes}
-              onClick={() => handleVote('UPVOTE', 'up')}
-              background={isExpanded ? 'white' : 'grey'}
-              isLoading={loadingState === 'up'}
-            />
-            <Voter
-              direction="down"
-              count={downvotes}
-              onClick={() => handleVote('DOWNVOTE', 'down')}
-              background={isExpanded ? 'white' : 'grey'}
-              isLoading={loadingState === 'down'}
-            />
+          {/* Net Score - Desktop */}
+          <div className="flex flex-col items-end w-[75px] flex-shrink-0">
+            <span className="body text-gray-400 text-lg">{netBalanceDisplay}</span>
           </div>
         </div>
 
@@ -231,7 +244,7 @@ export function ToolCard({
                 <CircularLogo
                   src={logo}
                   alt={`${name} logo`}
-                  size={80}
+                  size={60}
                 />
               </button>
             )}
@@ -242,7 +255,7 @@ export function ToolCard({
             {/* Header */}
             <div>
               <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between">
                   <button
                     onClick={handleTitleClick}
                     className="h3 text-[var(--color-black)] hover:cursor-pointer flex items-center gap-2"
@@ -257,6 +270,7 @@ export function ToolCard({
                       />
                     </div>
                   </button>
+                  <span className="body text-gray-400 text-lg ml-2">{netBalanceDisplay}</span>
                 </div>
                 <button
                   onClick={handleTitleClick}
@@ -270,24 +284,6 @@ export function ToolCard({
             {/* Expanded Content (Conditional Rendering) */}
             {isExpanded && (
               <div className="flex flex-col gap-4">
-                {/* Votes - Mobile Expanded */}
-                <div className="flex flex-row gap-2 justify-start">
-                  <Voter
-                    direction="up"
-                    count={upvotes}
-                    onClick={() => handleVote('UPVOTE', 'up')}
-                    background="white"
-                    isLoading={loadingState === 'up'}
-                  />
-                  <Voter
-                    direction="down"
-                    count={downvotes}
-                    onClick={() => handleVote('DOWNVOTE', 'down')}
-                    background="white"
-                    isLoading={loadingState === 'down'}
-                  />
-                </div>
-
                 {/* Pro & Con Section */}
                 {(proText || conText) && (
                   <div className="flex flex-col gap-4">
@@ -324,32 +320,6 @@ export function ToolCard({
             <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
             <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
             <Link variant="visit-site" onClick={handleVisitSite} />
-          </div>
-        </div>
-      )}
-
-      {/* Votes - Mobile Collapsed */}
-      {!isExpanded && (
-        <div className="block sm:hidden px-6 pb-6">
-          <div className="flex flex-row gap-2 w-full justify-center">
-            <div className="flex-1">
-              <Voter
-                direction="up"
-                count={upvotes}
-                onClick={() => handleVote('UPVOTE', 'up')}
-                background="grey"
-                isLoading={loadingState === 'up'}
-              />
-            </div>
-            <div className="flex-1">
-              <Voter
-                direction="down"
-                count={downvotes}
-                onClick={() => handleVote('DOWNVOTE', 'down')}
-                background="grey"
-                isLoading={loadingState === 'down'}
-              />
-            </div>
           </div>
         </div>
       )}

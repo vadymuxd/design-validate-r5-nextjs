@@ -58,7 +58,15 @@ export async function GET() {
       );
     }
 
-    return NextResponse.json({ methods: methods || [] });
+    return NextResponse.json({ 
+      methods: methods ? methods.sort((a: any, b: any) => {
+        // Put "All in" first (id: 0)
+        if (a.id === 0) return -1;
+        if (b.id === 0) return 1;
+        // Then sort by id
+        return a.id - b.id;
+      }) : [] 
+    });
   } catch (err) {
     const error = err as Error;
     console.error('Error fetching methods:', error);

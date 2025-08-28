@@ -211,7 +211,23 @@ async function updateAggregatedCounts(voteType: VoteEntityType, entityId: string
 // Update tool leaderboard counts (legacy support)
 async function updateToolLeaderboard(toolId: string, methodId: number) {
   try {
-    // Count votes for this specific tool using new structure
+    // For "All in" view (method_id = 0), ONLY update the "All in" leaderboard entry
+    if (methodId === 0) {
+      await updateToolLeaderboardForMethod(toolId, 0);
+      return;
+    }
+
+    // For specific method, update normally
+    await updateToolLeaderboardForMethod(toolId, methodId);
+  } catch (error) {
+    console.error('Unexpected error in updateToolLeaderboard:', error);
+  }
+}
+
+// Helper function to update tool leaderboard for a specific method
+async function updateToolLeaderboardForMethod(toolId: string, methodId: number) {
+  try {
+    // Count votes for this specific tool and method using new structure
     const { count: upvotes, error: upvoteError } = await supabase
       .from('votes')
       .select('*', { count: 'exact', head: true })
@@ -246,9 +262,8 @@ async function updateToolLeaderboard(toolId: string, methodId: number) {
     if (updateError) {
       console.error('Error updating tool leaderboard:', updateError);
     }
-
   } catch (error) {
-    console.error('Unexpected error in updateToolLeaderboard:', error);
+    console.error('Unexpected error in updateToolLeaderboardForMethod:', error);
   }
 }
 
@@ -406,7 +421,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 4. Validate context requirements
-    if (vote_type === 'tool' && !context_id) {
+    if (vote_type === 'tool' && context_id === undefined) {
       return NextResponse.json(
         { error: 'context_id (method_id) is required for tool votes' },
         { status: 400 }
@@ -431,7 +446,8 @@ export async function POST(request: NextRequest) {
     // For method votes, also check method_id to ensure proper duplicate detection
     if (vote_type === 'method') {
       existingVoteQuery = existingVoteQuery.eq('method_id', parseInt(entity_id));
-    } else if (context_id) {
+    } else if (context_id !== undefined && context_id !== null) {
+      // Only add method_id filter if context_id is explicitly provided (including 0 for "All in")
       existingVoteQuery = existingVoteQuery.eq('method_id', context_id);
     }
     
@@ -454,7 +470,7 @@ export async function POST(request: NextRequest) {
           .update({ 
             sentiment,
             updated_at: new Date().toISOString(),
-            method_id: vote_type === 'method' ? parseInt(entity_id) : (context_id || null)
+            method_id: vote_type === 'method' ? parseInt(entity_id) : (context_id !== undefined ? context_id : null)
           })
           .eq('id', existingVote.id);
 
@@ -491,7 +507,8 @@ export async function POST(request: NextRequest) {
       // Only add method_id if it's actually needed/provided
       if (vote_type === 'method') {
         voteData.method_id = parseInt(entity_id);
-      } else if (context_id) {
+      } else if (context_id !== undefined && context_id !== null) {
+        // Include context_id even if it's 0 (for "All in" view)
         voteData.method_id = context_id;
       }
       
