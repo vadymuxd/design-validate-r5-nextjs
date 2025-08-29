@@ -196,7 +196,7 @@ function ToolsPageContent() {
               {/* Feedback Section - Moved above tools */}
               <div className="flex flex-col items-center gap-4 mb-8">
                 <p className="body text-[var(--foreground)] text-center max-w-[730px]">
-                  Tools are ranked by recommendations net score (upvotes - downvotes). Vote for the best, let other people know. If you don't see a tool that should be here, send us a message!
+                  Tools are ranked by recommendations net score (upvotes - downvotes). Vote for the best, let other people know. If you don&apos;t see a tool that should be here, send us a message!
                 </p>
                 {currentMethod && (
                   <Feedback collectionSlug="tools" contextSlug={currentMethod.slug} />
