@@ -231,7 +231,7 @@ export function ToolCard({
           </div>
 
           {/* Net Score - Desktop */}
-          <div className="flex flex-col items-end w-[75px] flex-shrink-0">
+          <div className="flex flex-col items-end w-[15px] flex-shrink-0">
             <span className="body text-gray-400 text-lg">{netBalanceDisplay}</span>
           </div>
         </div>
