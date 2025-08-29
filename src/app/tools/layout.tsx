@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     "A/B testing software",
     "UX research tools",
     "analytics tools",
-    "user feedback tools",
+    "in-app feedback tools",
     "design tools comparison"
   ],
   openGraph: {

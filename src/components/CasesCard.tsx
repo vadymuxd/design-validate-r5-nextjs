@@ -13,7 +13,7 @@ const METHOD_NAME_MAP: Record<string, string> = {
   'session-replays': 'Session Replays',
   'heat-maps': 'Heatmaps',
   'surveys': 'Surveys',
-  'user-feedback': 'User Feedback',
+  'user-feedback': 'In-App Feedback',
   'concept-testing': 'Concept Testing',
   'user-interviews': 'User Interviews',
   'card-sorting': 'Card Sorting',
