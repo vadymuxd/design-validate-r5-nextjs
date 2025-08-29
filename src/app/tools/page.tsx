@@ -162,7 +162,7 @@ function ToolsPageContent() {
     <>
       <PageLoader titleNavigation={<TitleNavigation />}>
         {/* Methods */}
-        <div className="w-full max-w-[730px] flex flex-col gap-2">
+        <div className="w-full max-w-[880px] flex flex-col gap-2">
           <div className="flex gap-2 flex-wrap justify-center py-8">
             {methodsLoading ? (
               <div className="flex justify-center items-center h-12">
@@ -193,6 +193,16 @@ function ToolsPageContent() {
           /* Content: Tools or Coming Soon */
           tools.length > 0 ? (
             <>
+              {/* Feedback Section - Moved above tools */}
+              <div className="flex flex-col items-center gap-4 mb-8">
+                <p className="body text-[var(--foreground)] text-center max-w-[730px]">
+                  Tools are ranked by recommendations net score (upvotes - downvotes). Vote for the best, let other people know. If you don't see a tool that should be here, send us a message!
+                </p>
+                {currentMethod && (
+                  <Feedback collectionSlug="tools" contextSlug={currentMethod.slug} />
+                )}
+              </div>
+
               {/* Tools Grid */}
               <div className="w-full max-w-[730px] flex flex-col gap-px">
                 {tools.map((tool, index) => (
@@ -214,16 +224,6 @@ function ToolsPageContent() {
                     isLast={index === tools.length - 1}
                   />
                 ))}
-              </div>
-
-              {/* Feedback Section */}
-              <div className="flex flex-col items-center gap-4 mt-8">
-                <p className="body text-[var(--foreground)] text-center max-w-[730px]">
-                  This is a synthesized analysis of user sentiment (late 2023 - mid-2025) from G2, Capterra, TrustRadius, and Reddit. Numbers represent &quot;negative&quot; and &quot;positive&quot; mentions by users from listed sources plus unique users&apos; votes on this site. The initial sentiment analysis done by Gemini 2.5 Pro
-                </p>
-                {currentMethod && (
-                  <Feedback collectionSlug="tools" contextSlug={currentMethod.slug} />
-                )}
               </div>
             </>
           ) : (
