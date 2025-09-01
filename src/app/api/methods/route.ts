@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase';
 
 interface MethodSortable {
   id: number;
+  net_score: number;
 }
 
 export async function GET() {
@@ -32,7 +33,7 @@ export async function GET() {
           )
         `)
         .eq('collections.slug', 'tools')
-        .order('id');
+        .order('initial_score', { ascending: false });
 
       if (fallbackError) {
         console.error('Fallback database error:', fallbackError);
@@ -67,8 +68,8 @@ export async function GET() {
         // Put "All in" first (id: 0)
         if (a.id === 0) return -1;
         if (b.id === 0) return 1;
-        // Then sort by id
-        return a.id - b.id;
+        // Then sort by net_score descending (highest first)
+        return b.net_score - a.net_score;
       }) : [] 
     });
   } catch (err) {
