@@ -11,8 +11,11 @@ interface CollectionCardProps {
 const CollectionCard: React.FC<CollectionCardProps> = ({
   title,
   href,
-  count = 0,
+  count,
 }) => {
+  // Check if count data is available
+  const isCountLoaded = count !== undefined && count !== null;
+  
   // Determine which SVG to use based on title and screen size
   const getSvgPath = (title: string, isMobile: boolean = false) => {
     const screen = isMobile ? 'Mobile' : 'Desktop';
@@ -39,9 +42,16 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
           {/* Top: Counter */}
           <div className="pt-12 text-center">
             <div className="w-[20px] mx-auto flex justify-center">
-              <span className="label-default text-[var(--color-grey-dark)]">
-                {count.toLocaleString()}
-              </span>
+              {/* Fixed-height wrapper to prevent layout shift while loading */}
+              <div className="h-[22px] flex items-center justify-center">
+                {isCountLoaded ? (
+                  <span 
+                    className="label-default text-[var(--color-grey-dark)] animate-fadeIn"
+                  >
+                    {count.toLocaleString()}
+                  </span>
+                ) : null}
+              </div>
             </div>
           </div>
           
@@ -80,9 +90,16 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
           {/* Left: Counter */}
           <div className="flex items-center justify-center px-4 flex-shrink-0">
             <div className="w-[20px] flex justify-center">
-              <span className="label-default text-[var(--color-grey-dark)]">
-                {count.toLocaleString()}
-              </span>
+              {/* Fixed-height wrapper to prevent layout shift while loading */}
+              <div className="h-[22px] flex items-center justify-center">
+                {isCountLoaded ? (
+                  <span 
+                    className="label-default text-[var(--color-grey-dark)] animate-fadeIn"
+                  >
+                    {count.toLocaleString()}
+                  </span>
+                ) : null}
+              </div>
             </div>
           </div>
           

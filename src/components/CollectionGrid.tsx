@@ -44,7 +44,7 @@ export function CollectionGrid() {
           <CollectionCard
             title={collection.title}
             href={collection.href}
-            count={loading ? 0 : counts[collection.title as keyof typeof counts]}
+            count={loading ? undefined : counts[collection.title as keyof typeof counts]}
           />
         </div>
       ))}
