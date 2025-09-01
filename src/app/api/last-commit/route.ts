@@ -2,11 +2,11 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const owner = 'vadymuxd'; // Replace with your GitHub username
-    const repo = 'design-validate-r5-nextjs'; // Replace with your repository name
+    const owner = 'vadymuxd';
+    const repo = 'design-validate-r5-nextjs';
     
     const url = `https://api.github.com/repos/${owner}/${repo}/commits?per_page=1`;
-    console.log('Fetching from URL:', url);
+    console.log('🔍 Fetching from URL:', url);
     
     const response = await fetch(url, {
       headers: {
@@ -16,35 +16,42 @@ export async function GET() {
           'Authorization': `token ${process.env.GITHUB_TOKEN}`
         })
       },
-      next: { revalidate: 3600 } // Cache for 1 hour
+      next: { revalidate: 3600 }
     });
 
+    console.log('📡 Response status:', response.status);
+    console.log('📡 Response ok:', response.ok);
+
     if (!response.ok) {
-      console.error('GitHub API Error:', {
+      console.error('❌ GitHub API Error:', {
         status: response.status,
-        statusText: response.statusText,
-        headers: Object.fromEntries(response.headers.entries())
+        statusText: response.statusText
       });
       const errorText = await response.text();
-      console.error('Error response:', errorText);
+      console.error('❌ Error response:', errorText);
       throw new Error(`Failed to fetch last commit: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
-    console.log('GitHub API Response:', JSON.stringify(data, null, 2));
+    console.log('✅ GitHub API Response received, commits found:', data.length);
     
     if (!Array.isArray(data) || data.length === 0) {
+      console.error('❌ No commits found in the repository');
       throw new Error('No commits found in the repository');
     }
 
     const [lastCommit] = data;
     const lastCommitDate = lastCommit?.commit?.author?.date;
+    console.log('✅ Last commit date:', lastCommitDate);
 
     return NextResponse.json({ lastCommitDate });
   } catch (error) {
-    console.error('Error fetching last commit:', error);
+    console.error('❌ Error fetching last commit:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch last commit date' },
+      { 
+        error: 'Failed to fetch last commit date', 
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
