@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Button } from './Button';
 import LottieAnimation from './LottieAnimation';
-import cubeBlackAnimation from '../../public/gifs/black_3_cubes.json';
+import cosmosAnimation from '../../public/gifs/Cosmos.json';
 import { FeedbackPopup } from './FeedbackPopup';
 
 interface FooterProps {
@@ -144,23 +144,25 @@ export const Footer = ({ noBorder = false }: FooterProps) => {
               className="bg-white rounded-lg p-8 max-w-md w-full mx-4"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Cube Animation */}
+              {/* Cosmos Animation */}
               <div className="flex justify-center mb-6">
                 <LottieAnimation
-                  animationData={cubeBlackAnimation}
-                  className="w-48 h-48"
+                  animationData={cosmosAnimation}
+                  className="w-24 h-24"
                   speed={0.5}
                 />
               </div>
               
               {/* Headline */}
-              <h3 className="h3 text-black mb-4">We are working on it</h3>
+              <h3 className="h3 text-black mb-4 text-center">We are working on it</h3>
               
               {/* Body text */}
               <p className="body text-black mb-8">
                 This is a beta version of the platform.
 
 Our current focus is on validating content ideas to see what resonates with users, not on delivering a polished, high-quality user experience. You will likely encounter bugs or errors.
+
+<br /><br />
 
 We would love your feedback! Please report anything that seems broken or simply spend time on the sections you find most interesting. Your engagement will be tracked and it will help us to build a better proposition.
               </p>

@@ -36,7 +36,7 @@ export async function getToolLeaderboardPositions(toolId: string): Promise<ToolL
     // For each method where this tool is listed, calculate its rank
     for (const toolMethod of toolMethodsData) {
       const methodId = toolMethod.method_id;
-      const methodData = toolMethod.methods as any;
+      const methodData = toolMethod.methods as unknown as { id: number; name: string; slug: string } | null;
       
       if (!methodData) continue;
 
