@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { ProCon } from './ProCon';
-import { Link } from './Link';
+import { Button } from './Button';
 import { CircularLogo } from './CircularLogo';
 
 export interface VoteResult {
@@ -11,6 +11,73 @@ export interface VoteResult {
   message: string;
   variant: 'default' | 'warning';
 }
+
+// Helper function to get icons for the actions
+const getActionIcon = (variant: 'recommend' | 'dont-recommend' | 'visit-site', isLoading: boolean) => {
+  if (isLoading && (variant === 'recommend' || variant === 'dont-recommend')) {
+    return (
+      <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  switch (variant) {
+    case 'recommend':
+      return (
+        <div className="w-5 h-5 flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M5.83331 14.1667L14.1666 5.83334M14.1666 5.83334H5.83331M14.1666 5.83334V14.1667"
+              stroke="var(--color-green)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      );
+    case 'dont-recommend':
+      return (
+        <div className="w-5 h-5 flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M14.1666 5.83334L5.83331 14.1667M5.83331 14.1667H14.1666M5.83331 14.1667V5.83334"
+              stroke="var(--color-red)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      );
+    case 'visit-site':
+      return (
+        <div className="w-5 h-5 flex-shrink-0">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M15 10.8333V15.8333C15 16.2754 14.8244 16.6993 14.5118 17.0118C14.1993 17.3244 13.7754 17.5 13.3333 17.5H4.16667C3.72464 17.5 3.30072 17.3244 2.98816 17.0118C2.67559 16.6993 2.5 16.2754 2.5 15.8333V6.66667C2.5 6.22464 2.67559 5.80072 2.98816 5.48816C3.30072 5.17559 3.72464 5 4.16667 5H9.16667M12.5 2.5H17.5M17.5 2.5V7.5M17.5 2.5L8.33333 11.6667"
+              stroke="black"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+      );
+  }
+};
+
+const getActionText = (variant: 'recommend' | 'dont-recommend' | 'visit-site') => {
+  switch (variant) {
+    case 'recommend':
+      return 'Recommend';
+    case 'dont-recommend':
+      return "Don't recommend";
+    case 'visit-site':
+      return 'Learn more';
+  }
+};
 
 interface ToolCardProps {
   toolId: string;
@@ -163,7 +230,7 @@ export function ToolCard({
 
           {/* Content */}
           <div className="flex-grow">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-8">
               {/* Header */}
               <div>
                 <div className="flex flex-col gap-3">
@@ -220,10 +287,33 @@ export function ToolCard({
                   )}
 
                   {/* Actions */}
-                  <div className="flex flex-row gap-6">
-                    <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
-                    <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
-                    <Link variant="visit-site" onClick={handleVisitSite} />
+                  <div className="flex flex-row gap-3">
+                    <Button 
+                      variant="filled-black" 
+                      onClick={() => handleVote('UPVOTE', 'recommend')} 
+                      disabled={loadingState === 'recommend'}
+                      className="flex items-center gap-2"
+                    >
+                      {getActionIcon('recommend', loadingState === 'recommend')}
+                      {getActionText('recommend')}
+                    </Button>
+                    <Button 
+                      variant="filled-black" 
+                      onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} 
+                      disabled={loadingState === 'dont-recommend'}
+                      className="flex items-center gap-2"
+                    >
+                      {getActionIcon('dont-recommend', loadingState === 'dont-recommend')}
+                      {getActionText('dont-recommend')}
+                    </Button>
+                    <Button 
+                      variant="ghost-black" 
+                      onClick={handleVisitSite}
+                      className="flex items-center gap-2"
+                    >
+                      {getActionIcon('visit-site', false)}
+                      {getActionText('visit-site')}
+                    </Button>
                   </div>
                 </>
               )}
@@ -287,7 +377,7 @@ export function ToolCard({
 
             {/* Expanded Content (Conditional Rendering) */}
             {isExpanded && (
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-8">
                 {/* Pro & Con Section */}
                 {(proText || conText) && (
                   <div className="flex flex-col gap-4">
@@ -320,10 +410,33 @@ export function ToolCard({
           <div className="h-px bg-[#F2F2F7] w-full my-4"></div>
 
           {/* Actions - with its own padding */}
-          <div className="px-6 pb-6 flex flex-col gap-4">
-            <Link variant="recommend" onClick={() => handleVote('UPVOTE', 'recommend')} isLoading={loadingState === 'recommend'} />
-            <Link variant="dont-recommend" onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} isLoading={loadingState === 'dont-recommend'} />
-            <Link variant="visit-site" onClick={handleVisitSite} />
+          <div className="px-6 pb-6 flex flex-col gap-3">
+            <Button 
+              variant="filled-black" 
+              onClick={() => handleVote('UPVOTE', 'recommend')} 
+              disabled={loadingState === 'recommend'}
+              className="flex items-center gap-2 w-full"
+            >
+              {getActionIcon('recommend', loadingState === 'recommend')}
+              {getActionText('recommend')}
+            </Button>
+            <Button 
+              variant="filled-black" 
+              onClick={() => handleVote('DOWNVOTE', 'dont-recommend')} 
+              disabled={loadingState === 'dont-recommend'}
+              className="flex items-center gap-2 w-full"
+            >
+              {getActionIcon('dont-recommend', loadingState === 'dont-recommend')}
+              {getActionText('dont-recommend')}
+            </Button>
+            <Button 
+              variant="ghost-black" 
+              onClick={handleVisitSite}
+              className="flex items-center gap-2 w-full"
+            >
+              {getActionIcon('visit-site', false)}
+              {getActionText('visit-site')}
+            </Button>
           </div>
         </div>
       )}
