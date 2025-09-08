@@ -1,5 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import { NextRequest, NextResponse } from 'next/server';
+import { getToolLeaderboardPositions, ToolLeaderboardPosition } from '@/lib/toolLeaderboard';
 
 // Define a type for the shape of our processed tool
 type ProcessedTool = {
@@ -15,6 +16,7 @@ type ProcessedTool = {
   net_score: number;
   pro_text: string | null;
   con_text: string | null;
+  leaderboard_positions: ToolLeaderboardPosition[];
 };
 
 // Define the shape of the data coming from the Supabase query
@@ -105,8 +107,8 @@ export async function GET(request: NextRequest) {
     const typedData = (data || []) as unknown as SupabaseLeaderboardResponse[];
 
     // Process the data to create the desired structure and calculate the net score
-    const processedTools: ProcessedTool[] = typedData
-      .map(item => {
+    const processedToolsPromises = typedData
+      .map(async item => {
         const toolData = item.tools;
         if (!toolData) {
           return null;
@@ -117,6 +119,9 @@ export async function GET(request: NextRequest) {
         const totalDownvotes = (item.initial_downvotes ?? 0) + (item.current_downvotes ?? 0);
         const netScore = totalUpvotes - totalDownvotes;
 
+        // Get leaderboard positions for this tool
+        const leaderboardPositions = await getToolLeaderboardPositions(toolData.id);
+
         return {
           ...toolData,
           method_id: method.id,
@@ -126,9 +131,12 @@ export async function GET(request: NextRequest) {
           pro_text: proConData.pro_text,
           con_text: proConData.con_text,
           feature_description: proConData.feature_description,
+          leaderboard_positions: leaderboardPositions,
         };
-      })
-      .filter((tool): tool is ProcessedTool => tool !== null);
+      });
+
+    const processedToolsResults = await Promise.all(processedToolsPromises);
+    const processedTools: ProcessedTool[] = processedToolsResults.filter((tool): tool is ProcessedTool => tool !== null);
 
     // Sort by NET score (upvotes - downvotes) in descending order
     const sortedTools = processedTools.sort((a, b) => b.net_score - a.net_score);
@@ -184,6 +192,9 @@ async function handleAllInView() {
           .eq('method_id', 0)
           .maybeSingle(); // Use maybeSingle since "All in" entry might not exist yet
 
+        // Get leaderboard positions for this tool
+        const leaderboardPositions = await getToolLeaderboardPositions(tool.id);
+
         if (methodError) {
           console.error('Error fetching method scores:', methodError);
           return {
@@ -194,6 +205,7 @@ async function handleAllInView() {
             net_score: 0,
             pro_text: tool.pro_text,
             con_text: tool.con_text,
+            leaderboard_positions: leaderboardPositions,
           };
         }
 
@@ -222,6 +234,7 @@ async function handleAllInView() {
           net_score: netScore,
           pro_text: tool.pro_text,
           con_text: tool.con_text,
+          leaderboard_positions: leaderboardPositions,
         };
       })
     );

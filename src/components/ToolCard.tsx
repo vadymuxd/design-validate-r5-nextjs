@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { ProCon } from './ProCon';
 import { Button } from './Button';
 import { CircularLogo } from './CircularLogo';
+import LeaderboardNumber from './LeaderboardNumber';
+import { ToolLeaderboardPosition } from '@/data/types';
 
 export interface VoteResult {
   toolId: string;
@@ -94,6 +96,7 @@ interface ToolCardProps {
   onVote: (result: VoteResult) => void;
   isFirst?: boolean; // For top rounded corners
   isLast?: boolean; // For bottom rounded corners
+  leaderboardPositions?: ToolLeaderboardPosition[]; // Optional leaderboard data
 }
 
 export function ToolCard({
@@ -111,6 +114,7 @@ export function ToolCard({
   onVote,
   isFirst = false,
   isLast = false,
+  leaderboardPositions = [],
 }: ToolCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   type LoadingState = 'up' | 'down' | 'recommend' | 'dont-recommend' | null;
@@ -195,6 +199,11 @@ export function ToolCard({
   const netBalance = upvotes - downvotes;
   const netBalanceDisplay = netBalance > 0 ? `+${netBalance}` : netBalance < 0 ? `${netBalance}` : '0';
 
+  // Filter out "All in" method since it's not a specific method context, but keep the current method
+  const filteredLeaderboardPositions = leaderboardPositions.filter(
+    position => position.methodSlug !== 'all-in'
+  );
+
   // Calculate rounded corners based on position
   const getRoundedCorners = () => {
     if (isFirst && isLast) return 'rounded-2xl'; // Single item
@@ -250,12 +259,12 @@ export function ToolCard({
                       </div>
                     </button>
                   </div>
-                  <button
+                  <div
                     onClick={handleTitleClick}
-                    className="body text-[var(--color-black)] hover:cursor-pointer text-left"
+                    className="body text-[var(--color-black)] hover:cursor-pointer text-left select-text"
                   >
                     {displayDescription}
-                  </button>
+                  </div>
                 </div>
               </div>
 
@@ -283,6 +292,31 @@ export function ToolCard({
                           />
                         </div>
                       )}
+                    </div>
+                  )}
+
+                  {/* Leaderboard Positions */}
+                  {filteredLeaderboardPositions && filteredLeaderboardPositions.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-y-2">
+                      {filteredLeaderboardPositions.map((position, index) => (
+                        <React.Fragment key={position.methodId}>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              window.location.href = `/tools?method_slug=${position.methodSlug}`;
+                            }}
+                            className="hover:opacity-80 transition-opacity cursor-pointer"
+                          >
+                            <LeaderboardNumber 
+                              rank={position.rank}
+                              methodName={position.methodName}
+                            />
+                          </button>
+                          {index < filteredLeaderboardPositions.length - 1 && (
+                            <span className="label-default text-black mr-3">,</span>
+                          )}
+                        </React.Fragment>
+                      ))}
                     </div>
                   )}
 
@@ -366,12 +400,12 @@ export function ToolCard({
                   </button>
                   <span className="body text-gray-400 text-lg ml-2">{netBalanceDisplay}</span>
                 </div>
-                <button
+                <div
                   onClick={handleTitleClick}
-                  className="body text-[var(--color-black)] hover:cursor-pointer text-left"
+                  className="body text-[var(--color-black)] hover:cursor-pointer text-left select-text"
                 >
                   {displayDescription}
-                </button>
+                </div>
               </div>
             </div>
 
@@ -395,6 +429,26 @@ export function ToolCard({
                         text={conText}
                       />
                     )}
+                  </div>
+                )}
+
+                {/* Leaderboard Positions */}
+                {filteredLeaderboardPositions && filteredLeaderboardPositions.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-3">
+                    <div className="text-sm text-gray-600 mb-2 w-full">
+                      Also listed in {filteredLeaderboardPositions.length} other method{filteredLeaderboardPositions.length > 1 ? 's' : ''}:
+                    </div>
+                    {filteredLeaderboardPositions.map((position, index) => (
+                      <React.Fragment key={position.methodId}>
+                        <LeaderboardNumber 
+                          rank={position.rank}
+                          methodName={position.methodName}
+                        />
+                        {index < filteredLeaderboardPositions.length - 1 && (
+                          <span className="text-gray-400">,</span>
+                        )}
+                      </React.Fragment>
+                    ))}
                   </div>
                 )}
               </div>

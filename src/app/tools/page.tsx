@@ -204,7 +204,7 @@ function ToolsPageContent() {
               </div>
 
               {/* Tools Grid */}
-              <div className="w-full max-w-[730px] flex flex-col gap-px">
+              <div className="w-full max-w-[730px] flex flex-col gap-0.5">
                 {tools.map((tool, index) => (
                   <ToolCard
                     key={tool.id}
@@ -222,6 +222,7 @@ function ToolsPageContent() {
                     onVote={handleVote}
                     isFirst={index === 0}
                     isLast={index === tools.length - 1}
+                    leaderboardPositions={tool.leaderboard_positions}
                   />
                 ))}
               </div>
