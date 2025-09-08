@@ -200,9 +200,9 @@ export function ToolCard({
   const netBalanceDisplay = netBalance > 0 ? `+${netBalance}` : netBalance < 0 ? `${netBalance}` : '0';
 
   // Filter out "All in" method since it's not a specific method context, but keep the current method
-  const filteredLeaderboardPositions = leaderboardPositions.filter(
-    position => position.methodSlug !== 'all-in'
-  );
+  const filteredLeaderboardPositions = leaderboardPositions
+    .filter(position => position.methodSlug !== 'all-in')
+    .sort((a, b) => a.rank - b.rank); // Sort by rank ascending (1, 2, 3, ...)
 
   // Calculate rounded corners based on position
   const getRoundedCorners = () => {
