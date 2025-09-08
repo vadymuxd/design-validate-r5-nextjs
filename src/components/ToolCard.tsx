@@ -434,18 +434,23 @@ export function ToolCard({
 
                 {/* Leaderboard Positions */}
                 {filteredLeaderboardPositions && filteredLeaderboardPositions.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-3">
-                    <div className="text-sm text-gray-600 mb-2 w-full">
-                      Also listed in {filteredLeaderboardPositions.length} other method{filteredLeaderboardPositions.length > 1 ? 's' : ''}:
-                    </div>
+                  <div className="flex flex-wrap items-center gap-y-2">
                     {filteredLeaderboardPositions.map((position, index) => (
                       <React.Fragment key={position.methodId}>
-                        <LeaderboardNumber 
-                          rank={position.rank}
-                          methodName={position.methodName}
-                        />
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.location.href = `/tools?method_slug=${position.methodSlug}`;
+                          }}
+                          className="hover:opacity-80 transition-opacity cursor-pointer"
+                        >
+                          <LeaderboardNumber 
+                            rank={position.rank}
+                            methodName={position.methodName}
+                          />
+                        </button>
                         {index < filteredLeaderboardPositions.length - 1 && (
-                          <span className="text-gray-400">,</span>
+                          <span className="label-default text-black mr-3">,</span>
                         )}
                       </React.Fragment>
                     ))}
@@ -460,9 +465,6 @@ export function ToolCard({
       {/* Expanded Content for Mobile - Placed outside the main padding */}
       {isExpanded && (
         <div className="block sm:hidden">
-          {/* Divider */}
-          <div className="h-px bg-[#F2F2F7] w-full my-4"></div>
-
           {/* Actions - with its own padding */}
           <div className="px-6 pb-6 flex flex-col gap-3">
             <Button 
