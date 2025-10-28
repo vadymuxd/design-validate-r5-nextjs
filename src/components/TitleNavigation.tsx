@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useAnalyticsTracking } from '@/hooks/useAnalyticsTracking';
 
 const pages = [
   { href: '/methods', label: 'Methods' },
@@ -20,6 +21,7 @@ export function TitleNavigation({ showNav = true }: { showNav?: boolean }) {
   const pathname = usePathname();
   const router = useRouter();
   const containerRef = useRef<HTMLDivElement>(null);
+  const { trackTitleNavigation } = useAnalyticsTracking();
 
   const currentPage = pages.find((p) => p.href === pathname);
 
@@ -43,7 +45,23 @@ export function TitleNavigation({ showNav = true }: { showNav?: boolean }) {
     setIsOpen(!isOpen);
   };
 
-  const handleMenuItemClick = (href: string) => {
+  // Map page label to valid analytics value
+  const getAnalyticsValue = (label: string) => {
+    const labelLower = label.toLowerCase();
+    if (['methods', 'metrics', 'tools', 'frameworks', 'cases'].includes(labelLower)) {
+      return labelLower as 'methods' | 'metrics' | 'tools' | 'frameworks' | 'cases';
+    }
+    return 'methods'; // fallback
+  };
+
+  const handleMenuItemClick = async (href: string) => {
+    // Find the page to get the label for analytics
+    const page = pages.find(p => p.href === href);
+    if (page) {
+      const analyticsValue = getAnalyticsValue(page.label);
+      await trackTitleNavigation(analyticsValue);
+    }
+    
     setIsOpen(false);
     setHoveredItem(null);
     router.push(href);

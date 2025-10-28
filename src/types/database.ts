@@ -129,6 +129,51 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          id: number
+          created_at: string
+          url: string
+          component: string
+          value: string
+        }
+        Insert: {
+          id?: number
+          created_at?: string
+          url: string
+          component: string
+          value: string
+        }
+        Update: {
+          id?: number
+          created_at?: string
+          url?: string
+          component?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      content_analytics: {
+        Row: {
+          id: number
+          content: string
+          initial_score: number
+          current_score: number
+        }
+        Insert: {
+          id?: number
+          content: string
+          initial_score?: number
+          current_score?: number
+        }
+        Update: {
+          id?: number
+          content?: string
+          initial_score?: number
+          current_score?: number
+        }
+        Relationships: []
+      }
       methods: {
         Row: {
           collection_id: number

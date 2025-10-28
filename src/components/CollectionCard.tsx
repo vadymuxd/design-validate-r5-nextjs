@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { useAnalyticsTracking } from '@/hooks/useAnalyticsTracking';
 
 interface CollectionCardProps {
   title: string;
@@ -13,6 +14,8 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   href,
   count,
 }) => {
+  const { trackCollectionCard } = useAnalyticsTracking();
+  
   // Check if count data is available
   const isCountLoaded = count !== undefined && count !== null;
   
@@ -22,10 +25,28 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
     return `/images/Collections/Type=${title}, Screen=${screen}.svg`;
   };
 
+  // Map title to valid analytics value
+  const getAnalyticsValue = (title: string) => {
+    const titleLower = title.toLowerCase();
+    if (['methods', 'metrics', 'tools', 'frameworks', 'cases'].includes(titleLower)) {
+      return titleLower as 'methods' | 'metrics' | 'tools' | 'frameworks' | 'cases';
+    }
+    return 'methods'; // fallback
+  };
+
+  const handleClick = async (e: React.MouseEvent) => {
+    // Track the analytics event
+    const analyticsValue = getAnalyticsValue(title);
+    await trackCollectionCard(analyticsValue);
+    
+    // Let the Link component handle the navigation
+  };
+
   return (
     <Link
       href={href}
       className="group w-full"
+      onClick={handleClick}
     >
       {/* Desktop Layout - 1 column design */}
       <div 

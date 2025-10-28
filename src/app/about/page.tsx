@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import React from 'react';
 import { ContactForm } from '@/components/ContactForm';
 import { ContentCard } from '@/components/ContentCard';
+import { ContentAnalyticsSection } from '@/components/ContentAnalyticsSection';
 import Image from 'next/image';
 import { Footer } from '@/components/Footer';
 
@@ -87,6 +88,9 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      {/* Content Analytics Section */}
+      <ContentAnalyticsSection />
 
       {/* Goals Section */}
       <section className="bg-white py-20 sm:py-32">

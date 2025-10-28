@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAnalyticsTracking } from '@/hooks/useAnalyticsTracking';
 
 const ChevronIcon = ({ isUp, className }: { isUp: boolean, className?: string }) => {
   const path = isUp ? "M15 14L10 9L5 14" : "M5 11L10 16L15 11";
@@ -33,6 +34,7 @@ const TopNav = () => {
   const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { trackTopNav } = useAnalyticsTracking();
 
   useEffect(() => {
     setIsMounted(true);
@@ -122,6 +124,27 @@ const TopNav = () => {
     setIsHoverOpen(false); 
   };
 
+  // Map page label to valid analytics value
+  const getAnalyticsValue = (label: string) => {
+    const labelLower = label.toLowerCase();
+    if (['methods', 'metrics', 'tools', 'frameworks', 'cases'].includes(labelLower)) {
+      return labelLower as 'methods' | 'metrics' | 'tools' | 'frameworks' | 'cases';
+    }
+    return 'methods'; // fallback
+  };
+
+  const handleDropdownLinkClick = async (href: string, label: string) => {
+    const analyticsValue = getAnalyticsValue(label);
+    await trackTopNav(analyticsValue);
+    setIsClickOpen(false);
+  };
+
+  const handleMobileMenuLinkClick = async (href: string, label: string) => {
+    const analyticsValue = getAnalyticsValue(label);
+    await trackTopNav(analyticsValue);
+    setIsMenuOpen(false);
+  };
+
   return (
     <>
       <header className={`fixed top-0 left-0 right-0 z-[60] transition-transform duration-300 ${isVisible ? 'translate-y-0' : '-translate-y-full'} bg-black ${isMenuOpen ? '' : 'border-b border-[var(--color-grey-darkest)]'}`}>
@@ -166,7 +189,7 @@ const TopNav = () => {
                 }`}>
                   {dropdownLinks.map(link => (
                     <Link key={link.href} href={link.href}>
-                      <span onClick={() => setIsClickOpen(false)} className={`block px-4 py-2 label-mini text-white hover:text-[var(--color-red)] ${pathname === link.href ? 'text-[var(--color-red)]' : ''}`}>
+                      <span onClick={() => handleDropdownLinkClick(link.href, link.label)} className={`block px-4 py-2 label-mini text-white hover:text-[var(--color-red)] ${pathname === link.href ? 'text-[var(--color-red)]' : ''}`}>
                         {link.label}
                       </span>
                     </Link>
@@ -229,7 +252,7 @@ const TopNav = () => {
                   key={link.href}
                   href={link.href}
                   className="h1 text-white"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => handleMobileMenuLinkClick(link.href, link.label)}
                 >
                   {link.label}
                 </Link>
