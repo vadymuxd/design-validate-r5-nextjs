@@ -34,7 +34,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
     return 'methods'; // fallback
   };
 
-  const handleClick = async (e: React.MouseEvent) => {
+  const handleClick = async () => {
     // Track the analytics event
     const analyticsValue = getAnalyticsValue(title);
     await trackCollectionCard(analyticsValue);
