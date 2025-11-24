@@ -125,7 +125,7 @@ export default function AboutPage() {
               that are changing the game.
             </ContentCard>
             <ContentCard
-              title="Upgrade Our Toolkit"
+              title="Upgrade The Toolkit"
               variant="light"
               size="small"
               icon={<ColorSwatchIcon />}
@@ -134,7 +134,7 @@ export default function AboutPage() {
               validating your designs.
             </ContentCard>
             <ContentCard
-              title="Build a Community"
+              title="Build The Community"
               variant="light"
               size="small"
               icon={<Profile2UserIcon />}
