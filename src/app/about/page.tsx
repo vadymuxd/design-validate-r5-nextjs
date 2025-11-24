@@ -149,6 +149,17 @@ export default function AboutPage() {
       {/* Contact Section */}
       <section className="bg-[var(--color-grey-light)] py-20 sm:py-32">
         <div className="container mx-auto px-4 max-w-2xl text-center">
+          <div className="flex justify-center mb-8">
+            <div className="w-32 h-32 rounded-full overflow-hidden">
+              <Image
+                src="/images/vadym.png"
+                alt="Vadym"
+                width={128}
+                height={128}
+                className="object-cover w-full h-full"
+              />
+            </div>
+          </div>
           <ContactForm />
         </div>
       </section>

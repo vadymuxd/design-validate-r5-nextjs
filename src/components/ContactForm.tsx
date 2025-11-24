@@ -17,7 +17,7 @@ export function ContactForm({
   className,
   heading = 'Hi, there!',
   description =
-    "Share your thoughts, ideas, or feedback with us. We'd love to build a community of like-minded people, so please include your contact details if you want to collaborate or to be contacted back.",
+    "I am Vadym, the founder of this project. I would love to hear your thoughts, ideas, or any other feedback. Include your contact details to collaborate or stay anonymous if you prefer.",
 }: ContactFormProps) {
   const [message, setMessage] = useState('');
   const [formState, setFormState] = useState<FormState>('idle');
@@ -103,7 +103,15 @@ export function ContactForm({
         </div>
       )}
       <h2 className="h1 text-black mb-4">{displayHeading}</h2>
-      <p className={`body mb-8 ${formState === 'error' ? 'text-[var(--color-red)]' : 'text-[var(--color-grey-dark)]'}`}>{displayDescription}</p>
+      <p className={`body mb-8 ${formState === 'error' ? 'text-[var(--color-red)]' : 'text-[var(--color-grey-dark)]'}`}>
+        {formState === 'idle' && description.includes('Vadym') ? (
+          <>
+            I am <a href="https://www.linkedin.com/in/vadymuxd/" target="_blank" rel="noopener noreferrer" className="font-bold text-black">Vadym</a>, the founder of this project. I would love to hear your thoughts, ideas, or any other feedback. Include your contact details to collaborate or stay anonymous if you prefer.
+          </>
+        ) : (
+          displayDescription
+        )}
+      </p>
       {formState === 'sent' ? (
         <div className="flex justify-center">
           <button
